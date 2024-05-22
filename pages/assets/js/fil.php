@@ -1,27 +1,59 @@
 <?php
-// Verificar si se recibieron los datos de nombre y apellido
-if (isset($_GET["nombre"]) && isset($_GET["apellido"])) {
-    // Obtener los valores de nombre y apellido
-    // $nombreDocente = $_GET["nombre"];
-    // $apellidoDocente = $_GET["apellido"];
+if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
+    $nombre = isset($_GET['nombre']) ? $_GET['nombre'] : '';
+    $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';
 
-    // include("database.php");
+    $conexion = new mysqli("localhost", "root", "Miguelangelomy1", "Instituto");
 
-    // $sql = "SELECT * FROM Profesores WHERE Nombre LIKE '%$nombreDocente%' AND Apellido LIKE '%$apellidoDocente%'";
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
 
-    // $result = mysqli_query($conn, $sql);
+    // Construir la consulta SQL
+    $consulta = "SELECT
+                    Docentes.Nombre AS NombreDocente,
+                    Docentes.Apellido AS ApellidoDocente,
+                    Materias.Nombre AS NombreMateria,
+                    Carreras.Nombre AS NombreCarrera,
+                    Horarios.Dia,
+                    Horarios.HoraInicio,
+                    Horarios.HoraFin,
+                    Aulas.Numero AS NumeroAula
+                FROM
+                    DocenteMateria
+                    INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
+                    INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
+                    INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
+                    INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
+                    INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
+                WHERE";
+                    
+    if (!empty($nombre) && !empty($apellido)) {
+        $consulta .= "Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
+    } elseif (!empty($apellido)) {
+        $consulta .= "Docentes.Apellido LIKE '%$apellido%'";
+    } elseif (!empty($nombre)) {
+        $consulta .= "Docentes.Nombre LIKE '%$nombre%'";
+    } else {
+        // Si no se proporciona ni nombre ni apellido, la consulta no devolverá resultados
+        $consulta .= " AND 1 = 0";
+    }
+    
 
-    // if (mysqli_num_rows($result) > 0) {
-    //     while ($row = mysqli_fetch_assoc($result)) {
-    //         echo "Nombre: " . $row["Nombre"] . ", Apellido: " . $row["Apellido"] . "<br>";
-    //     }
-    // } else {
-    //     echo "No se encontraron docentes con los filtros especificados.";
-    // }
+    $resultado = $conexion->query($consulta);
 
-    // mysqli_close($conn);
-
-    echo "VERIFICACION EXITOSA";
+    if ($resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            echo "ID: " . $fila['DocenteID'] . "<br>";
+            echo "Nombre: " . $fila['Nombre'] . "<br>";
+            echo "Apellido: " . $fila['Apellido'] . "<br>";
+            echo "<br>";
+        }
+    } else {
+        echo "No se encontraron docentes con ese nombre y/o apellido.";
+    }
+    $conexion->close();
 } else {
-    echo "Error: No se recibieron los datos esperados.";
+    echo "No se proporcionaron nombre y/o apellido.";
 }
+?>

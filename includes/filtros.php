@@ -1,33 +1,61 @@
 <?php
-// Verificar si se recibieron los datos de nombre y apellido
-if (isset($_GET["nombre"]) && isset($_GET["apellido"])) {
-    // Obtener los valores de nombre y apellido
-    $nombreDocente = $_GET["nombre"];
-    $apellidoDocente = $_GET["apellido"];
+if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
+    $nombre = isset($_GET['nombre']) ? $_GET['nombre'] : '';
+    $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';
 
-    // Realizar la conexión a la base de datos (asumiendo que ya tienes un archivo de conexión)
-    include("database.php");
+    include('database.php');
+    // if ($conexion->connect_error) {
+    //     die("Error de conexión: " . $conexion->connect_error);
+    // }
+    $consulta = "SELECT
+                    Docentes.Nombre AS NombreDocente,
+                    Docentes.Apellido AS ApellidoDocente,
+                    Materias.Nombre AS NombreMateria,
+                    Carreras.Nombre AS NombreCarrera,
+                    Horarios.Dia,
+                    DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
+                    DATE_FORMAT(HoraFin, '%H:%i') AS HoraFin,
+                    Aulas.Numero AS NumeroAula,
+                    Materias.Nivel As Nivel
+                FROM
+                    DocenteMateria
+                    INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
+                    INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
+                    INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
+                    INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
+                    INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
+                WHERE";
 
-    // Consulta SQL para buscar los docentes según los filtros ingresados
-    $sql = "SELECT * FROM Profesores WHERE Nombre LIKE '%$nombreDocente%' AND Apellido LIKE '%$apellidoDocente%'";
+    if (!empty($nombre) && !empty($apellido)) {
+        $consulta .= " Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
+    } elseif (!empty($apellido)) {
+        $consulta .= " Docentes.Apellido LIKE '%$apellido%'";
+    } elseif (!empty($nombre)) {
+        $consulta .= " Docentes.Nombre LIKE '%$nombre%'";
+    } else {
+        echo "No se proporcionaron nombre y/o apellido.";
+        exit;
+    }
+    $consulta .= " ORDER BY Horarios.HorarioID";
 
-    // Ejecutar la consulta
-    $result = mysqli_query($conn, $sql);
+    $resultado = $conexion->query($consulta);
 
-    // Verificar si se encontraron resultados
-    if (mysqli_num_rows($result) > 0) {
-        // Mostrar los resultados
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "Nombre: " . $row["Nombre"] . ", Apellido: " . $row["Apellido"] . "<br>";
+    if ($resultado && $resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            echo "<div class='fila-profesor'>";
+            echo "<span class='spanDatos'>" . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NombreMateria'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NombreCarrera'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NumeroAula'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['Nivel'] . "</span>";
+            echo "</div>";
         }
     } else {
-        echo "No se encontraron docentes con los filtros especificados.";
+        echo "No se encontraron docentes con ese nombre y/o apellido.";
     }
-
-    // Cerrar la conexión a la base de datos
-    mysqli_close($conn);
+    $conexion->close();
 } else {
-    // Si no se recibieron los datos esperados, mostrar un mensaje de error
-    echo "Error: No se recibieron los datos esperados.";
+    echo "No se proporcionaron nombre y/o apellido.";
 }
-?>

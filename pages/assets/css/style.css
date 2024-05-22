@@ -421,15 +421,17 @@ main.min-main {
 }
 
 /*------------------> Titulos Filtros*/
-.seccionFiltros {
+.seccionFiltrosDocentes {
   display: grid;
-
   padding: 10px 0px;
   background: #eee;
-  grid-auto-flow: column;
-  grid-template-columns: repeat(4, 1fr);
-  /* justify-content: space-around; */
-  margin-bottom: 10px;
+  grid-template-columns: repeat(7, 1fr);
+}
+.seccionFiltrosCarreras{
+  display: grid;
+  padding: 10px 0px;
+  background: #eee;
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .fila-profesor {
@@ -445,7 +447,7 @@ main.min-main {
 }
 
 /* Estilos para la tabla de profesores */
-.tabla-profesores {
+#tabla-profesores {
   width: 100%;
   border-collapse: collapse;
 }
@@ -478,6 +480,8 @@ main.min-main {
 #apellido{
   margin-left: 10px;
 }
+
+
 
 
 /* .fila-profesor.spanOscuro:nth-child(odd) { */
@@ -522,7 +526,7 @@ main.min-main {
   margin-bottom: 5px;
 }
 
-.stat-info p {
+.stat-info span {
   font-size: 24px;
   font-weight: bold;
   color: #4caf50;
@@ -587,3 +591,6 @@ main.min-main {
 .class-time {
   color: #666;
 }
+
+
+/* TODO */

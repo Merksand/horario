@@ -30,13 +30,10 @@
         <input type="password" placeholder="Ingrese su contraseña" class="inputText" id="password" name="password" autocomplete="off">
 
         <input type="submit" value="Iniciar Sesion" name="btnIngresar" class="btnIngresar">
-        <!-- <div class="aviso">HOLA</div> -->
-
         <?php
         include("../includes/functions.php");
         ?>
 
-        <!-- <div class="aviso">Datos incorrectos</div> -->
     </form>
     <?php
     if (!empty($_POST["btnIngresar"])) {
