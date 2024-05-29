@@ -78,19 +78,6 @@
 
 
 
-    <div id="totales">
-        <h3>Totales:</h3>
-        <div id="total-docentes">Total de Docentes: <span id="docentes-count"></span></div>
-        <div id="total-materias">Total de Materias: <span id="materias-count"></span></div>
-        <div id="total-carreras">Total de Carreras: <span id="carreras-count"></span></div>
-        <!-- Agregar más totales según sea necesario -->
-    </div>
-
-
-
-
-
-
 
 
 

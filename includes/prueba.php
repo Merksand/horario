@@ -1,55 +1,53 @@
 <?php
-include 'database.php';
+if (isset($_GET['aula'])) {
+    $aula = $_GET['aula'];
 
-if (!empty($_POST["btnIngresar"])) {
+    include('database.php');
 
-    
-    $nombre = isset($_GET['nombre']) ? $_GET['nombre'] : '';
-    $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';
-    
-    $sql = "SELECT p.Nombre AS nombre_profesor, p.Apellido AS apellido_profesor, c.Nombre AS nombre_carrera, a.Numero AS numero_aula, h.Dia AS dia_horario, h.HoraInicio AS hora_inicio, h.HoraFin AS hora_fin
-        FROM Profesores p
-        JOIN ProfesorMateria pm ON p.ProfesorID = pm.ProfesorID
-        JOIN Materias m ON pm.MateriaID = m.MateriaID
-        JOIN Carreras c ON m.CarreraID = c.CarreraID
-        JOIN Aulas a ON pm.AulaID = a.AulaID
-        JOIN Horarios h ON pm.HorarioID = h.HorarioID";
+    $consulta = "SELECT
+                    Docentes.Nombre AS NombreDocente,
+                    Docentes.Apellido AS ApellidoDocente,
+                    Materias.Nombre AS NombreMateria,
+                    Carreras.Nombre AS NombreCarrera,
+                    Materias.Nivel AS NivelMateria,
+                    Horarios.Dia AS Dia,
+                    DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
+                    DATE_FORMAT(HoraFin, '%H:%i') AS HoraFin,
+                    Aulas.Nombre AS NombreAula
+                FROM
+                    DocenteMateria
+                    INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
+                    INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
+                    INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
+                    INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
+                    INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID";
 
-        if (!empty($nombre) || !empty($apellido)) {
-            $sql .= " WHERE ";
-            if (!empty($nombre)) {
-                $sql .= "p.Nombre LIKE '%$nombre%'";
-            }
-            if (!empty($apellido)) {
-                $sql .= (!empty($nombre) ? " AND " : "") . "p.Apellido LIKE '%$apellido%'";
-            }
-        }
-        
-        $resultado = $conn->query($sql);
-        
-        // Mostrar los resultados en una tabla con div
-        if ($resultado->num_rows > 0) {
-            echo '<div class="encabezado fila">';
-            echo '<div>Docente</div>';
-            echo '<div>Carrera</div>';
-            echo '<div>Aula</div>';
-            echo '<div>Horario</div>';
-            echo '</div>';
-            
-            while ($fila = $resultado->fetch_assoc()) {
-                echo '<div class="fila">';
-                echo '<div>' . $fila['nombre_profesor'] . ' ' . $fila['apellido_profesor'] . '</div>';
-                echo '<div>' . $fila['nombre_carrera'] . '</div>';
-                echo '<div>' . $fila['numero_aula'] . '</div>';
-                echo '<div>' . $fila['dia_horario'] . ' ' . $fila['hora_inicio'] . ' - ' . $fila['hora_fin'] . '</div>';
-                echo '</div>';
-            }
-        } else {
-            echo '<p>No se encontraron profesores que coincidan con el filtro.</p>';
-        }
+    if ($aula !== 'Todas') {
+        $consulta .= " WHERE Aulas.Nombre = '$aula'";
     }
 
-    ?>
+    $resultado = $conexion->query($consulta);
+    if ($resultado && $resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            echo "<div class='fila-profesor'>";
+            echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NombreMateria'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NivelMateria'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NombreAula'] . "</span>";
+            echo "</div>";
+        }
+    } else {
+        echo "No se encontraron docentes para el aula seleccionada.";
+    }
+    $conexion->close();
+} else {
+    echo "No se proporcionó el aula.";
+};
+?>
+
+
 
 
 

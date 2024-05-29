@@ -1,3 +1,24 @@
+SECRETARIA 
+SECRETARIA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO Materias (Nombre,Codigo,Nivel,CarreraID)
 VALUES 
     ('Matematica para la informatica','MPI-101',100, 1), 

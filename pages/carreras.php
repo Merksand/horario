@@ -12,7 +12,7 @@
         <h3>Buscar por carrera</h3>
         <div class="filtro">
             <label for="filtrar-carrera">Carrera:</label>
-            <select id="filtrar-carrera" class="filtrarCarrera" style="width: 250px;" name="filtrar-carrera">
+            <select id="filtrar-carrera" class="filtrarCarrera" style="width: 250px;" name="carrera">
                 <option name="" value=""></option>
                 <option name="Todas" value="Todas">Todas</option>
                 <option name="Mecanica Industrial" value="Mecanica Industrial">Mecánica Industrial</option>
@@ -24,6 +24,16 @@
                 <option name="Contaduria General" value="Contaduria General">Contaduría General</option>
                 <option name="Sistemas Informaticos" value="Sistemas Informaticos">Sistemas Informáticos</option>
             </select>
+        </div>
+        <div class="filtro">
+            <label for="filtrar-nivel">Nivel:</label>
+            <select id="filtrar-nivel" name="nivel" style="width: 150px;" name="nivel">
+                <option value="Todas">Todas</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+            </select>
+            <input type="submit" value="Filtrar" id="filtrar-nivel-carrera" name="filtrar-nivel-carrera" class="brt">
         </div>
     </div>
     <div class="seccionFiltrosCarreras">

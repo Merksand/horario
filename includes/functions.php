@@ -8,19 +8,18 @@ if (!empty($_POST["btnIngresar"])) {
         $usuario = $_POST['username'];
         $clave = $_POST['password'];
         
-        // Preparar la consulta SQL utilizando sentencias preparadas
-        $sql = "SELECT * FROM Usuarios WHERE usuario LIKE '%$usuario%' LIMIT 1";
-        $stmt = $conn->prepare($sql);
+        $sql = "SELECT * FROM Usuarios WHERE usuario = ? LIMIT 1";
+
+        $stmt = $conexion->prepare($sql);
         $stmt->bind_param("s", $usuario);
         $stmt->execute();
         $resultado = $stmt->get_result();
         
         if ($resultado->num_rows == 1) {
             $fila = $resultado->fetch_assoc();
-            // Verificar la contraseña utilizando password_verify()
             if (password_verify($clave, $fila['Clave'])) {
                 header("location:../index.php");
-                exit(); // Importante: detener la ejecución del script después de redirigir al usuario
+                exit(); 
             } else {
                 echo "<div class='alert alert-danger text-center mt-4 aviso'>Contraseña incorrecta</div>";
             }

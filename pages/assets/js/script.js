@@ -57,7 +57,7 @@ cloud.addEventListener("click", () => {
         span.classList.toggle("oculto");
     });
 });
-// FILTROS
+
 
 function cargarContenido(pagina) {
     fetch(pagina)
@@ -71,19 +71,6 @@ function cargarContenido(pagina) {
             console.error("Error generado:", error);
         });
 }
-
-// function agregarEventos() {
-//   const boton = document.getElementById("btn-filtrar");
-//   if (boton) {
-//     boton.addEventListener("click", () => {
-//       let nombreDocente = document.getElementById("nombre").value;
-//       let apellidoDocente = document.getElementById("apellido").value;
-//       let tabla = document.getElementById("tabla-profesores");
-
-//     });
-//   }
-// }
-
 function agregarEventos() {
     const boton = document.getElementById("btn-filtrar");
     if (boton) {
@@ -106,10 +93,35 @@ function agregarEventos() {
             xhr.send();
         });
     }
-    const botonFiltrarCarrera = document.querySelector(".filtrarCarrera");
+    // const botonFiltrarCarrera = document.querySelector(".filtrarCarrera");
+    // if (botonFiltrarCarrera) {
+    //     botonFiltrarCarrera.addEventListener("change", () => {
+    //         const carreraSeleccionada = document.querySelector(".filtrarCarrera").value;
+    //         let tabla = document.getElementById("tabla-profesores");
+    //         if (carreraSeleccionada !== "") {
+    //             const xhr = new XMLHttpRequest();
+    //             xhr.onreadystatechange = function () {
+    //                 if (xhr.readyState === 4) {
+    //                     if (xhr.status === 200) {
+    //                         tabla.innerHTML = xhr.responseText;
+    //                     } else {
+    //                         console.error("Error en la petición AJAX: " + xhr.status);
+    //                     }
+    //                 }
+    //             };
+
+    //             xhr.open("GET", "includes/carreras.php?carrera=" + carreraSeleccionada, true);
+    //             xhr.send();
+    //         }
+    //     });
+    // }
+
+
+    const botonFiltrarCarrera = document.getElementById("filtrar-nivel-carrera");
     if (botonFiltrarCarrera) {
-        botonFiltrarCarrera.addEventListener("change", () => {
+        botonFiltrarCarrera.addEventListener("click", () => {
             const carreraSeleccionada = document.querySelector(".filtrarCarrera").value;
+            const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
             let tabla = document.getElementById("tabla-profesores");
             if (carreraSeleccionada !== "") {
                 const xhr = new XMLHttpRequest();
@@ -122,14 +134,42 @@ function agregarEventos() {
                         }
                     }
                 };
-
-                xhr.open("GET", "includes/carreras.php?carrera=" + carreraSeleccionada, true);
+                xhr.open("GET", "includes/carreras.php?carrera=" + carreraSeleccionada+"&nivel="+nivelSeleccionado, true);
                 xhr.send();
             }
         });
     }
 
 
+
+    const botonFiltrarAula = document.querySelector(".filtrarAula");
+    if (botonFiltrarAula) {
+        botonFiltrarAula.addEventListener("change", () => {
+            const aulaSeleccionada = document.querySelector(".filtrarAula").value;
+            let tabla = document.getElementById("tabla-profesores");
+            if (aulaSeleccionada !== "") {
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) { 
+                            tabla.innerHTML = xhr.responseText;
+                        } else {
+                            console.error("Error en la petición AJAX: " + xhr.status);
+                        }
+                    }
+                };
+
+                xhr.open("GET", "includes/aulas.php?aula=" + aulaSeleccionada, true);
+                xhr.send();
+            }
+        });
+    }
+
+
+
+
+
+    
     const botonFiltrarHorario = document.getElementById("filtrar-horario");
     if (botonFiltrarHorario) {
         botonFiltrarHorario.addEventListener("click", () => {
@@ -142,8 +182,6 @@ function agregarEventos() {
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            // Procesar la respuesta y mostrar los resultados
-                            console.log(nivelSeleccionado);
                             tabla.innerHTML = xhr.responseText;
                         } else {
                             console.error("Error en la petición AJAX: " + xhr.status);
@@ -156,6 +194,35 @@ function agregarEventos() {
             }
         });
     }
+
+
+
+    const botonFiltrarMateria = document.getElementById("btn-materia");
+    if (botonFiltrarMateria) {
+        botonFiltrarMateria.addEventListener("click", (e) => {
+            let nombreMateria = document.getElementById("materia").value;
+            let tabla = document.getElementById("tabla-profesores");
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log(xhr.responseText);
+                        console.log(nombreMateria); 
+                        tabla.innerHTML = xhr.responseText;
+                    } else {
+                        console.error("Error en la petición AJAX: " + xhr.status);
+                    }
+                }
+            };
+            const url = "includes/materias.php?materia=" + encodeURIComponent(nombreMateria) ;
+            xhr.open("GET", url, true);
+            xhr.send();
+        });
+    }
+
+
+
+
 }
 
 
@@ -192,61 +259,8 @@ function cargarTotales() {
 }
 
 
-    // const filo = document.querySelector(".filo");
-    // filo.addEventListener("click", () => {
-    //     let tabla = document.getElementById("tabla-profesores");
-    //     var xhr = new XMLHttpRequest();
-
-    //     // Configurar la solicitud POST hacia el archivo PHP
-    //     xhr.open('POST', 'includes/carreras.php', true);
-    //     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-    //     // Definir la función de devolución de llamada para manejar la respuesta del servidor
-    //     xhr.onload = function () {
-    //         if (xhr.status >= 200 && xhr.status < 300) {
-    //             // Imprimir la respuesta del servidor en la consola (para propósitos de demostración)
-    //             // tabla.innerHTML =xhr.responseText;
-    //             console.log(xhr.responseText);;
-    //         } else {
-    //             console.error('Error al realizar la solicitud: ' + xhr.status);
-    //         }
-    //     };
-
-    //     // Enviar la solicitud al servidor, incluyendo la variable spanPresionado
-    //     xhr.send('spanPresionado=true');
-    // });
 
 
-
-
-
-
-
-
-
-
-// function home() {
-    
-// }
-
-
-
-
-
-// function agregarEventos() {
-//   const boton = document.getElementById("btn-filtrar");
-//   if (boton) {
-//       boton.addEventListener("click", (e) => {
-//         e.preventDefault();
-//         fetch('pages/assets/js/fil.php')
-//        .then((response) => response.text())
-//        .then((data) => {
-//             document.getElementById('tabla-profesores').innerHTML = data;
-//         })
-//         console.log(3223);
-//       });
-//   }
-// }
 
 // function setDefaultDate() {
 //   const fechaInput = document.getElementById("fecha");

@@ -33,37 +33,37 @@
             <ul>
                 <li class="puto" onclick="cargarContenido('pages/home.php')">
                     <a class="inbox" href="#">
-                        <ion-icon name="mail-unread-outline"></ion-icon>
+                        <ion-icon name="home-outline"></ion-icon>
                         <span>Inicio</span>
                     </a>
                 </li>
                 <li class="puto" onclick="cargarContenido('pages/horarios.php')">
                     <a class="inbox" href="#">
-                        <ion-icon name="mail-unread-outline"></ion-icon>
+                        <ion-icon name="time-outline"></ion-icon>
                         <span>Horario</span>
                     </a>
                 </li>
                 <li onclick="cargarContenido('pages/docentes.php')">
                     <a class="inbox" href="#">
-                        <ion-icon name="star-outline"></ion-icon>
+                        <ion-icon name="people-outline"></ion-icon>
                         <span>Docente</span>
                     </a>
                 </li>
-                <li>
+                <li onclick="cargarContenido('pages/materias.php')">
                     <a class="inbox" href="#">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <ion-icon name="library-outline"></ion-icon>
                         <span>Materia</span>
                     </a>
                 </li>
-                <li>
+                <li onclick="cargarContenido('pages/aulas.php')">
                     <a class="inbox" href="#">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <ion-icon name="easel-outline"></ion-icon>
                         <span>Aula</span>
                     </a>
                 </li>
                 <li onclick="cargarContenido('pages/carreras.php')">
                     <a class="inbox" href="#">
-                        <ion-icon name="paper-plane-outline"></ion-icon>
+                        <ion-icon name="business-outline"></ion-icon>
                         <span>Carrera</span>
                     </a>
                 </li>
@@ -73,9 +73,9 @@
                         <span>Reportes</span>
                     </a>
                 </li>
-                <li>
+                <li onclick="cargarContenido('pages/configuracion.php')">
                     <a class="inbox" href="#">
-                        <ion-icon name="bookmark-outline"></ion-icon>
+                        <ion-icon name="settings-outline"></ion-icon>
                         <span>Configuración</span>
                     </a>
                 </li>
@@ -123,7 +123,7 @@
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            cargarContenido('pages/horarios.php');
+            cargarContenido('pages/carreras.php');
         });
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

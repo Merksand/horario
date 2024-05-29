@@ -28,12 +28,25 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
 
     if ($carrera !== "Todas" && $nivel !== "Todas") {
         $consulta .= " WHERE Carreras.Nombre = '$carrera' AND Materias.Nivel = $nivel";
-    } else if ($carrera !== "Todas" && $nivel == "Todas") {
+    } elseif ($carrera !== "Todas" && $nivel === "Todas") {
         $consulta .= " WHERE Carreras.Nombre = '$carrera'";
-    } elseif ($carrera == "Todas" && $nivel !== "Todas") {
+    } elseif ($carrera === "Todas" && $nivel !== "Todas") {
         $consulta .= " WHERE Materias.Nivel = '$nivel'";
-    } else if (empty($carrera)) {
+    } elseif ($carrera === "Todas" && $nivel === "Todas") {
+        // No se necesita añadir ninguna condición WHERE si ambas son "Todas"
+    }
+
+
+    if (!empty($carrera) && $carrera !== "Todas" && $nivel !== "Todas") {
+        $consulta .= " WHERE Carreras.Nombre = '$carrera' AND Materias.Nivel = $nivel";
+    } elseif (!empty($carrera) && $carrera !== "Todas" && $nivel === "Todas") {
+        $consulta .= " WHERE Carreras.Nombre = '$carrera'";
+    } elseif ($carrera === "Todas" && $nivel !== "Todas") {
+        $consulta .= " WHERE Materias.Nivel = '$nivel'";
+    } elseif (empty($carrera)) {
         echo "No seleccionó ninguna carrera";
+    } elseif ($carrera === "Todas" && $nivel === "Todas") {
+        // No se necesita añadir ninguna condición WHERE si ambas son "Todas"
     }
 
 

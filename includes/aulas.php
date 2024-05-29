@@ -1,8 +1,6 @@
 <?php
-if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
-
-    $carrera = $_GET['carrera'];
-    $nivel = $_GET['nivel'];
+if (isset($_GET['aula'])) {
+    $aula = $_GET['aula'];
 
     include('database.php');
 
@@ -15,7 +13,7 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
                     Horarios.Dia AS Dia,
                     DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
                     DATE_FORMAT(HoraFin, '%H:%i') AS HoraFin,
-                    Aulas.Nombre AS NombreAula
+                    Carreras.Nombre AS NombreCarrera
                 FROM
                     DocenteMateria
                     INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
@@ -23,30 +21,10 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
                     INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID";
-    /* WHERE Carreras.Nombre = '$carrera'"; */
 
-
-    if ($carrera !== "Todas" && $nivel !== "Todas") {
-        $consulta .= " WHERE Carreras.Nombre = '$carrera' AND Materias.Nivel = $nivel";
-    } else if ($carrera !== "Todas" && $nivel == "Todas") {
-        $consulta .= " WHERE Carreras.Nombre = '$carrera'";
-    } elseif ($carrera == "Todas" && $nivel !== "Todas") {
-        $consulta .= " WHERE Materias.Nivel = '$nivel'";
-    } else if (empty($carrera)) {
-        echo "No seleccionó ninguna carrera";
+    if ($aula !== 'Todas') {
+        $consulta .= " WHERE Aulas.Nombre ='$aula'";
     }
-
-
-
-
-    // if ($carrera !== 'Todas') {
-    //     $consulta .=  " WHERE Carreras.Nombre = '$carrera' ";       
-    // }
-    // else if($nivel !== 'Todas' && $carrera !== 'Todas') {
-    //     $consulta .= " WHERE Materias.Nivel = '$nivel' AND Carreras.Nombre = '$carrera'";
-    // }else if($nivel == "Todas" && $carrera == "Todas") {
-    //     $consulta .= " WHERE Materias.Nivel = '$nivel'";
-    // }
 
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
@@ -57,13 +35,13 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
             echo "<span class='spanDatos'>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreMateria'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NivelMateria'] . "</span>";
-            echo "<span class='spanDatos'>" . $fila['NombreAula'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NombreCarrera'] . "</span>";
             echo "</div>";
         }
     } else {
         echo "No se encontraron docentes para la carrera seleccionada.";
     }
-    // $conexion->close();
+    $conexion->close();
 } else {
     echo "No se proporcionó la carrera.";
 };

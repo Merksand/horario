@@ -8,7 +8,7 @@
 
 <body>
     <div class="sidebar-filters">
-        <h3 id="desaparecer">Filtros</h3>
+        <h3 id="desaparecer">Filtros de horario</h3>
         <div class="filtro">
             <label for="filtrar-carrera">Carrera:</label>
             <select id="filtrar-carrera" id="materia" style="width: 150px;" name="filtrar-carrera">

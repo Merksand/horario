@@ -16,7 +16,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel'])) {
             Horarios.Dia AS Dia,
             DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
             DATE_FORMAT(HoraFin, '%H:%i') AS HoraFin,
-            Aulas.Numero AS NumeroAula
+            Aulas.Nombre AS NombreAula
         FROM
             DocenteMateria
             INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
@@ -48,7 +48,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel'])) {
             echo "<span class='spanDatos'>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreMateria'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NivelMateria'] . "</span>";
-            echo "<span class='spanDatos'>" . $fila['NumeroAula'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['NombreAula'] . "</span>";
             echo "</div>";
         }
 

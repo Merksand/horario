@@ -1,12 +1,10 @@
 <?php
-if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
-    $nombre = isset($_GET['nombre']) ? $_GET['nombre'] : '';
-    $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';
+if (isset($_GET['materia'])) {
+
+    $materia = $_GET['materia'];
 
     include('database.php');
-    // if ($conexion->connect_error) {
-    //     die("Error de conexión: " . $conexion->connect_error);
-    // }
+   
     $consulta = "SELECT
                     Docentes.Nombre AS NombreDocente,
                     Docentes.Apellido AS ApellidoDocente,
@@ -24,19 +22,19 @@ if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
                     INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
-                WHERE";
+                WHERE Materias.Nombre LIKE '%$materia%'";
 
-    if (!empty($nombre) && !empty($apellido)) {
-        $consulta .= " Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
-    } elseif (!empty($apellido)) {
-        $consulta .= " Docentes.Apellido LIKE '%$apellido%'";
-    } elseif (!empty($nombre)) {
-        $consulta .= " Docentes.Nombre LIKE '%$nombre%'";
-    } else {
-        echo "No se proporcionaron nombre y/o apellido.";
-        exit;
-    }
-    $consulta .= " ORDER BY Horarios.HorarioID";
+    // if (!empty($nombre) && !empty($apellido)) {
+    //     $consulta .= " Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
+    // } elseif (!empty($apellido)) {
+    //     $consulta .= " Docentes.Apellido LIKE '%$apellido%'";
+    // } elseif (!empty($nombre)) {
+    //     $consulta .= " Docentes.Nombre LIKE '%$nombre%'";
+    // } else {
+    //     echo "No se proporcionaron nombre y/o apellido.";
+    //     exit;
+    // }
+    // $consulta .= " ORDER BY Horarios.HorarioID";
 
     $resultado = $conexion->query($consulta);
 

@@ -13,7 +13,6 @@
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" placeholder="Nombre del docente" style="width: 150px;" name="nombre">
             <input type="text" id="apellido" placeholder="Apellido del docente" style="width: 150px;" name="apellido">
-            <!-- <button id="btn-filtrar-profesores">Filtrar</button> -->
             <input type="submit" value="Filtrar" id="btn-filtrar" name="btn-filtrar" class="btna">
         </div>
     </div>
