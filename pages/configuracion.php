@@ -138,7 +138,8 @@
         #buscarDocenteForm button {
             width: calc(100% - 22px);
         }
-        .datalist{
+
+        .datalist {
             width: 200px;
         }
     </style>
@@ -149,10 +150,9 @@
         <form id="buscarDocenteForm">
             <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente">
             <input type="text" id="buscarApellido" name="buscarApellido" placeholder="Apellido del docente">
-            <button type="submit" id="buscar" >Buscar</button>
+            <button type="submit" id="buscarDocente">Buscar</button>
         </form>
 
-        <!-- Formulario de registro y actualización de docentes -->
         <form id="docenteForm">
             <input type="hidden" id="docenteID" name="docenteID">
             <div>
@@ -163,11 +163,6 @@
                 <label for="apellido">Apellido del Docente:</label>
                 <input type="text" class="apellido" name="apellido" required>
             </div>
-            <!-- <div>
-                <label for="carrera">Carrera:</label>
-                <input type="text" id="carrera" name="carrera" required>
-            </div> -->
-
 
             <label for="navegador">Carrera:</label>
             <input list="carrera" id="navegador" name="navegador" type="text">
@@ -199,8 +194,7 @@
             </div>
         </form>
 
-        <!-- Tabla de docentes -->
-        <table id="docentesTable">
+        <table id="tabla-docentes">
             <thead>
                 <tr>
                     <th>ID</th>

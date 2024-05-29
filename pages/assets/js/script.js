@@ -134,7 +134,7 @@ function agregarEventos() {
                         }
                     }
                 };
-                xhr.open("GET", "includes/carreras.php?carrera=" + carreraSeleccionada+"&nivel="+nivelSeleccionado, true);
+                xhr.open("GET", "includes/carreras.php?carrera=" + carreraSeleccionada + "&nivel=" + nivelSeleccionado, true);
                 xhr.send();
             }
         });
@@ -151,7 +151,7 @@ function agregarEventos() {
                 const xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
-                        if (xhr.status === 200) { 
+                        if (xhr.status === 200) {
                             tabla.innerHTML = xhr.responseText;
                         } else {
                             console.error("Error en la petición AJAX: " + xhr.status);
@@ -169,7 +169,7 @@ function agregarEventos() {
 
 
 
-    
+
     const botonFiltrarHorario = document.getElementById("filtrar-horario");
     if (botonFiltrarHorario) {
         botonFiltrarHorario.addEventListener("click", () => {
@@ -188,7 +188,7 @@ function agregarEventos() {
                         }
                     }
                 };
-                const url = "includes/horarios.php?carrera=" + carreraSeleccionada + "&fecha=" + fechaSeleccionada+"&nivel=" +nivelSeleccionado;
+                const url = "includes/horarios.php?carrera=" + carreraSeleccionada + "&fecha=" + fechaSeleccionada + "&nivel=" + nivelSeleccionado;
                 xhr.open("GET", url, true);
                 xhr.send();
             }
@@ -207,22 +207,68 @@ function agregarEventos() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         console.log(xhr.responseText);
-                        console.log(nombreMateria); 
+                        console.log(nombreMateria);
                         tabla.innerHTML = xhr.responseText;
                     } else {
                         console.error("Error en la petición AJAX: " + xhr.status);
                     }
                 }
             };
-            const url = "includes/materias.php?materia=" + encodeURIComponent(nombreMateria) ;
+            const url = "includes/materias.php?materia=" + encodeURIComponent(nombreMateria);
             xhr.open("GET", url, true);
             xhr.send();
         });
     }
 
 
+    const buscarDocente = document.getElementById("buscarDocente");
+    if(buscarDocente){
+        buscarDocente.addEventListener("click", (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('buscarNombre').value;
+            const apellido = document.getElementById('buscarApellido').value;
+
+            const params = new URLSearchParams({ nombre, apellido });
+
+            fetch(`includes/CRUD/buscarDocente.php?${params.toString()}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tablaDocentes = document.querySelector('#tabla-docentes tbody');
+                    tablaDocentes.innerHTML = '';
+                    data.forEach(docente => {
+                        tablaDocentes.innerHTML += `
+                            <tr>
+                                <td>${docente.id}</td>
+                                <td>${docente.nombre}</td>
+                                <td>${docente.apellido}</td>
+                                <td>${docente.materia}</td>
+                                <td>${docente.nivel}</td>
+                                <td>${docente.aula}</td>
+                                <td>
+                                    <button class="editar" onclick="editarDocente(${docente.id})">✏️</button>
+                                    <button class="eliminar" onclick="eliminarDocente(${docente.id})">🗑️</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                })
+                .catch(error => console.error('Error al buscar docentes:', error));
+        });
+    }
 
 
+    const btnAgregar = document.getElementById("btn-submit");
+    if(btnAgregar){
+        btnAgregar.addEventListener("click", (e) => {
+            e.preventDefault();
+            console.log("Perra");
+        })
+    }
 }
 
 
