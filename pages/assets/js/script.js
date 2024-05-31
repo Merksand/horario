@@ -205,7 +205,7 @@ function agregarEventos() {
 
 
     const buscarDocente = document.getElementById("buscarDocente");
-    if(buscarDocente){
+    if (buscarDocente) {
         buscarDocente.addEventListener("click", (e) => {
             e.preventDefault();
             const nombre = document.getElementById('buscarNombre').value;
@@ -246,14 +246,33 @@ function agregarEventos() {
     }
 
 
-    const btnAgregar = document.getElementById("btn-submit");
-    if(btnAgregar){
-        btnAgregar.addEventListener("click", (e) => {
-            e.preventDefault();
-            console.log("Perra");
-        })
-    }
+    let docenteForm = document.getElementById("docenteForm");
+    if(docenteForm) {
+    docenteForm.addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevenir la recarga de la página por defecto
+        const formData = new FormData(docenteForm);
 
+        // Mostrar información en la consola
+        for (let [key, value] of formData.entries()) {
+            console.log(key + ': ' + value);
+        }
+
+        fetch("includes/CRUD/agregarDocente.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Docente agregado con éxito");
+                docenteForm.reset(); // Limpiar el formulario después de agregar
+            } else {
+                alert("Error al agregar docente: " + data.error);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    }
 }
 
 
