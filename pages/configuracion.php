@@ -8,9 +8,7 @@
 </head>
 
 <body>
-    <!-- docentes.php -->
     <style>
-        /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -80,6 +78,8 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            font-size: 1.1rem;
+
         }
 
         table th,
@@ -91,15 +91,19 @@
 
         table th {
             background-color: #f8f8f8;
-            color: #333;
+            color: #111;
+            font-weight: 900;
         }
 
         table tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-
+        table tbody tr:nth-child(odd) {
+            color: #fff;
+        }
         table tbody tr:hover {
-            background-color: #f1f1f1;
+            background-color: #ff0000;
+            color: #fff;
         }
 
         button {
@@ -145,28 +149,20 @@
     </style>
     <div id="docentesCRUD spanOscuro">
         <h2>Gestión de Docentes</h2>
-
-        <!-- Formulario de búsqueda -->
-        <form id="buscarDocenteForm">
-            <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente">
-            <input type="text" id="buscarApellido" name="buscarApellido" placeholder="Apellido del docente">
-            <button type="submit" id="buscarDocente">Buscar</button>
-        </form>
-
         <form id="docenteForm">
             <input type="hidden" id="docenteID" name="docenteID">
             <div>
-                <label for="nombre">Nombre del Docente:</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <label for="agregarNombre">Nombre del Docente:</label>
+                <input type="text" id="agregarNombre" name="nombre" required>
             </div>
             <div>
-                <label for="apellido">Apellido del Docente:</label>
-                <input type="text" class="apellido" name="apellido" required>
+                <label for="agregarApellido">Apellido del Docente:</label>
+                <input type="text" id="agregarApellido" class="apellido" name="apellido" required>
             </div>
 
-            <label for="navegador">Carrera:</label>
-            <input list="carrera" id="navegador" name="navegador" type="text">
-            <datalist id="carrera" class="datalist">
+            <label for="carrera">Carrera:</label>
+            <input list="list-carrera" id="carrera" name="carrera" type="text">
+            <datalist id="list-carrera" class="datalist">
                 <option value="Mecanica Industrial">
                 <option value="Mecanica Automotriz">
                 <option value="Electronica">
@@ -177,37 +173,76 @@
                 <option value="Sistemas Informaticos">
             </datalist>
 
+            <label for="periodo">Periodo:</label>
+            <input list="list-periodo" id="periodo" name="periodo" type="text">
+            <datalist id="list-periodo" class="datalist">
+                <option value="18:30 - 19:10">
+                <option value="19:10 - 19:50">
+                <option value="19:50 - 20:30">
+                <option value="20:30 - 21:10">
+                <option value="21:10 - 21:50">
+                <option value="21:50 - 22:30">
+            </datalist>
+
+
+            <label for="dia">Dia:</label>
+            <input list="periodo-dia" id="dia" name="dia" type="text">
+            <datalist id="periodo-dia" class="datalist">
+                <option value="Lunes">
+                <option value="Martes">
+                <option value="Miércoles">
+                <option value="Jueves">
+                <option value="Viernes">
+            </datalist>
+
+
+
             <div>
                 <label for="materia">Materia:</label>
                 <input type="text" id="materia" name="materia" required>
             </div>
-            <div>
-                <label for="nivel">Nivel:</label>
-                <input type="text" id="nivel" name="nivel" required>
-            </div>
+            <label for="agregarNivel">Nivel:</label>
+            <input list="periodo-nivel" id="agregarNivel" name="nivel" type="text">
+            <datalist id="periodo-nivel" class="datalist">
+                <option value="100">
+                <option value="200">
+                <option value="300">
+                <option value="400">
+                <option value="500">
+                <option value="600">
+            </datalist>
             <div>
                 <label for="aula">Aula:</label>
                 <input type="text" id="aula" name="aula" required>
             </div>
             <div>
-                <button type="submit" id="btn-submit">Guardar</button>
+                <button type="submit" id="btn-submit">Agregar Informacion</button>
             </div>
+        </form>
+
+        <!-- Formulario de búsqueda -->
+        <h2>Buscar Docente y Modificar</h2>
+        <br>
+        <form id="buscarDocenteForm">
+            <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente">
+            <input type="text" id="buscarApellido" name="buscarApellido" placeholder="Apellido del docente">
+            <button type="submit" id="buscarDocente">Buscar</button>
         </form>
 
         <table id="tabla-docentes">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nombres</th>
-                    <th>Apellidos</th>
+                    <th>Dia</th>
+                    <th>Horas</th>
+                    <th>Nombre Completo</th>
                     <th>Materia</th>
+                    <th>Carrera</th>
                     <th>Nivel</th>
                     <th>Aula</th>
-                    <th>Carrera</th>
+                    <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Datos de docentes se cargarán aquí -->
             </tbody>
         </table>
     </div>

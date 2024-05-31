@@ -24,18 +24,6 @@ if (isset($_GET['materia'])) {
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
                 WHERE Materias.Nombre LIKE '%$materia%'";
 
-    // if (!empty($nombre) && !empty($apellido)) {
-    //     $consulta .= " Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
-    // } elseif (!empty($apellido)) {
-    //     $consulta .= " Docentes.Apellido LIKE '%$apellido%'";
-    // } elseif (!empty($nombre)) {
-    //     $consulta .= " Docentes.Nombre LIKE '%$nombre%'";
-    // } else {
-    //     echo "No se proporcionaron nombre y/o apellido.";
-    //     exit;
-    // }
-    // $consulta .= " ORDER BY Horarios.HorarioID";
-
     $resultado = $conexion->query($consulta);
 
     if ($resultado && $resultado->num_rows > 0) {
@@ -51,9 +39,10 @@ if (isset($_GET['materia'])) {
             echo "</div>";
         }
     } else {
-        echo "No se encontraron docentes con ese nombre y/o apellido.";
+
+        echo "<div class='datosIncorrectos'>No existe la Materia ingresada</div>";
     }
     $conexion->close();
 } else {
-    echo "No se proporcionaron nombre y/o apellido.";
+    echo "No se proporcionaron datos necesario.";
 }

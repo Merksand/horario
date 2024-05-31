@@ -595,3 +595,16 @@ main.min-main {
 
 
 /* TODO */
+
+.datosIncorrectos{
+  width: 100%;
+  padding: 15px;
+  background: #f14747;
+  font-family: sans-serif;
+  font-size: large;
+  margin: 20px 0;
+  border-radius: 5px;
+  color: #fff;
+  text-align: center;
+  background: #ff0000;
+}

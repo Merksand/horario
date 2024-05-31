@@ -75,6 +75,7 @@ function agregarEventos() {
     const boton = document.getElementById("btn-filtrar");
     if (boton) {
         boton.addEventListener("click", (e) => {
+            e.preventDefault();
             let nombreDocente = document.getElementById("nombre").value;
             let apellidoDocente = document.getElementById("apellido").value;
             let tabla = document.getElementById("tabla-profesores");
@@ -88,34 +89,11 @@ function agregarEventos() {
                     }
                 }
             };
-            const url = "includes/filtros.php?nombre=" + encodeURIComponent(nombreDocente) + "&apellido=" + encodeURIComponent(apellidoDocente);
+            const url = "includes/docentes.php?nombre=" + encodeURIComponent(nombreDocente) + "&apellido=" + encodeURIComponent(apellidoDocente);
             xhr.open("GET", url, true);
             xhr.send();
         });
     }
-    // const botonFiltrarCarrera = document.querySelector(".filtrarCarrera");
-    // if (botonFiltrarCarrera) {
-    //     botonFiltrarCarrera.addEventListener("change", () => {
-    //         const carreraSeleccionada = document.querySelector(".filtrarCarrera").value;
-    //         let tabla = document.getElementById("tabla-profesores");
-    //         if (carreraSeleccionada !== "") {
-    //             const xhr = new XMLHttpRequest();
-    //             xhr.onreadystatechange = function () {
-    //                 if (xhr.readyState === 4) {
-    //                     if (xhr.status === 200) {
-    //                         tabla.innerHTML = xhr.responseText;
-    //                     } else {
-    //                         console.error("Error en la petición AJAX: " + xhr.status);
-    //                     }
-    //                 }
-    //             };
-
-    //             xhr.open("GET", "includes/carreras.php?carrera=" + carreraSeleccionada, true);
-    //             xhr.send();
-    //         }
-    //     });
-    // }
-
 
     const botonFiltrarCarrera = document.getElementById("filtrar-nivel-carrera");
     if (botonFiltrarCarrera) {
@@ -167,8 +145,14 @@ function agregarEventos() {
 
 
 
-
-
+    const fechaInput = document.getElementById('fecha');
+    if (fechaInput) {
+        const hoy = new Date();
+        const año = hoy.getFullYear();
+        const mes = ('0' + (hoy.getMonth() + 1)).slice(-2);
+        const dia = ('0' + hoy.getDate()).slice(-2);
+        fechaInput.value = `${año}-${mes}-${dia}`;
+    }
 
     const botonFiltrarHorario = document.getElementById("filtrar-horario");
     if (botonFiltrarHorario) {
@@ -200,14 +184,13 @@ function agregarEventos() {
     const botonFiltrarMateria = document.getElementById("btn-materia");
     if (botonFiltrarMateria) {
         botonFiltrarMateria.addEventListener("click", (e) => {
+            e.preventDefault();
             let nombreMateria = document.getElementById("materia").value;
             let tabla = document.getElementById("tabla-profesores");
             const xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
-                        console.log(xhr.responseText);
-                        console.log(nombreMateria);
                         tabla.innerHTML = xhr.responseText;
                     } else {
                         console.error("Error en la petición AJAX: " + xhr.status);
@@ -243,10 +226,11 @@ function agregarEventos() {
                     data.forEach(docente => {
                         tablaDocentes.innerHTML += `
                             <tr>
-                                <td>${docente.id}</td>
-                                <td>${docente.nombre}</td>
-                                <td>${docente.apellido}</td>
+                                <td>${docente.dia}</td>
+                                <td>${docente.horaInicio} - ${docente.horaFin}</td>
+                                <td>${docente.nombre} ${docente.apellido}</td>
                                 <td>${docente.materia}</td>
+                                <td>${docente.nombreCarrera}</td>
                                 <td>${docente.nivel}</td>
                                 <td>${docente.aula}</td>
                                 <td>
@@ -269,6 +253,7 @@ function agregarEventos() {
             console.log("Perra");
         })
     }
+
 }
 
 

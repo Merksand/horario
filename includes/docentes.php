@@ -53,7 +53,8 @@ if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
             echo "</div>";
         }
     } else {
-        echo "No se encontraron docentes con ese nombre y/o apellido.";
+        // echo "No se encontraron docentes con ese nombre y/o apellido.";
+        echo "<div class='datosIncorrectos'>No se encontró al Docente</div>";
     }
     $conexion->close();
 } else {

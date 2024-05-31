@@ -10,9 +10,11 @@
         <h3>Buscar por Materia</h3>
 
         <div class="filtro">
+            <form action="">
             <label for="materia">Nombre:</label>
             <input type="text" id="materia" placeholder="Nombre de la materia" style="width: 150px;" name="materia">
             <input type="submit" value="Filtrar" id="btn-materia" name="btn-filtrar" class="btna">
+            </form>
         </div>
     </div>
     <div class="seccionFiltrosDocentes">

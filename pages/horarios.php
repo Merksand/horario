@@ -12,7 +12,6 @@
         <div class="filtro">
             <label for="filtrar-carrera">Carrera:</label>
             <select id="filtrar-carrera" id="materia" style="width: 150px;" name="filtrar-carrera">
-            <!-- <select id="filtrar-carrera filtrar-carrera-horario" id="materia" style="width: 150px;" name=""> -->
                 <option value="Todas">Todas</option>
                 <option value="Mecánica Industrial">Mecánica Industrial</option>
                 <option value="Mecánica Automotriz">Mecánica Automotriz</option>
@@ -51,7 +50,6 @@
 
 
     </div>
-
     <script src="assets/js/script.js"></script>
 </body>
 

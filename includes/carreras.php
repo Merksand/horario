@@ -39,14 +39,6 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
 
 
 
-    // if ($carrera !== 'Todas') {
-    //     $consulta .=  " WHERE Carreras.Nombre = '$carrera' ";       
-    // }
-    // else if($nivel !== 'Todas' && $carrera !== 'Todas') {
-    //     $consulta .= " WHERE Materias.Nivel = '$nivel' AND Carreras.Nombre = '$carrera'";
-    // }else if($nivel == "Todas" && $carrera == "Todas") {
-    //     $consulta .= " WHERE Materias.Nivel = '$nivel'";
-    // }
 
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
@@ -61,7 +53,7 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
             echo "</div>";
         }
     } else {
-        echo "No se encontraron docentes para la carrera seleccionada.";
+        echo "<div class='datosIncorrectos'>No se encontró la Carrera seleccionada</div>";
     }
     // $conexion->close();
 } else {

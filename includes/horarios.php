@@ -25,7 +25,6 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel'])) {
             INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
             INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
         WHERE
-            Carreras.Nombre = '$carrera'  AND
             CASE DAYOFWEEK('$fecha')
                 WHEN 1 THEN 'Domingo'
                 WHEN 2 THEN 'Lunes'
@@ -37,7 +36,10 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel'])) {
             END = Horarios.Dia ";
 
     if (!($nivel == 'Todas')) {
-        $consulta .= "AND Materias.Nivel ='$nivel'";
+        $consulta .= " AND Materias.Nivel ='$nivel'";
+    }
+    if ($carrera !== "Todas") {
+        $consulta .= " AND Carreras.Nombre = '$carrera'";
     }
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
@@ -55,7 +57,8 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel'])) {
         // Imprimir la salida HTML
         // echo $output;
     } else {
-        echo "No se encontraron docentes para la carrera seleccionada en la fecha especificada.";
+        // echo "No se encontraron docentes para la carrera seleccionada en la fecha especificada.";
+        echo "<div class='datosIncorrectos'>No se encontraron los datos que requiere</div>";
     }
 } else {
     echo "No se proporcionaron datos de filtro.";
