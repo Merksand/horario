@@ -235,7 +235,7 @@ function agregarEventos() {
                                 <td>${docente.aula}</td>
                                 <td>
                                     <button class="editar" onclick="editarDocente(${docente.id})">✏️</button>
-                                    <button class="eliminar" onclick="eliminarDocente(${docente.id})">🗑️</button>
+                                    <button class="eliminar" onclick="eliminarDocente(${docente.id}")>🗑️</button>
                                 </td>
                             </tr>
                         `;
@@ -246,13 +246,36 @@ function agregarEventos() {
     }
 
 
+    
+
+    const tablaDocentes = document.querySelector('#tabla-docentes tbody');
+    if(tablaDocentes){
+        tablaDocentes.addEventListener("click", (e) => {
+            if(e.target.classList.contains("editar")){
+                function editarDocente(e){
+                    console.log(e);
+                }
+
+                editarDocente();
+            }
+            // if(e.target.classList.contains("eliminar")){
+            //     eliminarDocente();
+            // }
+        });
+    }
+    
+    // function editarDocente(){
+    //     console.log(11111);
+    // }
+    
+
+
     let docenteForm = document.getElementById("docenteForm");
     if(docenteForm) {
     docenteForm.addEventListener("submit", function(e) {
-        e.preventDefault(); // Prevenir la recarga de la página por defecto
+        e.preventDefault(); 
         const formData = new FormData(docenteForm);
 
-        // Mostrar información en la consola
         for (let [key, value] of formData.entries()) {
             console.log(key + ': ' + value);
         }
@@ -265,7 +288,7 @@ function agregarEventos() {
         .then(data => {
             if (data.success) {
                 alert("Docente agregado con éxito");
-                docenteForm.reset(); // Limpiar el formulario después de agregar
+                docenteForm.reset(); 
             } else {
                 alert("Error al agregar docente: " + data.error);
             }
@@ -273,7 +296,11 @@ function agregarEventos() {
         .catch(error => console.error('Error:', error));
     });
     }
+
+
 }
+
+
 
 
 function cargarTotales() {
