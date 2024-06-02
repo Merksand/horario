@@ -122,7 +122,7 @@
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            cargarContenido('pages/home.php');
+            cargarContenido('pages/configuracion.php');
 
            
         });

@@ -144,7 +144,7 @@
         }
 
         .datalist {
-            width: 200px;
+            width: 200px ;
         }
     </style>
     <div id="docentesCRUD spanOscuro">
@@ -247,7 +247,7 @@
                     <th>Horas</th>
                     <th>Nombre Completo</th>
                     <th>Materia</th>
-                    <th>Carrera</th>
+                    <th>Carrera :smile</th>
                     <th>Nivel</th>
                     <th>Aula</th>
                     <th>Opciones</th>

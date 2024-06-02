@@ -235,70 +235,71 @@ function agregarEventos() {
                                 <td>${docente.aula}</td>
                                 <td>
                                     <button class="editar" onclick="editarDocente(${docente.id})">✏️</button>
-                                    <button class="eliminar" onclick="eliminarDocente(${docente.id}")>🗑️</button>
-                                </td>
-                            </tr>
-                        `;
+                                    <button class="eliminar" onclick="eliminarDocente(${docente.id})">🗑️</button>
+                                    </td>
+                                    </tr>
+                                    `;
                     });
                 })
                 .catch(error => console.error('Error al buscar docentes:', error));
         });
     }
-
-
-    
-
-    const tablaDocentes = document.querySelector('#tabla-docentes tbody');
-    if(tablaDocentes){
-        tablaDocentes.addEventListener("click", (e) => {
-            if(e.target.classList.contains("editar")){
-                function editarDocente(e){
-                    console.log(e);
-                }
-
-                editarDocente();
-            }
-            // if(e.target.classList.contains("eliminar")){
-            //     eliminarDocente();
-            // }
-        });
-    }
-    
-    // function editarDocente(){
-    //     console.log(11111);
+    // let botonEditar = document.querySelector(".editar");
+    // if(botonEditar){
+        
+    //     function editarDocente() {
+    //         console.log(333);
+    //     }
     // }
-    
+
+
+
+
+    window.editarDocente = function (id) {
+        console.log(111);
+    }
+
+
+
+    window.eliminarDocente = function (id) {
+        console.log(222);
+    }
+
+
+    // if(e.target.classList.contains("eliminar")){
+    //     eliminarDocente();
+    // }
 
 
     let docenteForm = document.getElementById("docenteForm");
-    if(docenteForm) {
-    docenteForm.addEventListener("submit", function(e) {
-        e.preventDefault(); 
-        const formData = new FormData(docenteForm);
+    if (docenteForm) {
+        docenteForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(docenteForm);
 
-        for (let [key, value] of formData.entries()) {
-            console.log(key + ': ' + value);
-        }
-
-        fetch("includes/CRUD/agregarDocente.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Docente agregado con éxito");
-                docenteForm.reset(); 
-            } else {
-                alert("Error al agregar docente: " + data.error);
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
             }
-        })
-        .catch(error => console.error('Error:', error));
-    });
+
+            fetch("includes/CRUD/agregarDocente.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Docente agregado con éxito");
+                        docenteForm.reset();
+                    } else {
+                        alert("Error al agregar docente: " + data.error);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
     }
 
-
 }
+
 
 
 
@@ -337,23 +338,6 @@ function cargarTotales() {
 
 
 
-
-
-// function setDefaultDate() {
-//   const fechaInput = document.getElementById("fecha");
-//   if (fechaInput) {
-//     fechaInput.value = getCurrentDate();
-//   }
-// }
-
-// function getCurrentDate() {
-//   const today = new Date();
-//   const year = today.getFullYear();
-//   const month = String(today.getMonth() + 1).padStart(2, "0");
-//   const day = String(today.getDate()).padStart(2, "0");
-//   return `${year}-${month}-${day}`;
-// }
-// document.addEventListener("DOMContentLoaded", setDefaultDate);
 
 // * El js demas
 //////////////////////
