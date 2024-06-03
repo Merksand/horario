@@ -234,7 +234,7 @@ function agregarEventos() {
                                 <td>${docente.nivel}</td>
                                 <td>${docente.aula}</td>
                                 <td>
-                                    <button class="editar" onclick="editarDocente(${docente.id})">✏️</button>
+                                    <button class="editar"   onclick="editarDocente(${docente.id})">✏️</button>
                                     <button class="eliminar" onclick="eliminarDocente(${docente.id})">🗑️</button>
                                     </td>
                                     </tr>
@@ -244,31 +244,31 @@ function agregarEventos() {
                 .catch(error => console.error('Error al buscar docentes:', error));
         });
     }
-    // let botonEditar = document.querySelector(".editar");
-    // if(botonEditar){
-        
-    //     function editarDocente() {
-    //         console.log(333);
-    //     }
-    // }
 
+    window.editarDocente = function(id){
+        console.log('Eliminar docente con ID:', id);
+        if (confirm("¿Estás seguro de que deseas eliminar este docente?")) {
+            fetch(`includes/CRUD/eliminarDocente.php?id=${id}`, {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Docente eliminado con éxito");
+                    location.reload();
+                } else {
+                    alert("Error al eliminar docente: " + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
-
-
-    window.editarDocente = function (id) {
-        console.log(111);
     }
 
 
 
-    window.eliminarDocente = function (id) {
-        console.log(222);
-    }
 
 
-    // if(e.target.classList.contains("eliminar")){
-    //     eliminarDocente();
-    // }
 
 
     let docenteForm = document.getElementById("docenteForm");

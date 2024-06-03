@@ -247,7 +247,7 @@
                     <th>Horas</th>
                     <th>Nombre Completo</th>
                     <th>Materia</th>
-                    <th>Carrera :smile</th>
+                    <th>Carrera</th>
                     <th>Nivel</th>
                     <th>Aula</th>
                     <th>Opciones</th>

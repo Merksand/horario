@@ -53,3 +53,7 @@ const buscarDocente = document.getElementById("buscarDocente");
             });
         }
     }
+
+    function editarDocente(docenteID) {
+        console.log(docenteID);
+    }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: #000;">
+    <p>hola mundo</p>
+
+    <script>
+    // fetch(`includes/CRUD/eliminarDocente.php?id=${id}`, {method: 'GET'})
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data.success) {
+    //                 alert("Docente eliminado con éxito");
+    //                 location.reload();
+    //             } else {
+    //                 alert("Error al eliminar docente: " + data.error);
+    //             }
+    //         })
+    //         .catch(error => console.error('Error:', error));
+
+    // const CRUD_URL = `includes/CRUD/eliminarDocente.php?id=${id}`;
+    const CRUD_URL = `https://api.chucknorris.io/jokes/random`;
+    fetch(CRUD_URL).then((response) => {
+        console.log(response);
+    })
+    
+    
+    </script>
+</body>
+</html>
