@@ -25,11 +25,19 @@
         </div>
         <div class="filtro">
             <label for="filtrar-nivel">Nivel:</label>
-            <select id="filtrar-nivel" name="nivel" style="width: 150px;" name="nivel">
+            <select id="filtrar-nivel" name="nivel" style="width: 150px;">
                 <option value="Todas">Todas</option>
                 <option value="100">100</option>
                 <option value="200">200</option>
                 <option value="300">300</option>
+            </select>
+        </div>
+        <div class="filtro">
+            <label for="filtrar-turno">Turno:</label>
+            <select id="filtrar-turno" name="turno" style="width: 150px;">
+                <option value="Todas">Todas</option>
+                <option value="Mañana">Mañana</option>
+                <option value="Noche">Noche</option>
             </select>
         </div>
         <div class="filtro">

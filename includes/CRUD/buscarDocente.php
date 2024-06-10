@@ -7,6 +7,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
     $nombre = isset($_GET['nombre']) ? $_GET['nombre'] : '';
     $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';
     $consulta = "SELECT
+                    DocenteMateria.DocenteMateriaID as DocenteMateriaID,    
                     Docentes.DocenteID AS id,
                     Docentes.Nombre AS nombre,
                     Docentes.Apellido AS apellido,

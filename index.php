@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -107,7 +108,9 @@
                 <img src="img/logo-tran.png" alt="">
                 <div class="info-usuario">
                     <div class="nombre-email">
-                        <span class="nombre">-------</span>
+                        <span class="nombre">
+                            I.T.S.C.
+                        </span>
                         <span class="email">xxxxxxx@gmail.com</span>
                     </div>
                     <ion-icon name="ellipsis-vertical-outline"></ion-icon>
@@ -122,9 +125,9 @@
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            cargarContenido('pages/configuracion.php');
+            cargarContenido('pages/home.php');
 
-           
+
         });
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

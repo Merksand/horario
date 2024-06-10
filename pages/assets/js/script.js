@@ -223,46 +223,54 @@ function agregarEventos() {
                 .then(data => {
                     const tablaDocentes = document.querySelector('#tabla-docentes tbody');
                     tablaDocentes.innerHTML = '';
-                    data.forEach(docente => {
+                    data.forEach(docenteMateria => {
                         tablaDocentes.innerHTML += `
-                            <tr>
-                                <td>${docente.dia}</td>
-                                <td>${docente.horaInicio} - ${docente.horaFin}</td>
-                                <td>${docente.nombre} ${docente.apellido}</td>
-                                <td>${docente.materia}</td>
-                                <td>${docente.nombreCarrera}</td>
-                                <td>${docente.nivel}</td>
-                                <td>${docente.aula}</td>
+                            <tr data-docente-materia-id="${docenteMateria.DocenteMateriaID}">
+                                <td>${docenteMateria.dia}</td>
+                                <td>${docenteMateria.horaInicio} - ${docenteMateria.horaFin}</td>
+                                <td>${docenteMateria.nombre} ${docenteMateria.apellido}</td>
+                                <td>${docenteMateria.materia}</td>
+                                <td>${docenteMateria.nombreCarrera}</td>
+                                <td>${docenteMateria.nivel}</td>
+                                <td>${docenteMateria.aula}</td>
                                 <td>
-                                    <button class="editar"   onclick="editarDocente(${docente.id})">✏️</button>
-                                    <button class="eliminar" onclick="eliminarDocente(${docente.id})">🗑️</button>
-                                    </td>
-                                    </tr>
-                                    `;
+                                    <button class="editar" onclick= "editarDocente(${docenteMateria.DocenteMateriaID})">✏️</button>
+                                    <button class="eliminar" onclick="eliminarDocenteMateria(${docenteMateria.DocenteMateriaID})">🗑️</button>
+                                </td>
+                            </tr>
+                        `;
                     });
                 })
                 .catch(error => console.error('Error al buscar docentes:', error));
         });
     }
 
-    window.editarDocente = function(id){
-        console.log('Eliminar docente con ID:', id);
-        if (confirm("¿Estás seguro de que deseas eliminar este docente?")) {
-            fetch(`includes/CRUD/eliminarDocente.php?id=${id}`, {
-                method: 'GET'
+    window.eliminarDocenteMateria = function(docenteMateriaID) {
+        if (confirm('¿Estás seguro de que deseas eliminar este horario?')) {
+            fetch('includes/CRUD/eliminarDocente.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ docenteMateriaID })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    alert("Docente eliminado con éxito");
-                    location.reload();
+                console.log('Respuesta del servidor:', data);
+                if (data.status === 'success') {
+                    alert(data.message);
+                    const row = document.querySelector(`tr[data-docente-materia-id="${docenteMateriaID}"]`);
+                    if (row) {
+                        row.remove();
+                    } else {
+                        console.error('No se encontró la fila con DocenteMateriaID:', docenteMateriaID);
+                    }
                 } else {
-                    alert("Error al eliminar docente: " + data.error);
+                    alert(data.message);
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error al eliminar el horario:', error));
         }
-
     }
 
 

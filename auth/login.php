@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -22,7 +23,6 @@
         <?php
         include('../includes/database.php');
         ?>
-
         <label for="username">Nombre de Usuario</label>
         <input type="text" placeholder="Ingrese su usuario" class="inputText" id="username" name="username" autocomplete="off">
 
@@ -31,7 +31,7 @@
 
         <input type="submit" value="Iniciar Sesion" name="btnIngresar" class="btnIngresar">
         <?php
-        include("../includes/functions.php");
+        include("../includes/login.php");
         ?>
 
     </form>

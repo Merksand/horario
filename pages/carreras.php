@@ -13,7 +13,7 @@
         <div class="filtro">
             <label for="filtrar-carrera">Carrera:</label>
             <select id="filtrar-carrera" class="filtrarCarrera" style="width: 250px;" name="carrera">
-                <option name="" value=""></option>
+                <!-- <option name="" value=""></option> -->
                 <option name="Todas" value="Todas">Todas</option>
                 <option name="Mecanica Industrial" value="Mecanica Industrial">Mecánica Industrial</option>
                 <option name="Mecanica Automotriz" value="Mecanica Automotriz">Mecánica Automotriz</option>

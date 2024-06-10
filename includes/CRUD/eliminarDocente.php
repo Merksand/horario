@@ -1,22 +1,42 @@
 <?php
-// includes/eliminar_docente.php
-include('../database.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-if (isset($_POST['docenteID'])) {
-    $docenteID = $_POST['docenteID'];
+header('Content-Type: application/json');
 
-    $consulta = "DELETE FROM Docentes WHERE DocenteID = ?";
-    $stmt = $conexion->prepare($consulta);
-    $stmt->bind_param("i", $docenteID);
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $input = json_decode(file_get_contents('php://input'), true);
 
-    if ($stmt->execute()) {
-        echo "Docente eliminado exitosamente.";
+        if (isset($input['docenteMateriaID'])) {
+            $docenteMateriaID = $input['docenteMateriaID'];
+
+            // Incluye la base de datos con la ruta correcta
+            include('../database.php');
+
+            // Elimina el registro en DocenteMateria
+            $sql = "DELETE FROM DocenteMateria WHERE DocenteMateriaID = ?";
+            $stmt = $conexion->prepare($sql);
+            if ($stmt) {
+                $stmt->bind_param("i", $docenteMateriaID);
+                $stmt->execute();
+                $stmt->close();
+
+                echo json_encode(['status' => 'success', 'message' => 'Horario eliminado correctamente']);
+            } else {
+                throw new Exception("Error al preparar la consulta para eliminar el horario");
+            }
+
+            // Cierra la conexión
+            $conexion->close();
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'ID de horario no proporcionado']);
+        }
     } else {
-        echo "Error al eliminar el docente: " . $conexion->error;
+        echo json_encode(['status' => 'error', 'message' => 'Método no permitido']);
     }
-
-    $stmt->close();
-    $conexion->close();
-} else {
-    echo "Datos incompletos.";
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Error en el servidor: ' . $e->getMessage()]);
 }
+?>

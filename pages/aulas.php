@@ -27,7 +27,7 @@
         <h3>Docente</h3>
         <h3>Materia</h3>
         <h3>Nivel</h3>
-        <h3>Carrera1</h3>
+        <h3>Carrera</h3>
     </div>
     <div id="tabla-profesores">
     </div>

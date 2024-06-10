@@ -1,4 +1,36 @@
 <?php
+
+if (!empty($_POST["btnIngresar"])) {
+    if (empty($_POST['username']) || empty($_POST['password'])) {
+        echo '<div class="alert alert-danger text-center mt-4 aviso">LOS CAMPOS ESTAN VACIOS</div>';
+    } else {
+        include('database.php');
+        $usuario = $_POST['username'];
+        $clave = $_POST['password'];
+
+        // Consulta SQL con verificación de usuario y contraseña
+        $sql = "SELECT * FROM Usuarios WHERE usuario = ? AND Clave = ? LIMIT 1";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("ss", $usuario, $clave);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($resultado->num_rows == 1) {
+            header("location:../index.php");
+            exit();
+        } else {
+            echo "<div class='alert alert-danger text-center mt-4 aviso'>Usuario o contraseña incorrectos</div>";
+        }
+    }
+}
+?>
+
+
+
+
+
+
+<?php
 if (isset($_GET['aula'])) {
     $aula = $_GET['aula'];
 
@@ -150,35 +182,35 @@ include '../includes/database.php';
 
 // Verifica si se ha enviado el parámetro de la carrera seleccionada
 if(isset($_GET['carrera'])) {
-    $carrera = $_GET['carrera'];
+$carrera = $_GET['carrera'];
 
-    // Consulta SQL para obtener las materias de la carrera seleccionada
-    $sql = "SELECT m.Nombre AS NombreMateria, m.Codigo, c.Nombre AS NombreCarrera
-            FROM Materias m
-            INNER JOIN Carreras c ON m.CarreraID = c.CarreraID
-            WHERE c.Nombre = '$carrera'";
+// Consulta SQL para obtener las materias de la carrera seleccionada
+$sql = "SELECT m.Nombre AS NombreMateria, m.Codigo, c.Nombre AS NombreCarrera
+FROM Materias m
+INNER JOIN Carreras c ON m.CarreraID = c.CarreraID
+WHERE c.Nombre = '$carrera'";
 
-    $result = $conn->query($sql);
+$result = $conn->query($sql);
 
-    if($result) {
-        $materias = array();
+if($result) {
+$materias = array();
 
-        // Obtener los resultados de la consulta
-        while($row = $result->fetch_assoc()) {
-            $materias[] = $row;
-        }
+// Obtener los resultados de la consulta
+while($row = $result->fetch_assoc()) {
+$materias[] = $row;
+}
 
-        // Devolver los resultados en formato JSON
-        echo json_encode($materias);
-    } else {
-        // Si hay un error en la consulta
-        echo json_encode(array('error' => 'Error al obtener las materias.'));
-    }
-} 
+// Devolver los resultados en formato JSON
+echo json_encode($materias);
+} else {
+// Si hay un error en la consulta
+echo json_encode(array('error' => 'Error al obtener las materias.'));
+}
+}
 // else {
-//     // Si no se ha enviado el parámetro de la carrera seleccionada
-//     echo json_encode(array('error' => 'No se ha especificado la carrera.'));
-// }  
+// // Si no se ha enviado el parámetro de la carrera seleccionada
+// echo json_encode(array('error' => 'No se ha especificado la carrera.'));
+// }
 // Cerrar la conexión a la base de datos
 // $conn->close();
 
@@ -204,22 +236,22 @@ if(isset($_GET['carrera'])) {
 
 
 if (!empty($_POST["btningresar"])) {
-    if (empty($_POST["usuario"]) and empty($_POST["password"])) {
-        echo '<div class="alert alert-danger">LOS CAMPOS ESTAN VACIOS</div>';
-    } else {
-        $usuario = $_POST["usuario"];
-        $clave = $_POST["password"];
-    }
+if (empty($_POST["usuario"]) and empty($_POST["password"])) {
+echo '<div class="alert alert-danger">LOS CAMPOS ESTAN VACIOS</div>';
+} else {
+$usuario = $_POST["usuario"];
+$clave = $_POST["password"];
+}
 }
 $conexion = mysqli_connect("localhost", "root", "Miguelangelomy1", "Instituto");
-        $sql = "SELECT * FROM Usuarios WHERE usuario = '$usuario' AND Clave = '$clave'";
-        $resultado = mysqli_query($conexion, $sql);
-        $filas = mysqli_num_rows($resultado);
-        if ($filas > 0) {
-            echo '<div class="alert btn-success mt-4 aviso text-center">Conexion Exitosa</div>';
-        }else{
-            echo '<div class="alert btn-danger mt-4 aviso text-center">Usuario o Contraseña Incorrectos</div>';
-        }
+$sql = "SELECT * FROM Usuarios WHERE usuario = '$usuario' AND Clave = '$clave'";
+$resultado = mysqli_query($conexion, $sql);
+$filas = mysqli_num_rows($resultado);
+if ($filas > 0) {
+echo '<div class="alert btn-success mt-4 aviso text-center">Conexion Exitosa</div>';
+}else{
+echo '<div class="alert btn-danger mt-4 aviso text-center">Usuario o Contraseña Incorrectos</div>';
+}
 ?>
 
 
@@ -232,17 +264,3 @@ Sconexion->set_charset(*utf8*);
 
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

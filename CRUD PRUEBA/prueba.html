@@ -7,25 +7,23 @@
   </head>
   <body>
     <button>Click</button>
-
     <button class="boton2">Click2</button>
+
     <div class="tabla"></div>
     <script>
-      let tabla = document.querySelector('.tabla');
+      let tabla = document.querySelector(".tabla");
 
-      let boton = document.querySelector('button');
+      let boton = document.querySelector("button");
 
-      let boton2 = document.querySelector('.boton2');
+      let boton2 = document.querySelector(".boton2");
 
-
-
-      boton.addEventListener('click', () => {
+      boton.addEventListener("click", () => {
         tabla.innerHTML = `
         <button class='caja' onclick="agregar(999)">Salida</button>
         `;
       });
 
-      function agregar(id){
+      function agregar(id) {
         console.log(id);
       }
     </script>

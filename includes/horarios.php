@@ -3,6 +3,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel'])) {
     $carrera = $_GET['carrera'];
     $fecha = $_GET['fecha'];
     $nivel = $_GET['nivel'];
+    $turno = $_GET['turno'];
 
     include('database.php');
 
