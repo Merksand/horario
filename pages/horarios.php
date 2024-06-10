@@ -13,14 +13,14 @@
             <label for="filtrar-carrera">Carrera:</label>
             <select id="filtrar-carrera" id="materia" style="width: 150px;" name="filtrar-carrera">
                 <option value="Todas">Todas</option>
-                <option value="Mecánica Industrial">Mecánica Industrial</option>
-                <option value="Mecánica Automotriz">Mecánica Automotriz</option>
-                <option value="Electrónica">Electrónica</option>
-                <option value="Electricidad Industrial">Electricidad Industrial</option>
-                <option value="Construcción Civil">Construcción Civil</option>
-                <option value="Química">Química Industrial</option>
-                <option value="Contaduría General">Contaduría General</option>
                 <option value="Sistemas Informáticos">Sistemas Informáticos</option>
+                <option value="Construcción Civil">Construcción Civil</option>
+                <option value="Mecánica Automotriz">Mecánica Automotriz</option>
+                <option value="Mecánica Industrial">Mecánica Industrial</option>
+                <option value="Electrónica">Electrónica</option>
+                <option value="Química">Química Industrial</option>
+                <option value="Electricidad Industrial">Electricidad Industrial</option>
+                <option value="Contaduría General">Contaduría General</option>
             </select>
         </div>
         <div class="filtro">

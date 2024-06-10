@@ -1,0 +1,76 @@
+[1mdiff --git a/notas.md b/notas.md[m
+[1mindex abfe343..0500875 100644[m
+[1m--- a/notas.md[m
+[1m+++ b/notas.md[m
+[36m@@ -1,3 +1,48 @@[m
+[32m+[m[32m/*Construccion Civil*/[m
+[32m+[m[32mINSERT INTO Materias (Nombre, Codigo, Nivel, CarreraID) VALUES[m
+[32m+[m[32m('Matemática para la informática', 'MPI-101', 100, 1),[m
+[32m+[m[32m('Programación I', 'PRG-102', 100, 1),[m
+[32m+[m[32m('Ingles Técnico', 'INT-103', 100, 1),[m
+[32m+[m[32m('Hardware de computadoras', 'HDC-104', 100, 1),[m
+[32m+[m[32m('Taller de sistemas operativos', 'TSO-105', 100, 1),[m
+[32m+[m[32m('Ofimática y tecnología multimedia', 'OTM-106', 100, 1),[m
+[32m+[m[32m('Diseño y programación web I', 'DPW-107', 100, 1),[m
+[32m+[m[32m('Estadística', 'ETD-201', 200, 1),[m
+[32m+[m[32m('Programación II', 'PRG-202', 200, 1),[m
+[32m+[m[32m('Redes de computadoras I', 'RDC-203', 200, 1),[m
+[32m+[m[32m('Programación móvil I', 'PDM-204', 200, 1),[m
+[32m+[m[32m('Análisis y diseño de sistemas I', 'ADS-205', 200, 1),[m
+[32m+[m[32m('Diseño y programación Web II', 'DPW-206', 200, 1),[m
+[32m+[m[32m('Base de datos I', 'BDD-207', 200, 1),[m
+[32m+[m[32m('Emprendimiento productivo', 'ELE-208', 200, 1),[m
+[32m+[m[32m('Emprendimiento productivo', 'EMP-301', 300, 1),[m
+[32m+[m[32m('Programación III', 'PRG-302', 300, 1),[m
+[32m+[m[32m('Gestión de software', 'GDS-303', 300, 1),[m
+[32m+[m[32m('Redes de computadoras II', 'RDC-304', 300, 1),[m
+[32m+[m[32m('Taller modalidad de graduación', 'TMG-305', 300, 1),[m
+[32m+[m[32m('Análisis y diseño de sistemas II', 'ADS-306', 300, 1),[m
+[32m+[m[32m('Diseño y programación web II', 'DPW-307', 300, 1),[m
+[32m+[m[32m('Base de datos II', 'BDD-308', 300, 1),[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+ INSERT INTO DocenteMateria (DocenteID, MateriaID, AulaID, HorarioID) VALUES[m
+ /*100*/[m
+ (1, 3, 1, 7), [m
+[1mdiff --git a/pages/horarios.php b/pages/horarios.php[m
+[1mindex 676a7bc..a154997 100644[m
+[1m--- a/pages/horarios.php[m
+[1m+++ b/pages/horarios.php[m
+[36m@@ -13,14 +13,14 @@[m
+             <label for="filtrar-carrera">Carrera:</label>[m
+             <select id="filtrar-carrera" id="materia" style="width: 150px;" name="filtrar-carrera">[m
+                 <option value="Todas">Todas</option>[m
+[31m-                <option value="Mecánica Industrial">Mecánica Industrial</option>[m
+[32m+[m[32m                <option value="Sistemas Informáticos">Sistemas Informáticos</option>[m
+[32m+[m[32m                <option value="Construcción Civil">Construcción Civil</option>[m
+                 <option value="Mecánica Automotriz">Mecánica Automotriz</option>[m
+[32m+[m[32m                <option value="Mecánica Industrial">Mecánica Industrial</option>[m
+                 <option value="Electrónica">Electrónica</option>[m
+[31m-                <option value="Electricidad Industrial">Electricidad Industrial</option>[m
+[31m-                <option value="Construcción Civil">Construcción Civil</option>[m
+                 <option value="Química">Química Industrial</option>[m
+[32m+[m[32m                <option value="Electricidad Industrial">Electricidad Industrial</option>[m
+                 <option value="Contaduría General">Contaduría General</option>[m
+[31m-                <option value="Sistemas Informáticos">Sistemas Informáticos</option>[m
+             </select>[m
+         </div>[m
+         <div class="filtro">[m

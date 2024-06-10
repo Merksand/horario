@@ -1,3 +1,48 @@
+/*Construccion Civil*/
+INSERT INTO Materias (Nombre, Codigo, Nivel, CarreraID) VALUES
+('Matemática para la informática', 'MPI-101', 100, 1),
+('Programación I', 'PRG-102', 100, 1),
+('Ingles Técnico', 'INT-103', 100, 1),
+('Hardware de computadoras', 'HDC-104', 100, 1),
+('Taller de sistemas operativos', 'TSO-105', 100, 1),
+('Ofimática y tecnología multimedia', 'OTM-106', 100, 1),
+('Diseño y programación web I', 'DPW-107', 100, 1),
+('Estadística', 'ETD-201', 200, 1),
+('Programación II', 'PRG-202', 200, 1),
+('Redes de computadoras I', 'RDC-203', 200, 1),
+('Programación móvil I', 'PDM-204', 200, 1),
+('Análisis y diseño de sistemas I', 'ADS-205', 200, 1),
+('Diseño y programación Web II', 'DPW-206', 200, 1),
+('Base de datos I', 'BDD-207', 200, 1),
+('Emprendimiento productivo', 'ELE-208', 200, 1),
+('Emprendimiento productivo', 'EMP-301', 300, 1),
+('Programación III', 'PRG-302', 300, 1),
+('Gestión de software', 'GDS-303', 300, 1),
+('Redes de computadoras II', 'RDC-304', 300, 1),
+('Taller modalidad de graduación', 'TMG-305', 300, 1),
+('Análisis y diseño de sistemas II', 'ADS-306', 300, 1),
+('Diseño y programación web II', 'DPW-307', 300, 1),
+('Base de datos II', 'BDD-308', 300, 1),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO DocenteMateria (DocenteID, MateriaID, AulaID, HorarioID) VALUES
 /*100*/
 (1, 3, 1, 7), 
