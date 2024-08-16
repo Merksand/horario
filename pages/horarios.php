@@ -15,12 +15,12 @@
                 <option value="Todas">Todas</option>
                 <option value="Sistemas Informáticos">Sistemas Informáticos</option>
                 <option value="Construcción Civil">Construcción Civil</option>
+                <option value="Contaduría General">Contaduría General</option>
                 <option value="Mecánica Automotriz">Mecánica Automotriz</option>
                 <option value="Mecánica Industrial">Mecánica Industrial</option>
                 <option value="Electrónica">Electrónica</option>
-                <option value="Química">Química Industrial</option>
+                <option value="Química Industrial">Química Industrial</option>
                 <option value="Electricidad Industrial">Electricidad Industrial</option>
-                <option value="Contaduría General">Contaduría General</option>
             </select>
         </div>
         <div class="filtro">
@@ -30,6 +30,9 @@
                 <option value="100">100</option>
                 <option value="200">200</option>
                 <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="600">600</option>
             </select>
         </div>
         <div class="filtro">
@@ -37,6 +40,7 @@
             <select id="filtrar-turno" name="turno" style="width: 150px;">
                 <option value="Todas">Todas</option>
                 <option value="Mañana">Mañana</option>
+                <option value="Tarde">Tarde</option>
                 <option value="Noche">Noche</option>
             </select>
         </div>
@@ -46,13 +50,14 @@
             <input type="submit" value="Filtrar" id="filtrar-horario" name="filtrar-horario">
         </div>
     </div>
-    <div class="seccionFiltrosCarreras">
+    <div class="seccionFiltrosHorarios">
         <h3>Dia <span class="filo"><ion-icon name="caret-up"></ion-icon></span></h3>
         <h3>Horas</h3>
         <h3>Docente</h3>
         <h3>Materia</h3>
         <h3>Nivel</h3>
         <h3>Aula</h3>
+        <h3>Carrera</h3>
     </div>
     <div id="tabla-profesores">
 

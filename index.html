@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        body {
+            /* background-color: #000000; */
+            /* color: black; */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        button {
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 20px;
+        }
+    </style>
+    <button>Click</button>
+    <script>
+        document.querySelector('button').addEventListener('click', () => {
+            swal({
+                title: "Good job!",
+                text: "You clicked the button!",
+                icon: "success",
+                button: false,
+            });
+            setTimeout(() => {
+                swal.close();
+            }, 3000);
+        });
+    </script>
+</body>
+
+</html>

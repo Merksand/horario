@@ -12,7 +12,7 @@
 <body>
 
     <div class="stats-container">
-        <div class="stat-card">
+        <div class="stat-card card__Docentes">
             <div class="stat-icon">
                 <i class="fas fa-user-tie"></i>
             </div>
@@ -26,7 +26,7 @@
 
         </div>
 
-        <div class="stat-card">
+        <div class="stat-card card__Materias">
             <div class="stat-icon">
                 <i class="fas fa-book"></i>
             </div>
@@ -38,7 +38,7 @@
 
         <!-- <div id="total-materias">Total de Materias: <span id="materias-count"></span></div> -->
 
-        <div class="stat-card">
+        <div class="stat-card card__Carreras">
             <div class="stat-icon">
                 <i class="fas fa-graduation-cap"></i>
             </div>
@@ -51,7 +51,7 @@
 
         <!-- <div id="total-carreras">Total de Carreras: <span id="carreras-count"></span></div> -->
 
-        <div class="stat-card">
+        <div class="stat-card card__Aulas">
             <div class="stat-icon">
                 <i class="fas fa-door-open"></i>
             </div>
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-card card__Horarios">
             <div class="stat-icon">
                 <i class="fas fa-calendar-alt"></i>
             </div>
@@ -74,6 +74,9 @@
 
 
 
+    <ol id="listaAulas" class="data-list">
+
+    </ol>
 
 
 
@@ -81,7 +84,10 @@
 
 
 
-    <div class="daily-teachers">
+
+
+
+<!--     <div class="daily-teachers">
         <h2>Docentes del día</h2>
         <div class="teachers-list">
             <div class="career-section">
@@ -149,8 +155,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
+
+   
     <script src="assets/js/script.js"></script>
 </body>
-
 </html>

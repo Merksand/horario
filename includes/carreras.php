@@ -39,7 +39,7 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
 
 
 
-
+    $consulta .= " ORDER BY Horarios.HorarioID, Horarios.HoraInicio ";    
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {

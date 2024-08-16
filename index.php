@@ -118,17 +118,18 @@
             </div>
         </div>
     </div>
-    <main>
+    <main class="menuContent">
         <div class="content" id="contenido">
             <!-- Aquí se cargarán los contenidos -->
         </div>
     </main>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            cargarContenido('pages/home.php');
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     cargarContenido('pages/home.php');
+        //     // cargarContenido('pages/configuracion.php');
 
 
-        });
+        // });
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

@@ -3,12 +3,13 @@ if (isset($_GET['materia'])) {
 
     $materia = $_GET['materia'];
 
-    include('database.php');
+    include 'database.php';
    
     $consulta = "SELECT
                     Docentes.Nombre AS NombreDocente,
                     Docentes.Apellido AS ApellidoDocente,
                     Materias.Nombre AS NombreMateria,
+                    Materias.SubNivel AS SubNivelMateria,
                     Carreras.Nombre AS NombreCarrera,
                     Horarios.Dia,
                     DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
@@ -35,7 +36,7 @@ if (isset($_GET['materia'])) {
             echo "<span class='spanDatos'>" . $fila['NombreCarrera'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreAula'] . "</span>";
-            echo "<span class='spanDatos'>" . $fila['Nivel'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['Nivel'] . $fila['SubNivelMateria'] ."</span>";
             echo "</div>";
         }
     } else {

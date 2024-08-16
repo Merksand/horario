@@ -2,7 +2,7 @@
 if (isset($_GET['aula'])) {
     $aula = $_GET['aula'];
 
-    include('database.php');
+    include 'database.php';
 
     $consulta = "SELECT
                     Docentes.Nombre AS NombreDocente,
@@ -25,7 +25,7 @@ if (isset($_GET['aula'])) {
     if ($aula !== 'Todas') {
         $consulta .= " WHERE Aulas.Nombre ='$aula'";
     }
-
+    
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
@@ -39,7 +39,8 @@ if (isset($_GET['aula'])) {
             echo "</div>";
         }
     } else {
-        echo "No se encontraron docentes para la carrera seleccionada.";
+        // echo "No se encontraron docentes para la carrera seleccionada.";
+        echo "<div class='datosIncorrectos'>No se encontraron datos del aula</div>";
     }
     $conexion->close();
 } else {

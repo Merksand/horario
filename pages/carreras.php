@@ -8,21 +8,27 @@
 </head>
 
 <body>
+    <?php
+    include '../includes/database.php';
+
+
+    $sql = "SELECT Nombre FROM Carreras";
+    $result = $conexion->query($sql);
+
+    $options = "";
+    while ($row = $result->fetch_assoc()) {
+        $options .= "<option name='{$row['Nombre']}' value='{$row['Nombre']}'>{$row['Nombre']}</option>";
+    }
+
+    $conexion->close();
+    ?>
     <div class="sidebar-filters">
         <h3>Buscar por carrera</h3>
         <div class="filtro">
             <label for="filtrar-carrera">Carrera:</label>
             <select id="filtrar-carrera" class="filtrarCarrera" style="width: 250px;" name="carrera">
-                <!-- <option name="" value=""></option> -->
                 <option name="Todas" value="Todas">Todas</option>
-                <option name="Mecanica Industrial" value="Mecanica Industrial">Mecánica Industrial</option>
-                <option name="Mecanica Automotriz" value="Mecanica Automotriz">Mecánica Automotriz</option>
-                <option name="Electronica" value="Electronica">Electrónica</option>
-                <option name="Electricidad Industrial" value="Electricidad Industrial">Electricidad Industrial</option>
-                <option name="Construccion Civil" value="Construccion Civil">Construcción Civil</option>
-                <option name="Quimica" value="Quimica">Química Industrial</option>
-                <option name="Contaduria General" value="Contaduria General">Contaduría General</option>
-                <option name="Sistemas Informaticos" value="Sistemas Informaticos">Sistemas Informáticos</option>
+                <?php echo $options;?>
             </select>
         </div>
         <div class="filtro">
@@ -32,6 +38,9 @@
                 <option value="100">100</option>
                 <option value="200">200</option>
                 <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="600">600</option>
             </select>
             <input type="submit" value="Filtrar" id="filtrar-nivel-carrera" name="filtrar-nivel-carrera" class="brt">
         </div>

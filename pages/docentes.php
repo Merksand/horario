@@ -18,6 +18,12 @@
                 <input type="text" id="apellido" placeholder="Apellido del docente" style="width: 150px;" name="apellido">
                 <input type="submit" value="Filtrar" id="btn-filtrar" name="btn-filtrar" class="btna">
         </div>
+
+        <div class="filtro">
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" class="fechaDocente" style="width: 150px;" name="fecha">   
+            <input type="submit" value="Filtrar" id="filtrar-horarieo" name="filtrar-horario">
+        </div>
         </form>
     </div>
     <div class="seccionFiltrosDocentes">
