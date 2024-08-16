@@ -1,7 +1,8 @@
 <?php
-if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
-    $nombre = isset($_GET['nombre']) ?$_GET['nombre']  : '';
-    $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';
+if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha'])) {
+    $nombre = $_GET['nombre'] ?? '';
+    $apellido = $_GET['apellido'] ?? '';
+    $fecha = $_GET['fecha'] ?? '';
     // $fecha = isset($_GET['fecha']) ?? '';
     include 'database.php';
     // if ($conexion->connect_error) {
@@ -24,14 +25,47 @@ if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
                     INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
-                WHERE";
+                WHERE ";
 
     if (!empty($nombre) && !empty($apellido)) {
         $consulta .= " Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
+        if (!empty($fecha)) {
+            $consulta .= " AND  CASE DAYOFWEEK('$fecha')
+                WHEN 1 THEN 'Domingo'
+                WHEN 2 THEN 'Lunes'
+                WHEN 3 THEN 'Martes'
+                WHEN 4 THEN 'Miércoles'
+                WHEN 5 THEN 'Jueves'
+                WHEN 6 THEN 'Viernes'
+                WHEN 7 THEN 'Sábado'
+            END = Horarios.Dia ";
+        }
     } elseif (!empty($apellido)) {
         $consulta .= " Docentes.Apellido LIKE '%$apellido%'";
+        if (!empty($fecha)) {
+            $consulta .= " AND  CASE DAYOFWEEK('$fecha')
+                WHEN 1 THEN 'Domingo'
+                WHEN 2 THEN 'Lunes'
+                WHEN 3 THEN 'Martes'
+                WHEN 4 THEN 'Miércoles'
+                WHEN 5 THEN 'Jueves'
+                WHEN 6 THEN 'Viernes'
+                WHEN 7 THEN 'Sábado'
+            END = Horarios.Dia ";
+        }
     } elseif (!empty($nombre)) {
         $consulta .= " Docentes.Nombre LIKE '%$nombre%'";
+        if (!empty($fecha)) {
+            $consulta .= " AND  CASE DAYOFWEEK('$fecha')
+                WHEN 1 THEN 'Domingo'
+                WHEN 2 THEN 'Lunes'
+                WHEN 3 THEN 'Martes'
+                WHEN 4 THEN 'Miércoles'
+                WHEN 5 THEN 'Jueves'
+                WHEN 6 THEN 'Viernes'
+                WHEN 7 THEN 'Sábado'
+            END = Horarios.Dia ";
+        }
     } else {
         echo "No se proporcionaron nombre y/o apellido.";
         exit;

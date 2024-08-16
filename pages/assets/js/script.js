@@ -168,29 +168,72 @@ function agregarEventos() {
 
 
 
-
+    // *  FILTRAR DOCENTE POR NOMBRE O APELLIDO
     const boton = document.getElementById("btn-filtrar");
-    if (boton) {
-        boton.addEventListener("click", (e) => {
-            e.preventDefault();
-            let nombreDocente = document.getElementById("nombre").value;
-            let apellidoDocente = document.getElementById("apellido").value;
-            let tabla = document.getElementById("tabla-profesores");
-            const xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        tabla.innerHTML = xhr.responseText;
-                    } else {
-                        console.error("Error en la petición AJAX: " + xhr.status);
-                    }
+    const botonFecha = document.getElementById("filtrar-horario");
+
+    // Función para manejar la búsqueda sin fecha
+    function handleDocenteClick(e) {
+        e.preventDefault();
+        let nombre = document.getElementById("nombre").value;
+        let apellido = document.getElementById("apellido").value;
+        let tabla = document.getElementById("tabla-profesores");
+
+        // Crear un objeto URLSearchParams sin fecha
+        const params = new URLSearchParams({ nombre, apellido });
+        const url = `includes/docentes.php?${params.toString()}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            };
-            const url = "includes/docentes.php?nombre=" + encodeURIComponent(nombreDocente) + "&apellido=" + encodeURIComponent(apellidoDocente);
-            xhr.open("GET", url, true);
-            xhr.send();
-        });
+                return response.text();
+            })
+            .then(data => {
+                tabla.innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error en la petición fetch:", error);
+            });
     }
+
+    // Función para manejar la búsqueda con fecha
+    function docenteFecha(e) {
+        e.preventDefault();
+        let nombre = document.getElementById("nombre").value;
+        let apellido = document.getElementById("apellido").value;
+        let fecha = document.getElementById("fecha").value;
+        let tabla = document.getElementById("tabla-profesores");
+
+        // Crear un objeto URLSearchParams con fecha
+        const params = new URLSearchParams({ nombre, apellido, fecha });
+        const url = `includes/docentes.php?${params.toString()}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                tabla.innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error en la petición fetch:", error);
+            });
+    }
+
+    // Asignar las funciones a cada botón
+    if (boton) {
+        boton.addEventListener("click", handleDocenteClick);
+    }
+    if (botonFecha) {
+        botonFecha.addEventListener("click", docenteFecha);
+
+    }
+
 
     const botonFiltrarCarrera = document.getElementById("filtrar-nivel-carrera");
     if (botonFiltrarCarrera) {
@@ -309,7 +352,7 @@ function agregarEventos() {
             const nombre = document.getElementById('buscarNombre').value;
             const apellido = document.getElementById('buscarApellido').value;
             // const fecha = document.querySelector('.fechaDocente').value;
-            const params = new URLSearchParams({ nombre, apellido});
+            const params = new URLSearchParams({ nombre, apellido });
 
             fetch(`includes/CRUD/buscarDocente.php?${params.toString()}`)
                 .then(response => {
