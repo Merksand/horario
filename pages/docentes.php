@@ -19,11 +19,11 @@
                 <input type="submit" value="Filtrar" id="btn-filtrar" name="btn-filtrar" class="btna">
         </div>
 
-        <div class="filtro">
+        <!-- <div class="filtro">
             <label for="fecha">Fecha:</label>
             <input type="date" id="fecha" class="fechaDocente" style="width: 150px;" name="fecha">   
             <input type="submit" value="Filtrar" id="filtrar-horarieo" name="filtrar-horario">
-        </div>
+        </div> -->
         </form>
     </div>
     <div class="seccionFiltrosDocentes">

@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-include('../database.php');
+include '../database.php';
 if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
     $nombre = isset($_GET['nombre']) ? $_GET['nombre'] : '';
     $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';

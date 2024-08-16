@@ -1,8 +1,8 @@
 <?php
 if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
-    $nombre = isset($_GET['nombre']) ?? '';
-    $apellido = isset($_GET['apellido']) ?? '';
-    $fecha = isset($_GET['fecha']) ?? '';
+    $nombre = isset($_GET['nombre']) ?$_GET['nombre']  : '';
+    $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';
+    // $fecha = isset($_GET['fecha']) ?? '';
     include 'database.php';
     // if ($conexion->connect_error) {
     //     die("Error de conexión: " . $conexion->connect_error);

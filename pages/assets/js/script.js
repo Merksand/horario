@@ -308,8 +308,8 @@ function agregarEventos() {
             e.preventDefault();
             const nombre = document.getElementById('buscarNombre').value;
             const apellido = document.getElementById('buscarApellido').value;
-            const fecha = document.querySelector('.fechaDocente').value;
-            const params = new URLSearchParams({ nombre, apellido,fecha});
+            // const fecha = document.querySelector('.fechaDocente').value;
+            const params = new URLSearchParams({ nombre, apellido});
 
             fetch(`includes/CRUD/buscarDocente.php?${params.toString()}`)
                 .then(response => {
@@ -322,7 +322,6 @@ function agregarEventos() {
                     const tablaDocentes = document.querySelector('#tabla-docentes tbody');
                     tablaDocentes.innerHTML = '';
                     data.forEach(docenteMateria => {
-            console.log(fecha);
 
                         tablaDocentes.innerHTML += `
                             <tr data-docente-materia-id="${docenteMateria.DocenteMateriaID}">
