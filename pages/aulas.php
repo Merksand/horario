@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="seccionFiltrosCarreras">
-        <h3>Dia <span class="filo"><ion-icon name="caret-up"></ion-icon></span></h3>
+        <h3>Dia</h3>
         <h3>Horas</h3>
         <h3>Docente</h3>
         <h3>Materia</h3>

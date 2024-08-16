@@ -227,12 +227,19 @@ function agregarEventos() {
 
     // Asignar las funciones a cada botón
     if (boton) {
-        boton.addEventListener("click", handleDocenteClick);
+        boton.addEventListener("click", docenteFecha );
     }
     if (botonFecha) {
-        botonFecha.addEventListener("click", docenteFecha);
+        botonFecha.addEventListener("click", handleDocenteClick);
 
     }
+    // if (boton) {
+    //     boton.addEventListener("click", handleDocenteClick);
+    // }
+    // if (botonFecha) {
+    //     botonFecha.addEventListener("click", docenteFecha);
+
+    // }
 
 
     const botonFiltrarCarrera = document.getElementById("filtrar-nivel-carrera");

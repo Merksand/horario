@@ -53,7 +53,7 @@
     <div class="seccionFiltrosDocentes">
         <!-- <h3>Docente </ion-icon><ion-icon name="caret-down"></ion-icon></h3> -->
         <h3>Horas</h3>
-        <h3>Docente <span class="filo"><ion-icon name="caret-down"></ion-icon></span></h3>
+        <h3>Docente</h3>
         <h3>Materia</h3>
         <h3>Carrera</h3>
         <h3>Dia</h3>
