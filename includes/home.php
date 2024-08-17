@@ -9,17 +9,23 @@ $valor = $_REQUEST["valorPadre"];
 if (isset($valor)) {
     if ($valor == "card__Docentes") {
         // $query = "SELECT * FROM docentes order by Nombre";        
-        $query = "SELECT distinct   Docentes.Nombre AS nombre,
+        $query = "    SELECT 
+    Docentes.Nombre AS nombre,
     Docentes.Apellido AS apellido,
-    Carreras.Nombre AS nombreCarrera
+    GROUP_CONCAT(DISTINCT Carreras.Nombre ORDER BY Carreras.Nombre SEPARATOR ' , ') AS CarrerasAsociadas 
 FROM
     DocenteMateria
     INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
     INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
-    INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID order by nombre";
+    INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID 
+GROUP BY 
+    Docentes.Nombre, Docentes.Apellido
+ORDER BY 
+    Docentes.Nombre;
+";
         $result = $conexion->query($query);
         while ($fila = $result->fetch_assoc()) {
-            echo "<li class='lista__Docentes data-item '>" .  $fila["nombre"] . " " . $fila["apellido"] . '<span class="idHomeCarrera">' . $fila["nombreCarrera"] . '</span>' . "</li>";
+            echo "<li class='lista__Docentes data-item '>" .  $fila["nombre"] . " " . $fila["apellido"] . '<span class="idHomeCarrera">' . $fila["CarrerasAsociadas"] . '</span>' . "</li>";
         }
     }
 

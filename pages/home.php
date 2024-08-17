@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div class="stat-card card__Horarios">
+        <!-- <div class="stat-card card__Horarios">
             <div class="stat-icon">
                 <i class="fas fa-calendar-alt"></i>
             </div>
@@ -69,7 +69,7 @@
                 <h3>Horarios</h3>
                 <span id="horarios-count"></span>
             </div>
-        </div>
+        </div> -->
     </div>
 
 

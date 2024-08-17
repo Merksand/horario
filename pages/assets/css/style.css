@@ -307,80 +307,7 @@ main.min-main {
   margin-left: 80px;
 }
 
-/*------------------> Responsive*/
-@media (max-height: 660px) {
-  .barra-lateral .nombre-pagina {
-    margin-bottom: 5px;
-  }
-  .barra-lateral .modo-oscuro {
-    margin-bottom: 3px;
-  }
-}
-@media (max-width: 600px) {
-  .barra-lateral {
-    position: fixed;
-    left: -250px;
-  }
-  .max-barra-lateral {
-    left: 0;
-  }
-  .menu {
-    display: flex;
-  }
-  .menu ion-icon:nth-child(2) {
-    display: none;
-  }
-  main {
-    margin-left: 0;
-  }
-  main.min-main {
-    margin-left: 0;
-  }
-  .seccionFiltros {
-    font-size: 12px;
-  }
-  .fila-profesor span {
-    font-size: 6px;
-    /* padding: 2px 0px; */
-    /* background: #000; */
-  }
-  /* FILTROS RESPON */
-  #desaparecer {
-    visibility: hidden;
-    position: absolute;
-    /* left: 300px; */
-    margin-bottom: 15px;
-  }
-  .seccionFiltros > h3 {
-    font-size: 11px;
-    /* color: #007bff; */
-  }
-  .sidebar-filters {
-    display: flex;
-    align-items: baseline;
-    margin: 0px;
-    padding: 0px;
-    /* color: #007bff; */
-    flex-wrap: wrap;
-  }
-  .sidebar-filters h3{
-    margin-bottom: 10px;
-  }
-  .filtro {
-    margin-right: 0;
-  }
 
-  .filtro:not(:last-child) {
-    margin-bottom: 10px;
-  }
-  #materia,
-  #fecha {
-    padding: 0px;
-  }
-  #fecha {
-    margin-left: 13px;
-  }
-}
 
 /*-------------------> MAIN FILTROS CSS
 /* Estilos para la sección de filtros */
@@ -649,6 +576,8 @@ main.min-main {
   padding: 15px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  word-wrap: break-word !important;
+word-break: break-all !important;
 }
 
 .data-item:hover {
@@ -725,4 +654,85 @@ main.min-main {
   background-color:  var(--bg-color) !important;
   color: var(--text-color);
   transition: .3s ease;
+}
+
+
+
+/*------------------> Responsive*/
+@media (max-height: 660px) {
+  .barra-lateral .nombre-pagina {
+    margin-bottom: 5px;
+  }
+  .barra-lateral .modo-oscuro {
+    margin-bottom: 3px;
+  }
+}
+@media (max-width: 600px) {
+  .barra-lateral {
+    position: fixed;
+    left: -250px;
+  }
+  .max-barra-lateral {
+    left: 0;
+  }
+  .menu {
+    display: flex;
+  }
+  .menu ion-icon:nth-child(2) {
+    display: none;
+  }
+  main {
+    margin-left: 0;
+  }
+  main.min-main {
+    margin-left: 0;
+  }
+  .seccionFiltros {
+    font-size: 12px;
+  }
+  .fila-profesor span {
+    font-size: 6px;
+    /* padding: 2px 0px; */
+    /* background: #000; */
+  }
+  /* FILTROS RESPON */
+  #desaparecer {
+    visibility: hidden;
+    position: absolute;
+    /* left: 300px; */
+    margin-bottom: 15px;
+  }
+  .seccionFiltros > h3,.data-item {
+    font-size: 11px;
+    /* color: #007bff; */;
+  }
+  .data-item{
+    word-wrap: break-word !important; /* El texto se ajustará al ancho del contenedor */
+    word-break: break-all !important; /* Romper palabras largas si es necesario */
+  }
+  .sidebar-filters {
+    display: flex;
+    align-items: baseline;
+    margin: 0px;
+    padding: 0px;
+    /* color: #007bff; */
+    flex-wrap: wrap;
+  }
+  .sidebar-filters h3{
+    margin-bottom: 10px;
+  }
+  .filtro {
+    margin-right: 0;
+  }
+
+  .filtro:not(:last-child) {
+    margin-bottom: 10px;
+  }
+  #materia,
+  #fecha {
+    padding: 0px;
+  }
+  #fecha {
+    margin-left: 13px;
+  }
 }
