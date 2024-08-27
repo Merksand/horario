@@ -1,11 +1,44 @@
 -- Problemas con los datos
 
+
+### MECANICA INDUSTRIAL
+# Aula desconocida
+
+
 ### ELECTRICIDAD INDUSTRIAL
 # Nivel 300 Sabado de materia programada
 # Nivel 400 Sabado de materia programada y jueves noche no tiene que haber nada
 
 ### ELECTRONICA
 # Nivel 300 Miercoles y Jueves sin docente
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

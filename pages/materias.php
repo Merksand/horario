@@ -8,13 +8,13 @@
 </head>
 
 <body>
-   <?php
+    <?php
     include "../includes/database.php";
     $query = "SELECT Nombre,Nivel,SubNivel FROM materias";
     $result = $conexion->query($query);
     $materias = [];
     while ($row = $result->fetch_assoc()) {
-        $materias[] = $row ;
+        $materias[] = $row;
     }
     ?>
     <div class="sidebar-filters">
@@ -25,10 +25,10 @@
                 <label for="materia">Nombre:</label>
                 <input list="lista-materias" type="text" id="materia" name="materia" placeholder="Nombre de la materia" style="width: 250px;">
                 <datalist id="lista-materias">
-                    <?php 
+                    <?php
                     foreach ($materias as $materia) {
                         // echo "<option value='" . $materia['Nombre'] . "'>";
-                        
+
                         // echo "<option value='{$materia['Nombre']}'>{$materia['Nombre']}</option>";
 
                         // echo '<option value="' . $materia['Nombre'] . '">';
@@ -39,17 +39,18 @@
                     }
                     ?>
                 </datalist>
-                
 
                 <!-- <input type="text" id="materia" placeholder="Nombre de la materia" style="width: 150px;" name="materia"> -->
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" class="fechaDocente" style="width: 150px;" name="fecha">
                 <input type="submit" value="Filtrar" id="btn-materia" name="btn-filtrar" class="btna">
-                
             </form>
+            <input type="submit" value="Semana completa" id="filtrar-horario" name="filtrar-horario">
         </div>
     </div>
 
 
-    
+
     <div class="seccionFiltrosDocentes">
         <!-- <h3>Docente </ion-icon><ion-icon name="caret-down"></ion-icon></h3> -->
         <h3>Horas</h3>

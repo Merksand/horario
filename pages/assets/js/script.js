@@ -227,19 +227,131 @@ function agregarEventos() {
 
     // Asignar las funciones a cada botón
     if (boton) {
-        boton.addEventListener("click", docenteFecha );
+        boton.addEventListener("click", docenteFecha);
     }
     if (botonFecha) {
         botonFecha.addEventListener("click", handleDocenteClick);
 
     }
-    // if (boton) {
-    //     boton.addEventListener("click", handleDocenteClick);
-    // }
-    // if (botonFecha) {
-    //     botonFecha.addEventListener("click", docenteFecha);
 
-    // }
+
+
+    const botonFiltrarMateria = document.getElementById("btn-materia");
+    const btnMateriaSemana = document.getElementById("filtrar-horario");
+
+
+    function materiaFecha(e) {
+        e.preventDefault();
+        let nombreMateria = document.getElementById("materia").value;
+        let fecha = document.getElementById("fecha").value;
+        let tabla = document.getElementById("tabla-profesores");
+
+        const params = new URLSearchParams({ materia: nombreMateria, fecha });
+        const url = `includes/materias.php?${params.toString()}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                tabla.innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error en la petición fetch:", error);
+            });
+    }
+
+    function materiaSemana(e) {
+        e.preventDefault();
+        let nombreMateria = document.getElementById("materia").value;
+        let tabla = document.getElementById("tabla-profesores");
+
+        const params = new URLSearchParams({ materia: nombreMateria });
+        const url = `includes/materias.php?${params.toString()}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                tabla.innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error en la petición fetch:", error);
+            });
+    }
+
+    if (botonFiltrarMateria) botonFiltrarMateria.addEventListener("click", materiaFecha);
+    if (btnMateriaSemana) btnMateriaSemana.addEventListener("click", materiaSemana);
+
+
+
+
+    // * FILTRO DE AULA ///////////////////////////////////////
+    const botonFiltrarAula = document.querySelector(".filtrarAula");
+    const btnAulaSemana = document.getElementById("filtrar-aula");
+    const filtrarTurno = document.getElementById("filtrar-turno")
+
+    function filtrarAula(e) {
+        const aulaSeleccionada = botonFiltrarAula.value;
+        const turno = document.getElementById("filtrar-turno").value;
+        let tabla = document.getElementById("tabla-profesores");
+        let fecha = document.querySelector("#fecha").value;
+        if (aulaSeleccionada !== "") {
+            const params = new URLSearchParams({ aula: aulaSeleccionada, fecha, turno });
+            const url = `includes/aulas.php?${params.toString()}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    tabla.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error("Error en la petición fetch:", error);
+                });
+        }
+    }
+
+    function filtrarAulaSemana(e) {
+        const aulaSeleccionada = botonFiltrarAula.value;
+        let tabla = document.getElementById("tabla-profesores");
+        const turno = document.getElementById("filtrar-turno").value;
+        if (aulaSeleccionada !== "") {
+            const params = new URLSearchParams({ aula: aulaSeleccionada, turno});
+            const url = `includes/aulas.php?${params.toString()}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    tabla.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error("Error en la petición fetch:", error);
+                });
+        }
+    }
+
+    if (botonFiltrarAula) botonFiltrarAula.addEventListener("change", filtrarAula);
+    if (btnAulaSemana) btnAulaSemana.addEventListener("click", filtrarAulaSemana);
+    if (filtrarTurno) filtrarTurno.addEventListener("change", filtrarAula);
+// -----------------------------------------------------------------------------------------
+
 
 
     const botonFiltrarCarrera = document.getElementById("filtrar-nivel-carrera");
@@ -267,28 +379,7 @@ function agregarEventos() {
 
 
 
-    const botonFiltrarAula = document.querySelector(".filtrarAula");
-    if (botonFiltrarAula) {
-        botonFiltrarAula.addEventListener("change", () => {
-            const aulaSeleccionada = document.querySelector(".filtrarAula").value;
-            let tabla = document.getElementById("tabla-profesores");
-            if (aulaSeleccionada !== "") {
-                const xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            tabla.innerHTML = xhr.responseText;
-                        } else {
-                            console.error("Error en la petición AJAX: " + xhr.status);
-                        }
-                    }
-                };
 
-                xhr.open("GET", "includes/aulas.php?aula=" + aulaSeleccionada, true);
-                xhr.send();
-            }
-        });
-    }
 
 
 
@@ -329,27 +420,7 @@ function agregarEventos() {
 
 
 
-    const botonFiltrarMateria = document.getElementById("btn-materia");
-    if (botonFiltrarMateria) {
-        botonFiltrarMateria.addEventListener("click", (e) => {
-            e.preventDefault();
-            let nombreMateria = document.getElementById("materia").value;
-            let tabla = document.getElementById("tabla-profesores");
-            const xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        tabla.innerHTML = xhr.responseText;
-                    } else {
-                        console.error("Error en la petición AJAX: " + xhr.status);
-                    }
-                }
-            };
-            const url = "includes/materias.php?materia=" + encodeURIComponent(nombreMateria);
-            xhr.open("GET", url, true);
-            xhr.send();
-        });
-    }
+
 
 
     const buscarDocente = document.getElementById("buscarDocente");

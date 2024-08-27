@@ -22,13 +22,28 @@
     <div class="sidebar-filters">
         <h3>Buscar por Aula</h3>
         <div class="filtro">
-            <label for="filtrar-aula">Aula:</label>
-            <select id="filtrar-aula" class="filtrarAula" style="width: 250px;" name="filtrar-aula">
-                <option value=""></option>
-                <option value="Todas">Todas</option>
-                <?php echo $filtrar_carrera; ?>
-            </select>
-        
+            <span class="bloquesFiltro">
+                <label for="filtrar-aula">Aula:</label>
+                <select class="filtrarAula" style="width: 250px;" name="filtrar-aula">
+                    <option value=""></option>
+                    <option value="Todas">Todas</option>
+                    <?php echo $filtrar_carrera; ?>
+                </select>
+            </span>
+            <span class="bloquesFiltro">
+                <label for="filtrar-turno" class="labelEspacio">Turno:</label>
+                <select id="filtrar-turno" name="turno" style="width: 150px;">
+                    <option value="Noche">Noche</option>
+                    <option value="Mañana">Mañana</option>
+                    <option value="Todas">Todas</option>
+                </select>
+            </span>
+            <span class="bloquesFiltro">
+                <label for="fecha" class="labelEspacio">Fecha:</label>
+                <input type="date" id="fecha" style="width: 150px;" name="fecha">
+            </span>
+            <input type="submit" value="Semana completa" id="filtrar-aula" name="filtrar-aula">
+
 
             <!-- <select id="filtrar-aula" class="filtrarAula" style="width: 250px;" name="filtrar-carrera">
                 <option name="" value=""></option>

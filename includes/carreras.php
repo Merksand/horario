@@ -4,7 +4,7 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
     $carrera = $_GET['carrera'];
     $nivel = $_GET['nivel'];
 
-    include('database.php');
+    include 'database.php';
 
     $consulta = "SELECT
                     Docentes.Nombre AS NombreDocente,
@@ -53,7 +53,7 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
             echo "</div>";
         }
     } else {
-        echo "<div class='datosIncorrectos'>No se encontró la Carrera seleccionada</div>";
+        echo "<div class='datosIncorrectos'>No existe el nivel en la carrera</div>";
     }
     // $conexion->close();
 } else {

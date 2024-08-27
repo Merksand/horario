@@ -27,11 +27,28 @@
             margin: 20px;
         }
     </style>
-    <button>Click</button>
+    <button class="suss">Click</button>
+    <button class="Reporte">Click</button>
+
+    <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+    <ion-icon class="icono" name="home-outline"></ion-icon>
+    <div class="iconos"><ion-icon name="home-outline"></ion-icon></div>
+
+    <ion-icon  name="ellipsis-vertical-outline"></ion-icon>
+    <h1>jf</h1>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
-        document.querySelector('button').addEventListener('click', () => {
+
+        document.querySelector(".iconos").addEventListener("click", (e) => {
+            console.log(33);
+        })
+        document.querySelector('.suss').addEventListener('click', () => {
             swal({
-                title: "Good job!",
+                title: "Trabajo hecho!",
                 text: "You clicked the button!",
                 icon: "success",
                 button: false,
@@ -40,6 +57,35 @@
                 swal.close();
             }, 3000);
         });
+
+
+
+        document.querySelector('.Reporte').addEventListener('click', () => {
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Definir las columnas y los datos
+            const columns = ["Columna 1", "Columna 2", "Columna 3", "Columna 4"];
+            const data = [
+                ["Dato 1", "Dato 2", "Dato 3", "Dato 4"],
+                ["Dato 5", "Dato 6", "Dato 7", "Dato 8"],
+                ["Dato 9", "Dato 10", "Dato 11", "Dato 12"]
+            ];
+
+            // Crear la tabla con colores
+            doc.autoTable({
+                head: [columns],
+                body: data,
+                styles: { fillColor: [255, 0, 0] }, // Color de fondo de las celdas
+                headStyles: { fillColor: [0, 0, 0] }, // Color de fondo de las celdas de encabezado
+                alternateRowStyles: { fillColor: [255, 0, 0] } // Color de fondo alternativo para las filas
+            });
+
+            // Guardar el PDF con el nombre 'table.pdf'
+            doc.save('table.pdf');
+        });
+
     </script>
 </body>
 

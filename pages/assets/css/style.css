@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap");
+
 :root {
   --color-barra-lateral: rgb(255, 255, 255);
 
@@ -53,6 +54,7 @@
   box-sizing: border-box;
   font-family: "Outfit", sans-serif;
 }
+
 body {
   height: 100vh;
   width: 100%;
@@ -96,6 +98,7 @@ body {
 .mini-barra-lateral {
   width: 80px;
 }
+
 .barra-lateral span {
   width: 100px;
   white-space: nowrap;
@@ -104,6 +107,7 @@ body {
   opacity: 1;
   transition: opacity 0.5s ease, width 0.5s ease;
 }
+
 .barra-lateral span.oculto {
   opacity: 0;
   width: 0;
@@ -118,11 +122,13 @@ body {
   display: flex;
   align-items: center;
 }
+
 .barra-lateral .nombre-pagina ion-icon {
   min-width: 50px;
   font-size: 40px;
   cursor: pointer;
 }
+
 .barra-lateral .nombre-pagina span {
   margin-left: 5px;
   font-size: 25px;
@@ -141,6 +147,7 @@ body {
   background-color: var(--color-boton);
   color: var(--color-boton-texto);
 }
+
 .barra-lateral .boton ion-icon {
   min-width: 50px;
   font-size: 25px;
@@ -152,16 +159,20 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 .barra-lateral .navegacion::-webkit-scrollbar {
   width: 5px;
 }
+
 .barra-lateral .navegacion::-webkit-scrollbar-thumb {
   background-color: var(--color-scroll);
   border-radius: 5px;
 }
+
 .barra-lateral .navegacion::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-scroll-hover);
 }
+
 .barra-lateral .navegacion li {
   list-style: none;
   /* display: flex; */
@@ -177,11 +188,13 @@ body {
   border-radius: 10px;
   color: var(--color-texto-menu);
 }
+
 /* * AQUIIIIIIIIIIIIIIIIIIIIIIIIIIII HOVER DE LAS OPCIONES */
 .barra-lateral .navegacion a:hover {
   background-color: var(--color-menu-hover);
   color: var(--color-menu-hover-texto);
 }
+
 /* .barra-lateral .navegacion li:active {
   background-color: #007bff;
 } */
@@ -206,6 +219,7 @@ body {
   display: flex;
   justify-content: space-between;
 }
+
 .barra-lateral .modo-oscuro .info {
   width: 150px;
   height: 45px;
@@ -214,6 +228,7 @@ body {
   align-items: center;
   color: var(--color-texto-menu);
 }
+
 .barra-lateral .modo-oscuro ion-icon {
   width: 50px;
   font-size: 20px;
@@ -228,6 +243,7 @@ body {
   height: 45px;
   cursor: pointer;
 }
+
 .barra-lateral .modo-oscuro .base {
   position: relative;
   display: flex;
@@ -237,6 +253,7 @@ body {
   background-color: var(--color-switch-base);
   border-radius: 50px;
 }
+
 .barra-lateral .modo-oscuro .circulo {
   position: absolute;
   width: 18px;
@@ -246,6 +263,7 @@ body {
   left: 2px;
   transition: left 0.5s ease;
 }
+
 .barra-lateral .modo-oscuro .circulo.prendido {
   left: 15px;
 }
@@ -255,11 +273,13 @@ body {
   width: 100%;
   display: flex;
 }
+
 .barra-lateral .usuario img {
   width: 50px;
   min-width: 50px;
   border-radius: 10px;
 }
+
 .barra-lateral .usuario .info-usuario {
   width: 100%;
   display: flex;
@@ -268,19 +288,23 @@ body {
   color: var(--color-texto);
   overflow: hidden;
 }
+
 .barra-lateral .usuario .nombre-email {
   width: 100%;
   display: flex;
   flex-direction: column;
   margin-left: 5px;
 }
+
 .barra-lateral .usuario .nombre {
   font-size: 15px;
   font-weight: 600;
 }
+
 .barra-lateral .usuario .email {
   font-size: 13px;
 }
+
 .barra-lateral .usuario ion-icon {
   font-size: 20px;
 }
@@ -303,6 +327,7 @@ main {
   padding: 20px;
   transition: margin-left 0.5s ease;
 }
+
 main.min-main {
   margin-left: 80px;
 }
@@ -358,23 +383,23 @@ main.min-main {
 .seccionFiltrosDocentes {
   display: grid;
   padding: 10px 0px;
-  background:  var(--bg-color);
+  background: var(--bg-color);
   color: var(--text-color);
   grid-template-columns: repeat(7, 1fr);
 }
 
-.seccionFiltrosHorarios{
+.seccionFiltrosHorarios {
   display: grid;
   padding: 10px 0px;
-  background:  var(--bg-color);
+  background: var(--bg-color);
   color: var(--text-color);
   grid-template-columns: repeat(7, 1fr);
 }
 
-.seccionFiltrosCarreras{
+.seccionFiltrosCarreras {
   display: grid;
   padding: 10px 0px;
-  background:  var(--bg-color);
+  background: var(--bg-color);
   color: var(--text-color);
   grid-template-columns: repeat(6, 1fr);
 }
@@ -423,7 +448,7 @@ main.min-main {
 } */
 
 /* TODO APELLIDO AQUI DE ALGO */
-#apellido{
+#apellido {
   margin-left: 10px;
 }
 
@@ -453,7 +478,7 @@ main.min-main {
   margin: 10px;
   text-align: center;
   width: 180px;
-  transition:  0.3s ease;
+  transition: 0.3s ease;
 }
 
 .stat-card:hover {
@@ -540,7 +565,7 @@ main.min-main {
 
 /* TODO */
 
-.datosIncorrectos{
+.datosIncorrectos {
   width: 100%;
   padding: 15px;
   background: #f14747;
@@ -555,7 +580,7 @@ main.min-main {
 
 /** ESTILOS PARA FILA HOME */
 
-#listaAulas{
+#listaAulas {
   margin-left: 15px;
 }
 
@@ -569,22 +594,23 @@ main.min-main {
 }
 
 .data-item {
+  display: flex;
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
   border-radius: 5px;
   margin-bottom: 10px;
   padding: 15px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  word-wrap: break-word !important;
-word-break: break-all !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: space-between;
 }
 
 .data-item:hover {
   /* background-color: #e9ecef; */
   filter: brightness(.8);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .data-item .name {
@@ -615,11 +641,11 @@ word-break: break-all !important;
 }
 
 
-.idHomeCarrera{
+.idHomeCarrera {
   float: right;
 }
 
-.darkHome{
+.darkHome {
   background-color: #2c2d31;
   color: white;
 }
@@ -632,7 +658,8 @@ word-break: break-all !important;
 
 } */
 
-.data-item, .stat-card {
+.data-item,
+.stat-card {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
@@ -651,64 +678,107 @@ word-break: break-all !important;
 
 
 .fila-profesor span:nth-child(odd) {
-  background-color:  var(--bg-color) !important;
+  background-color: var(--bg-color) !important;
   color: var(--text-color);
   transition: .3s ease;
 }
 
+.labelEspacio{
+  margin-left: 15px;
+}
 
+
+ion-icon[name='receipt']{
+  font-size: 1.4rem;
+  margin-left: 10px;
+  color: #fa1911;
+}
+.iconoPdf{
+  background: none;
+  border: none;
+}
 
 /*------------------> Responsive*/
 @media (max-height: 660px) {
   .barra-lateral .nombre-pagina {
     margin-bottom: 5px;
   }
+
   .barra-lateral .modo-oscuro {
     margin-bottom: 3px;
   }
 }
+
 @media (max-width: 600px) {
   .barra-lateral {
     position: fixed;
     left: -250px;
   }
+  
+
   .max-barra-lateral {
     left: 0;
   }
+
   .menu {
     display: flex;
   }
+
   .menu ion-icon:nth-child(2) {
     display: none;
   }
+
   main {
     margin-left: 0;
   }
+
   main.min-main {
     margin-left: 0;
   }
+
   .seccionFiltros {
     font-size: 12px;
   }
+
   .fila-profesor span {
     font-size: 6px;
-    /* padding: 2px 0px; */
-    /* background: #000; */
   }
+
   /* FILTROS RESPON */
   #desaparecer {
     visibility: hidden;
     position: absolute;
-    /* left: 300px; */
     margin-bottom: 15px;
   }
-  .seccionFiltros > h3,.data-item {
+
+  .seccionFiltros>h3,
+  .data-item {
     font-size: 11px;
-    /* color: #007bff; */;
   }
-  .data-item{
-    word-wrap: break-word !important; /* El texto se ajustará al ancho del contenedor */
-    word-break: break-all !important; /* Romper palabras largas si es necesario */
+
+  .data-item {
+    word-break: break-all !important;
+    word-wrap: break-word !important;
+  }
+
+  .data-item span {
+    /* background: green ; */
+    max-width: 55%;
+  }
+
+  .filtro{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  #fecha{
+    margin: 0;
+  }
+  .bloquesFiltro{
+    margin: 0;
+  }
+
+  .labelEspacio{
+    margin: 0;
   }
   .sidebar-filters {
     display: flex;
@@ -718,9 +788,15 @@ word-break: break-all !important;
     /* color: #007bff; */
     flex-wrap: wrap;
   }
-  .sidebar-filters h3{
+
+  .sidebar-filters h3 {
     margin-bottom: 10px;
   }
+
+  h3 {
+    font-size: 8px;
+  }
+
   .filtro {
     margin-right: 0;
   }
@@ -728,11 +804,24 @@ word-break: break-all !important;
   .filtro:not(:last-child) {
     margin-bottom: 10px;
   }
+
   #materia,
   #fecha {
     padding: 0px;
   }
+
   #fecha {
     margin-left: 13px;
   }
+
+  .stat-card {
+    width: 30%;
+  }
+
+  .stat-info h3,
+  span {
+    font-size: 14px !important;
+  }
+
+
 }

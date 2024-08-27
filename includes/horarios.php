@@ -5,7 +5,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
     $nivel = $_GET['nivel'];
     $turno = $_GET['turno'];
 
-    include('database.php');
+    include 'database.php';
 
     $consulta = "
         SELECT

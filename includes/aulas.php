@@ -1,6 +1,8 @@
 <?php
 if (isset($_GET['aula'])) {
-    $aula = $_GET['aula'];
+    $aula = $_GET['aula'] ?? '';
+    $fecha = $_GET['fecha'] ?? '';
+    $turno = $_GET['turno'] ?? '';
 
     include 'database.php';
 
@@ -24,8 +26,26 @@ if (isset($_GET['aula'])) {
 
     if ($aula !== 'Todas') {
         $consulta .= " WHERE Aulas.Nombre ='$aula'";
+
+        if (!empty($turno) && $turno !== 'Todas') {
+            $consulta .= " AND Horarios.Turno = '$turno'" ;
+        }
+        
+        if (!empty($_GET['fecha'])) {
+            $consulta .= " AND  CASE DAYOFWEEK('$fecha')
+            WHEN 1 THEN 'Domingo'
+            WHEN 2 THEN 'Lunes'
+            WHEN 3 THEN 'Martes'
+            WHEN 4 THEN 'Miércoles'
+            WHEN 5 THEN 'Jueves'
+            WHEN 6 THEN 'Viernes'
+            WHEN 7 THEN 'Sábado'
+            END = Horarios.Dia ";
+        }
     }
-    
+
+
+
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
@@ -40,7 +60,8 @@ if (isset($_GET['aula'])) {
         }
     } else {
         // echo "No se encontraron docentes para la carrera seleccionada.";
-        echo "<div class='datosIncorrectos'>No se encontraron datos del aula</div>";
+        // echo "<div class='datosIncorrectos'>No se encontraron datos del aula</div>";
+        echo "<div class='datosIncorrectos'>Aula no ocupada en turno $turno </div>";
     }
     $conexion->close();
 } else {

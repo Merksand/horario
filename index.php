@@ -67,7 +67,7 @@
                         <span>Carrera</span>
                     </a>
                 </li>
-                <li>
+                <li onclick="cargarContenido('pages/reportes.php')">
                     <a class="inbox" href="#">
                         <ion-icon name="document-text-outline"></ion-icon>
                         <span>Reportes</span>

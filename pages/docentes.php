@@ -16,13 +16,13 @@
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" placeholder="Nombre del docente" style="width: 150px;" name="nombre">
                 <input type="text" id="apellido" placeholder="Apellido del docente" style="width: 150px;" name="apellido">
-                
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" id="fecha" class="fechaDocente" style="width: 150px;" name="fecha">
+
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" class="fechaDocente" style="width: 150px;" name="fecha">
                 <!-- <input type="submit" value="Filtrar" id="btn-filtrar" name="btn-filtrar" class="btna" style="visibility: hidden;"> -->
                 <input type="submit" value="Filtrar" id="btn-filtrar" name="btn-filtrar" class="btna">
             </form>
-            <input type="submit" value="Semana completa" id="filtrar-horario" name="filtrar-horario" >
+            <input type="submit" value="Semana completa" id="filtrar-horario" name="filtrar-horario">
         </div>
     </div>
     <div class="seccionFiltrosDocentes">
