@@ -172,14 +172,12 @@ function agregarEventos() {
     const boton = document.getElementById("btn-filtrar");
     const botonFecha = document.getElementById("filtrar-horario");
 
-    // Función para manejar la búsqueda sin fecha
     function handleDocenteClick(e) {
-        e.preventDefault();
+        // e.preventDefault();
         let nombre = document.getElementById("nombre").value;
         let apellido = document.getElementById("apellido").value;
         let tabla = document.getElementById("tabla-profesores");
 
-        // Crear un objeto URLSearchParams sin fecha
         const params = new URLSearchParams({ nombre, apellido });
         const url = `includes/docentes.php?${params.toString()}`;
 
@@ -234,7 +232,7 @@ function agregarEventos() {
 
     }
 
-
+// * FILTRO DE MATERIA /////////////////////////////////////////////////
 
     const botonFiltrarMateria = document.getElementById("btn-materia");
     const btnMateriaSemana = document.getElementById("filtrar-horario");
@@ -328,7 +326,7 @@ function agregarEventos() {
         let tabla = document.getElementById("tabla-profesores");
         const turno = document.getElementById("filtrar-turno").value;
         if (aulaSeleccionada !== "") {
-            const params = new URLSearchParams({ aula: aulaSeleccionada, turno});
+            const params = new URLSearchParams({ aula: aulaSeleccionada, turno });
             const url = `includes/aulas.php?${params.toString()}`;
 
             fetch(url)
@@ -350,7 +348,7 @@ function agregarEventos() {
     if (botonFiltrarAula) botonFiltrarAula.addEventListener("change", filtrarAula);
     if (btnAulaSemana) btnAulaSemana.addEventListener("click", filtrarAulaSemana);
     if (filtrarTurno) filtrarTurno.addEventListener("change", filtrarAula);
-// -----------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------
 
 
 
