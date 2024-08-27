@@ -170,7 +170,7 @@ function agregarEventos() {
 
     // *  FILTRAR DOCENTE POR NOMBRE O APELLIDO
     const boton = document.getElementById("btn-filtrar");
-    const botonFecha = document.getElementById("filtrar-horario");
+    const botonFecha = document.getElementById("filtrar-semana");
 
     function handleDocenteClick(e) {
         // e.preventDefault();
@@ -294,7 +294,7 @@ function agregarEventos() {
     // * FILTRO DE AULA ///////////////////////////////////////
     const botonFiltrarAula = document.querySelector(".filtrarAula");
     const btnAulaSemana = document.getElementById("filtrar-aula");
-    const filtrarTurno = document.getElementById("filtrar-turno")
+    const filtrarTurno = document.getElementById("filtrar-turno-evento")
 
     function filtrarAula(e) {
         const aulaSeleccionada = botonFiltrarAula.value;
@@ -351,7 +351,7 @@ function agregarEventos() {
     // -----------------------------------------------------------------------------------------
 
 
-
+//* FILTRO CARRERAS ////////////////////////////////
     const botonFiltrarCarrera = document.getElementById("filtrar-nivel-carrera");
     if (botonFiltrarCarrera) {
         botonFiltrarCarrera.addEventListener("click", () => {
@@ -376,7 +376,7 @@ function agregarEventos() {
     }
 
 
-
+// *////////////////////////////////////////////////////////////////
 
 
 
@@ -390,7 +390,7 @@ function agregarEventos() {
         fechaInput.value = `${año}-${mes}-${dia}`;
     }
 
-    const botonFiltrarHorario = document.getElementById("filtrar-horario");
+    const botonFiltrarHorario = document.getElementById("filtrar-horarios");
     if (botonFiltrarHorario) {
         botonFiltrarHorario.addEventListener("click", () => {
             const carreraSeleccionada = document.getElementById("filtrar-carrera").value;

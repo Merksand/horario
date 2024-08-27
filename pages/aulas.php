@@ -31,7 +31,7 @@
                 </select>
             </span>
             <span class="bloquesFiltro">
-                <label for="filtrar-turno" class="labelEspacio">Turno:</label>
+                <label for="filtrar-turno-evento" class="labelEspacio">Turno:</label>
                 <select id="filtrar-turno" name="turno" style="width: 150px;">
                     <option value="Noche">Noche</option>
                     <option value="Mañana">Mañana</option>

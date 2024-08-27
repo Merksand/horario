@@ -22,7 +22,7 @@
                 <!-- <input type="submit" value="Filtrar" id="btn-filtrar" name="btn-filtrar" class="btna" style="visibility: hidden;"> -->
                 <input type="submit" value="Filtrar" id="btn-filtrar" name="btn-filtrar" class="btna">
             </form>
-            <input type="submit" value="Semana completa" id="filtrar-horario" name="filtrar-horario">
+            <input type="submit" value="Semana completa" id="filtrar-semana" name="filtrar-horario">
         </div>
     </div>
     <div class="seccionFiltrosDocentes">

@@ -47,7 +47,7 @@
         <div class="filtro">
             <label for="fecha">Fecha:</label>
             <input type="date" id="fecha" style="width: 150px;" name="fecha">   
-            <input type="submit" value="Filtrar" id="filtrar-horario" name="filtrar-horario">
+            <input type="submit" value="Filtrar" id="filtrar-horarios" name="filtrar-horario">
         </div>
     </div>
     <div class="seccionFiltrosHorarios">
