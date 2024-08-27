@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,10 @@
     <title>EduTime</title>
     <link rel="stylesheet" type="text/css" href="pages/assets/css/style.css">
     <link rel="icon" href="img/logo-tran.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+
 
 </head>
 

@@ -54,7 +54,7 @@
             </select> -->
         </div>
     </div>
-    <div class="seccionFiltrosCarreras">
+    <div class="seccionFiltrosCarreras pilares">
         <h3>Dia</h3>
         <h3>Horas</h3>
         <h3>Docente</h3>

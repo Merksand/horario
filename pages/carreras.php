@@ -45,7 +45,7 @@
             <input type="submit" value="Filtrar" id="filtrar-nivel-carrera" name="filtrar-nivel-carrera" class="brt">
         </div>
     </div>
-    <div class="seccionFiltrosCarreras">
+    <div class="seccionFiltrosCarreras pilares">
         <h3>Dia</h3>
         <h3>Horas</h3>
         <h3>Docente</h3>

@@ -386,6 +386,7 @@ main.min-main {
   background: var(--bg-color);
   color: var(--text-color);
   grid-template-columns: repeat(7, 1fr);
+  text-align: center;
 }
 
 .seccionFiltrosHorarios {
@@ -394,6 +395,8 @@ main.min-main {
   background: var(--bg-color);
   color: var(--text-color);
   grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  max-width: 100%;
 }
 
 .seccionFiltrosCarreras {
@@ -402,6 +405,7 @@ main.min-main {
   background: var(--bg-color);
   color: var(--text-color);
   grid-template-columns: repeat(6, 1fr);
+  text-align: center;
 }
 
 .fila-profesor {
@@ -696,6 +700,10 @@ ion-icon[name='receipt']{
 .iconoPdf{
   background: none;
   border: none;
+  font-size: 1.4rem;
+}
+.textCenter{
+  text-align: center;
 }
 
 /*------------------> Responsive*/
@@ -744,6 +752,9 @@ ion-icon[name='receipt']{
     font-size: 6px;
   }
 
+  .spanDatos{
+    font-size: 6px;
+  }
   /* FILTROS RESPON */
   #desaparecer {
     visibility: hidden;
@@ -751,11 +762,7 @@ ion-icon[name='receipt']{
     margin-bottom: 15px;
   }
 
-  .seccionFiltros>h3,
-  .data-item {
-    font-size: 11px;
-  }
-
+ 
   .data-item {
     word-break: break-all !important;
     word-wrap: break-word !important;
@@ -793,9 +800,7 @@ ion-icon[name='receipt']{
     margin-bottom: 10px;
   }
 
-  h3 {
-    font-size: 8px;
-  }
+
 
   .filtro {
     margin-right: 0;
@@ -815,12 +820,20 @@ ion-icon[name='receipt']{
   }
 
   .stat-card {
-    width: 30%;
+    width: 23%;
   }
 
-  .stat-info h3,
-  span {
-    font-size: 14px !important;
+  .stat-info >  span {
+    font-size: 14px ;
+  }
+
+  .stat-info >  h3 {
+    font-size: 14px ;
+  } 
+
+  .pilares>h3,
+  .data-item {
+    font-size: 11px;
   }
 
 

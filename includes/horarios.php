@@ -46,16 +46,18 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
     if($turno !== "Todas"){
         $consulta .= " AND Horarios.Turno = '$turno'";
     }
-    $consulta .= " ORDER BY Horarios.Dia, Horarios.HoraInicio "; 
+    // $consulta .= " ORDER BY Horarios.Dia, Horarios.HoraInicio "; 
+    // $consulta .= " ORDER BY Horarios.Dia,Horarios.HoraFin, NombreDocente "; 
+    $consulta .= " ORDER BY NombreDocente;"; 
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<div class='fila-profesor'>";
-            echo "<span class='spanDatos '>" . $fila['Dia'] . "</span>";
-            echo "<span class='spanDatos '>" . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
+            echo "<span class='spanDatos textCenter'>" . $fila['Dia'] . "</span>";
+            echo "<span class='spanDatos textCenter'>" . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreMateria'] . "</span>";
-            echo "<span class='spanDatos '>" . $fila['NivelMateria'] . " " . $fila['SubNivelMateria'] . "</span>";
+            echo "<span class='spanDatos textCenter'>" . $fila['NivelMateria'] . " " . $fila['SubNivelMateria'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreAula'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreCarrera'] . "</span>";
             echo "</div>";

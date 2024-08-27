@@ -375,11 +375,13 @@ function agregarEventos() {
         });
     }
 
+// * REPORTES //////////////////////////////////
 
+    
 // *////////////////////////////////////////////////////////////////
 
 
-
+//* FILTRO HORARIOS //////////////////////////////////////////////////////////////////
 
     const fechaInput = document.getElementById('fecha');
     if (fechaInput) {
@@ -390,31 +392,74 @@ function agregarEventos() {
         fechaInput.value = `${año}-${mes}-${dia}`;
     }
 
-    const botonFiltrarHorario = document.getElementById("filtrar-horarios");
-    if (botonFiltrarHorario) {
-        botonFiltrarHorario.addEventListener("click", () => {
-            const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
-            const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
-            const turnoSeleccionado = document.getElementById("filtrar-turno").value;
-            const fechaSeleccionada = document.getElementById("fecha").value;
-            let tabla = document.getElementById("tabla-profesores");
-            if (carreraSeleccionada !== "") {
-                const xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            tabla.innerHTML = xhr.responseText;
-                        } else {
-                            console.error("Error en la petición AJAX: " + xhr.status);
-                        }
-                    }
-                };
-                const url = "includes/horarios.php?carrera=" + carreraSeleccionada + "&fecha=" + fechaSeleccionada + "&nivel=" + nivelSeleccionado + "&turno=" + turnoSeleccionado;
-                xhr.open("GET", url, true);
-                xhr.send();
-            }
+
+
+    
+    const botonReporte = document.querySelector(".iconoPdf");
+
+if (botonReporte) {
+    botonReporte.addEventListener("click", () => {
+        const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
+        const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
+        const turnoSeleccionado = document.getElementById("filtrar-turno").value;
+        const fechaSeleccionada = document.getElementById("fecha").value;
+
+        // Crear un objeto URLSearchParams para los parámetros de la URL
+        const params = new URLSearchParams({
+            carrera: carreraSeleccionada,
+            fecha: fechaSeleccionada,
+            nivel: nivelSeleccionado,
+            turno: turnoSeleccionado
         });
-    }
+
+        // Redirigir a la página que generará el PDF
+        // window.location.href = `../../../includes/Report/horarios.php?${params.toString()}`;
+
+        const url = `../../../includes/Report/horarios.php?${params.toString()}`;
+        window.open(url, '_blank');
+    });
+}
+
+
+    const botonFiltrarHorario = document.getElementById("filtrar-horarios");
+
+if (botonFiltrarHorario) {
+    botonFiltrarHorario.addEventListener("click", () => {
+        const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
+        const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
+        const turnoSeleccionado = document.getElementById("filtrar-turno").value;
+        const fechaSeleccionada = document.getElementById("fecha").value;
+        let tabla = document.getElementById("tabla-profesores");
+
+        if (carreraSeleccionada !== "") {
+            // Crear un objeto URLSearchParams para los parámetros de la URL
+            const params = new URLSearchParams({
+                carrera: carreraSeleccionada,
+                fecha: fechaSeleccionada,
+                nivel: nivelSeleccionado,
+                turno: turnoSeleccionado
+            });
+
+            const url = `includes/horarios.php?${params.toString()}`;
+
+            // Usar fetch para hacer la petición
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    tabla.innerHTML = data;
+                })
+                .catch(error => {
+                    console.error("Error en la petición fetch:", error);
+                });
+        }
+    });
+}
+
 
 
 

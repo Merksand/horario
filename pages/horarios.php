@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Horario</title>
 </head>
 
@@ -46,12 +48,15 @@
         </div>
         <div class="filtro">
             <label for="fecha">Fecha:</label>
-            <input type="date" id="fecha" style="width: 150px;" name="fecha">   
+            <input type="date" id="fecha" style="width: 150px;" name="fecha">
             <input type="submit" value="Filtrar" id="filtrar-horarios" name="filtrar-horario">
         </div>
+        <button class="iconoPdf" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
+
     </div>
-    <div class="seccionFiltrosHorarios">
-        <h3>Dia</h3>
+
+    <div class="seccionFiltrosHorarios pilares">
+        <h3>Dia  </h3>
         <h3>Horas</h3>
         <h3>Docente</h3>
         <h3>Materia</h3>
