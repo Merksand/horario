@@ -1,9 +1,10 @@
 <?php
-if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) || isset($_GET['turno'])) {
+if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) || isset($_GET['turno']) || !empty($_GET['iconoFlecha'])) {
     $carrera = $_GET['carrera'];
     $fecha = $_GET['fecha'];
     $nivel = $_GET['nivel'];
     $turno = $_GET['turno'];
+    $iconoFlecha = $_GET['iconoFlecha'] ?? '';
 
     include 'database.php';
 
@@ -16,6 +17,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
             Carreras.Nombre AS NombreCarrera,
             Materias.Nivel AS NivelMateria,
             Horarios.Dia AS Dia,
+            Horarios.Periodo AS periodo,
             DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
             DATE_FORMAT(HoraFin, '%H:%i') AS HoraFin,
             Aulas.Nombre AS NombreAula
@@ -46,15 +48,24 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
     if($turno !== "Todas"){
         $consulta .= " AND Horarios.Turno = '$turno'";
     }
-    // $consulta .= " ORDER BY Horarios.Dia, Horarios.HoraInicio "; 
-    // $consulta .= " ORDER BY Horarios.Dia,Horarios.HoraFin, NombreDocente "; 
-    $consulta .= " ORDER BY NombreDocente;"; 
+
+    if ($iconoFlecha === 'Nombre') {
+        // $consulta .= " ORDER BY Horarios.Dia ASC,NombreMateria ASC,NombreDocente,NivelMateria"; 
+        $consulta .= " ORDER BY NombreDocente ASC,NombreMateria ASC,NombreDocente,NivelMateria"; 
+        
+        // $consulta .= " ORDER BY Horarios.Dia, Horarios.HoraInicio";
+        
+    } else {
+        // $consulta .= " ORDER BY Horarios.HoraInicio, Horarios.HoraFin"; 
+        $consulta .= " ORDER BY Horarios.HoraInicio ASC, Horarios.HoraFin ASC;"; 
+    }
+
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<div class='fila-profesor'>";
             echo "<span class='spanDatos textCenter'>" . $fila['Dia'] . "</span>";
-            echo "<span class='spanDatos textCenter'>" . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
+            echo "<span class='spanDatos textCenter'>"."P" . $fila['periodo'] ." : " . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreMateria'] . "</span>";
             echo "<span class='spanDatos textCenter'>" . $fila['NivelMateria'] . " " . $fila['SubNivelMateria'] . "</span>";
@@ -62,12 +73,8 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
             echo "<span class='spanDatos '>" . $fila['NombreCarrera'] . "</span>";
             echo "</div>";
         }
-
-        // Imprimir la salida HTML
-        // echo $output;
     } else {
-        // echo "No se encontraron docentes para la carrera seleccionada en la fecha especificada.";
-        echo "<div class='datosIncorrectos'>No se encontraron los datos que requiere</div>";
+        echo "<div class='datosIncorrectos'>La carrera no tiene el nivel seleccionado</div>";
     }
 } else {
     echo "No se proporcionaron datos de filtro.";

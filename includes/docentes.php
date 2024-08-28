@@ -67,30 +67,39 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             END = Horarios.Dia ";
         }
     } else {
-        echo "No se proporcionaron nombre y/o apellido.";
+        echo "<div class='datosIncorrectos'>No se proporcionaron nombre y/o apellido.</div>";
         exit;
     }
     $consulta .= " ORDER BY Horarios.HorarioID";
 
     $resultado = $conexion->query($consulta);
 
+    $docente = "SELECT * FROM Docentes WHERE Nombre LIKE '%$nombre%' AND Apellido LIKE '%$apellido%'";
+    $resultado2 = $conexion->query($docente);
+
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<div class='fila-profesor'>";
+            echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreMateria'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreCarrera'] . "</span>";
-            echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreAula'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['Nivel'] . "</span>";
             echo "</div>";
         }
-    } else {
+    } else if($resultado2->num_rows > 0){
+        echo "<div class='datosIncorrectos'>El docente no trabaja hoy</div>";
+        exit();
+    }
+     else {
         // echo "No se encontraron docentes con ese nombre y/o apellido.";
         echo "<div class='datosIncorrectos'>No se encontró al Docente</div>";
     }
     $conexion->close();
 } else {
-    echo "No se proporcionaron nombre y/o apellido.";
+    // echo "No se proporcionaron nombre y/o apellido.";
+    // echo "<div class='datosIncorrectos'>No se encontró al Docente</div>";
+    
 }

@@ -56,9 +56,9 @@
     </div>
 
     <div class="seccionFiltrosHorarios pilares">
-        <h3>Dia  </h3>
+        <h3>Dia</h3>
         <h3>Horas</h3>
-        <h3>Docente</h3>
+        <h3>Docente <span class="iconoFlecha"><i class="fa-solid fa-arrow-down-short-wide"></i></span></h3>
         <h3>Materia</h3>
         <h3>Nivel</h3>
         <h3>Aula</h3>

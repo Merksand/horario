@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET['materia'])) {
 
-    $materia = $_GET['materia'];
+    $materia = $_GET['materia'] ?? Null;
     $fecha = $_GET['fecha'] ?? '';
 
     include 'database.php';

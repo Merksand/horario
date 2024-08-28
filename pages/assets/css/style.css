@@ -703,7 +703,11 @@ ion-icon[name='receipt']{
   font-size: 1.4rem;
 }
 .textCenter{
-  text-align: center;
+  /* text-align: center; */
+}
+.iconoFlecha{
+  /* border: none; */
+  /* background: none; */
 }
 
 /*------------------> Responsive*/

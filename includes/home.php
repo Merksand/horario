@@ -39,6 +39,7 @@ FROM
     LEFT JOIN DocenteMateria ON Aulas.AulaID = DocenteMateria.AulaID
     LEFT JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
     LEFT JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
+    WHERE Aulas.Nombre <> 'Desconocido' 
 GROUP BY Aulas.AulaID, Aulas.Nombre
 ORDER BY SUBSTRING_INDEX(aula, '-', 1),CAST(SUBSTRING_INDEX(aula, '-', -1) AS UNSIGNED)";
         $result = $conexion->query($query);

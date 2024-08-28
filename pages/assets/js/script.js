@@ -232,7 +232,7 @@ function agregarEventos() {
 
     }
 
-// * FILTRO DE MATERIA /////////////////////////////////////////////////
+    // * FILTRO DE MATERIA /////////////////////////////////////////////////
 
     const botonFiltrarMateria = document.getElementById("btn-materia");
     const btnMateriaSemana = document.getElementById("filtrar-horario");
@@ -298,7 +298,7 @@ function agregarEventos() {
 
     function filtrarAula(e) {
         const aulaSeleccionada = botonFiltrarAula.value;
-        const turno = document.getElementById("filtrar-turno").value;
+        const turno = document.getElementById("filtrar-turno-evento").value;
         let tabla = document.getElementById("tabla-profesores");
         let fecha = document.querySelector("#fecha").value;
         if (aulaSeleccionada !== "") {
@@ -324,7 +324,7 @@ function agregarEventos() {
     function filtrarAulaSemana(e) {
         const aulaSeleccionada = botonFiltrarAula.value;
         let tabla = document.getElementById("tabla-profesores");
-        const turno = document.getElementById("filtrar-turno").value;
+        const turno = document.getElementById("filtrar-turno-evento").value;
         if (aulaSeleccionada !== "") {
             const params = new URLSearchParams({ aula: aulaSeleccionada, turno });
             const url = `includes/aulas.php?${params.toString()}`;
@@ -351,7 +351,7 @@ function agregarEventos() {
     // -----------------------------------------------------------------------------------------
 
 
-//* FILTRO CARRERAS ////////////////////////////////
+    //* FILTRO CARRERAS ////////////////////////////////
     const botonFiltrarCarrera = document.getElementById("filtrar-nivel-carrera");
     if (botonFiltrarCarrera) {
         botonFiltrarCarrera.addEventListener("click", () => {
@@ -375,13 +375,13 @@ function agregarEventos() {
         });
     }
 
-// * REPORTES //////////////////////////////////
-
-    
-// *////////////////////////////////////////////////////////////////
+    // * REPORTES //////////////////////////////////
 
 
-//* FILTRO HORARIOS //////////////////////////////////////////////////////////////////
+    // *////////////////////////////////////////////////////////////////
+
+
+    //* FILTRO HORARIOS //////////////////////////////////////////////////////////////////
 
     const fechaInput = document.getElementById('fecha');
     if (fechaInput) {
@@ -394,44 +394,16 @@ function agregarEventos() {
 
 
 
-    
+
     const botonReporte = document.querySelector(".iconoPdf");
 
-if (botonReporte) {
-    botonReporte.addEventListener("click", () => {
-        const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
-        const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
-        const turnoSeleccionado = document.getElementById("filtrar-turno").value;
-        const fechaSeleccionada = document.getElementById("fecha").value;
+    if (botonReporte) {
+        botonReporte.addEventListener("click", () => {
+            const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
+            const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
+            const turnoSeleccionado = document.getElementById("filtrar-turno").value;
+            const fechaSeleccionada = document.getElementById("fecha").value;
 
-        // Crear un objeto URLSearchParams para los parámetros de la URL
-        const params = new URLSearchParams({
-            carrera: carreraSeleccionada,
-            fecha: fechaSeleccionada,
-            nivel: nivelSeleccionado,
-            turno: turnoSeleccionado
-        });
-
-        // Redirigir a la página que generará el PDF
-        // window.location.href = `../../../includes/Report/horarios.php?${params.toString()}`;
-
-        const url = `../../../includes/Report/horarios.php?${params.toString()}`;
-        window.open(url, '_blank');
-    });
-}
-
-
-    const botonFiltrarHorario = document.getElementById("filtrar-horarios");
-
-if (botonFiltrarHorario) {
-    botonFiltrarHorario.addEventListener("click", () => {
-        const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
-        const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
-        const turnoSeleccionado = document.getElementById("filtrar-turno").value;
-        const fechaSeleccionada = document.getElementById("fecha").value;
-        let tabla = document.getElementById("tabla-profesores");
-
-        if (carreraSeleccionada !== "") {
             // Crear un objeto URLSearchParams para los parámetros de la URL
             const params = new URLSearchParams({
                 carrera: carreraSeleccionada,
@@ -440,26 +412,77 @@ if (botonFiltrarHorario) {
                 turno: turnoSeleccionado
             });
 
-            const url = `includes/horarios.php?${params.toString()}`;
+            // Redirigir a la página que generará el PDF
+            // window.location.href = `../../../includes/Report/horarios.php?${params.toString()}`;
 
-            // Usar fetch para hacer la petición
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    tabla.innerHTML = data;
-                })
-                .catch(error => {
-                    console.error("Error en la petición fetch:", error);
-                });
-        }
-    });
+            const url = `../../../includes/Report/horarios.php?${params.toString()}`;
+            window.open(url, '_blank');
+        });
+    }
+    
+    
+    // Selecciona el ícono de la flecha
+let iconoFlecha = document.querySelector(".iconoFlecha");
+
+// Selecciona el botón para filtrar horarios
+const botonFiltrarHorario = document.getElementById("filtrar-horarios");
+
+// Función para realizar la solicitud de filtrado
+function horarioPrincipal() {
+    // Obtén los valores seleccionados de los filtros
+    const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
+    const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
+    const turnoSeleccionado = document.getElementById("filtrar-turno").value;
+    const fechaSeleccionada = document.getElementById("fecha").value;
+
+    // Determina el criterio de ordenación
+    const ordenacion = iconoFlecha && iconoFlecha.classList.contains('ordenarPorNombre') ? 'Nombre' : 'OtroCriterio'; // Ajusta según necesites
+
+    let tabla = document.getElementById("tabla-profesores");
+
+    // Verifica si hay una carrera seleccionada
+    if (carreraSeleccionada !== "") {
+        // Crear un objeto URLSearchParams para los parámetros de la URL
+        const params = new URLSearchParams({
+            carrera: carreraSeleccionada,
+            fecha: fechaSeleccionada,
+            nivel: nivelSeleccionado,
+            turno: turnoSeleccionado,
+            iconoFlecha: ordenacion
+        });
+
+        // Construir la URL para la solicitud
+        const url = `includes/horarios.php?${params.toString()}`;
+
+        // Usar fetch para hacer la petición
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                tabla.innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error en la petición fetch:", error);
+            });
+    }
 }
 
+// Agregar los event listeners
+if (botonFiltrarHorario) {
+    botonFiltrarHorario.addEventListener("click", horarioPrincipal);
+}
+
+if (iconoFlecha) {
+    iconoFlecha.addEventListener("click", () => {
+        // Alternar el criterio de ordenación
+        iconoFlecha.classList.toggle('ordenarPorNombre');
+        horarioPrincipal();
+    });
+}
 
 
 

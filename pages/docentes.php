@@ -27,11 +27,11 @@
     </div>
     <div class="seccionFiltrosDocentes pilares">
         <!-- <h3>Docente </ion-icon><ion-icon name="caret-down"></ion-icon></h3> -->
+        <h3>Dia</h3>
         <h3>Horas</h3>
         <h3>Docente</h3>
         <h3>Materia</h3>
         <h3>Carrera</h3>
-        <h3>Dia</h3>
         <h3>Aula</h3>
         <h3>Nivel</h3>
     </div>
