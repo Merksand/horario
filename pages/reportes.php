@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar Reportes</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -104,14 +103,18 @@
                 </button>
 
             </div>
+            <div class="reporte-card">
+                <h2>Lista de todos los docentes</h2>
+                <p>Genera un reporte de los docentes .</p>
+                <!-- <button onclick="window.location.href='pages/assets/fpdf/PruebaV.php'"><i class="fa-solid fa-file-pdf fa-lg" style="color: white;"></i></button> -->
+                <button onclick="window.open('pages/assets/fpdf/PruebaV.php', '_blank')">
+                    <i class="fa-solid fa-file-pdf fa-lg" style="color: white;"></i>
+                </button>
+
+            </div>
         </div>
     </div>
     <!-- <button class="iconoPdf" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button> -->
 </body>
 
 </html>
-
-
-registro
-transaccion // utilizo informacion de varias tablas para podre realizar el requerimiento (las ventas)
-reporte

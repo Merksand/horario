@@ -51,7 +51,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
 
     if ($iconoFlecha === 'Nombre') {
         // $consulta .= " ORDER BY Horarios.Dia ASC,NombreMateria ASC,NombreDocente,NivelMateria"; 
-        $consulta .= " ORDER BY NombreDocente ASC,NombreMateria ASC,NombreDocente,NivelMateria"; 
+        $consulta .= " ORDER BY NombreDocente ASC,HoraInicio,NivelMateria,NombreMateria ASC,NombreDocente,NivelMateria"; 
         
         // $consulta .= " ORDER BY Horarios.Dia, Horarios.HoraInicio";
         

@@ -214,7 +214,7 @@ body {
 /*----------------> Modo Oscuro*/
 .barra-lateral .modo-oscuro {
   width: 100%;
-  margin-bottom: 80px;
+  margin-bottom: 35px;
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -272,6 +272,10 @@ body {
 .barra-lateral .usuario {
   width: 100%;
   display: flex;
+  margin-bottom: 50px;
+}
+.lateral-inferior{
+  height: 30%;
 }
 
 .barra-lateral .usuario img {
@@ -297,8 +301,8 @@ body {
 }
 
 .barra-lateral .usuario .nombre {
-  font-size: 15px;
-  font-weight: 600;
+  /* font-size: 15px; */
+  /* font-weight: 600; */
 }
 
 .barra-lateral .usuario .email {
@@ -717,7 +721,7 @@ ion-icon[name='receipt']{
   }
 
   .barra-lateral .modo-oscuro {
-    margin-bottom: 3px;
+    margin-bottom: 30px;
   }
 }
 

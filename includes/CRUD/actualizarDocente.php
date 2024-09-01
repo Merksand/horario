@@ -18,21 +18,24 @@ $sql = "UPDATE DocenteMateria dm
         JOIN Horarios h ON dm.HorarioID = h.HorarioID
         SET ";
 
-if ($nombre) $sql .= "d.Nombre = '$nombre'";
-if ($apellido) $sql .= "d.Apellido = '$apellido', ";
-if ($dia) $sql .= "h.Dia = '$dia', ";
-if ($periodoInicio) $sql .= "h.PeriodoInicio = '$periodoInicio', ";
-if ($materia) $sql .= "m.NombreMateria = '$materia', ";
-if ($carrera) $sql .= "m.Carrera = '$carrera', ";
-if ($nivel) $sql .= "m.Nivel = '$nivel', ";
-if ($aula) $sql .= "a.NombreAula = '$aula', ";
+$setClauses = [];
 
-$sql = rtrim($sql, ', ');
+if ($nombre) $setClauses[] = "d.Nombre = '$nombre'";
+if ($apellido) $setClauses[] = "d.Apellido = '$apellido'";
+if ($dia) $setClauses[] = "h.Dia = '$dia'";
+if ($periodoInicio) $setClauses[] = "h.PeriodoInicio = '$periodoInicio'";
+if ($materia) $setClauses[] = "m.NombreMateria = '$materia'";
+if ($carrera) $setClauses[] = "m.Carrera = '$carrera'";
+if ($nivel) $setClauses[] = "m.Nivel = '$nivel'";
+if ($aula) $setClauses[] = "a.NombreAula = '$aula'";
+
+$sql .= implode(', ', $setClauses);
 $sql .= " WHERE dm.DocenteMateriaID = $docenteMateriaID";
 
 $resultado = $conexion->query($sql);
+
 if ($resultado) {
     echo "Datos actualizados correctamente";
 } else {
-    echo "Error al actualizar los datos";
+    echo "Error al actualizar los datos: " . $conexion->error;
 }

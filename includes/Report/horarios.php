@@ -50,7 +50,11 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) && isset($_GET['nivel']) &&
     if ($turno !== "Todas") {
         $consulta .= " AND Horarios.Turno = '$turno'";
     }
-    $consulta .= " ORDER BY NombreDocente ASC, NombreMateria ASC, NombreDocente, NivelMateria";
+
+    $consulta .= " AND Aulas.Nombre <> 'Desconocido'";
+    
+    // $consulta .= " ORDER BY Horarios.Periodo,NombreDocente ASC, NombreMateria ASC, NombreDocente, NivelMateria";
+    $consulta .= " ORDER BY NombreDocente ASC,HoraInicio,NivelMateria,NombreMateria ASC,NombreDocente,NivelMateria"; 
 
     $resultado = $conexion->query($consulta);
 
@@ -155,3 +159,6 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) && isset($_GET['nivel']) &&
 } else {
     echo "Faltan parámetros en la solicitud.";
 }
+
+
+//sistema y contaduria 

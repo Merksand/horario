@@ -3,9 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 include '../database.php';
-if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
-    $nombre = isset($_GET['nombre']) ? $_GET['nombre'] : '';
-    $apellido = isset($_GET['apellido']) ? $_GET['apellido'] : '';
+if (!empty($_GET['nombre']) || !empty($_GET['apellido'])) {
+    $nombre = $_GET["nombre"] ?? '';
+    $apellido = $_GET["apellido"] ?? '';
     $consulta = "SELECT
                     DocenteMateria.DocenteMateriaID as DocenteMateriaID,    
                     Docentes.DocenteID AS id,
@@ -17,7 +17,8 @@ if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
                     Carreras.Nombre AS nombreCarrera,
                     DATE_FORMAT(HoraInicio, '%H:%i') AS horaInicio,
                     DATE_FORMAT(HoraFin, '%H:%i') AS horaFin,
-                    Horarios.Dia AS dia
+                    Horarios.Dia AS dia,
+                    Horarios.HorarioID AS horarioID
                 FROM
                     DocenteMateria
                     INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
@@ -28,7 +29,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
 
     $filtros = [];
     if (!empty($nombre)) {
-        $filtros[] = "Docentes.Nombre LIKE '%" . $conexion->real_escape_string($nombre) . "%' ORDER BY Horarios.HorarioID";
+        $filtros[] = "Docentes.Nombre LIKE '%" . $conexion->real_escape_string($nombre) . "%' ";
     }
     if (!empty($apellido)) {
         $filtros[] = "Docentes.Apellido LIKE '%" . $conexion->real_escape_string($apellido) . "%'";
@@ -37,6 +38,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
     if (!empty($filtros)) {
         $consulta .= ' WHERE ' . implode(' AND ', $filtros);
     }
+    $consulta .= ' ORDER BY Horarios.HorarioID, horaInicio';
     $resultado = $conexion->query($consulta);
     if ($resultado) {
         if ($resultado->num_rows > 0) {
@@ -56,6 +58,6 @@ if (isset($_GET['nombre']) || isset($_GET['apellido'])) {
     }
 } else {
     header('Content-Type: application/json');
-    echo json_encode(['error' => 'Parámetros de búsqueda no proporcionados']);
+    echo json_encode(['aviso' => 'Parámetros de búsqueda no proporcionados']);
 }
 $conexion->close();

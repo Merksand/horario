@@ -13,17 +13,17 @@
         <h3 id="desaparecer">Filtros de horario</h3>
         <div class="filtro">
             <label for="filtrar-carrera">Carrera:</label>
-            <select id="filtrar-carrera" id="materia" style="width: 150px;" name="filtrar-carrera">
-                <option value="Todas">Todas</option>
-                <option value="Sistemas Informáticos">Sistemas Informáticos</option>
-                <option value="Construcción Civil">Construcción Civil</option>
-                <option value="Contaduría General">Contaduría General</option>
-                <option value="Mecánica Automotriz">Mecánica Automotriz</option>
-                <option value="Mecánica Industrial">Mecánica Industrial</option>
-                <option value="Electrónica">Electrónica</option>
-                <option value="Química Industrial">Química Industrial</option>
-                <option value="Electricidad Industrial">Electricidad Industrial</option>
-            </select>
+                <select id="filtrar-carrera" id="materia" style="width: 150px;" name="filtrar-carrera">
+                    <option value="Todas">Todas</option>
+                    <option value="Sistemas Informáticos">Sistemas Informáticos</option>
+                    <option value="Construcción Civil">Construcción Civil</option>
+                    <option value="Contaduría General">Contaduría General</option>
+                    <option value="Mecánica Automotriz">Mecánica Automotriz</option>
+                    <option value="Mecánica Industrial">Mecánica Industrial</option>
+                    <option value="Electrónica">Electrónica</option>
+                    <option value="Química Industrial">Química Industrial</option>
+                    <option value="Electricidad Industrial">Electricidad Industrial</option>
+                </select>
         </div>
         <div class="filtro">
             <label for="filtrar-nivel">Nivel:</label>

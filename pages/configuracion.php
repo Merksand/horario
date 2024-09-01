@@ -10,6 +10,10 @@
 
 <body>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -17,6 +21,7 @@
             padding: 0;
             background-color: #008b8b;
         }
+
 
         h2 {
             text-align: center;
@@ -48,9 +53,8 @@
             margin-bottom: 10px;
             padding: 10px;
             font-size: 16px;
-            border: 1px solid #ddd;
+            border: 3px solid #ddd;
             border-radius: 4px;
-            box-sizing: border-box;
         }
 
         form button {
@@ -140,6 +144,7 @@
             width: calc(50% - 22px);
             display: inline-block;
             margin-right: 10px;
+            box-sizing: border-box;
         }
 
         #buscarDocenteForm button {
@@ -318,15 +323,25 @@
     $result = $conexion->query($sql2);
     $materias = [];
     while ($row = $result->fetch_assoc()) {
-        $materias[] = $row ;
+        $materias[] = $row;
     }
 
     $sql3 = "SELECT Nombre FROM Aulas ORDER BY SUBSTRING_INDEX(Nombre, '-', 1),CAST(SUBSTRING_INDEX(Nombre, '-', -1) AS UNSIGNED)";
     $result = $conexion->query($sql3);
     $aulas = [];
     while ($row = $result->fetch_assoc()) {
-        $aulas[] = $row ;
+        $aulas[] = $row;
     }
+
+
+
+    $queryAulas = "SELECT Nombre FROM Aulas ORDER BY SUBSTRING_INDEX(Nombre, '-', 1),CAST(SUBSTRING_INDEX(Nombre, '-', -1) AS UNSIGNED)";
+    $result = $conexion->query($queryAulas);
+    $filtrar_carrera = "";
+    while ($row = $result->fetch_assoc()) {
+        $filtrar_carrera .= "<option value='{$row['Nombre']}'>{$row['Nombre']}</option>";
+    }
+
 
     $conexion->close();
     ?>
@@ -357,7 +372,7 @@
                 <label for="editModal__dia" class="modal__label">Día:</label>
                 <input list="editModal__periodo-dia" id="editModal__dia" name="dia" type="text" class="modal__input">
                 <datalist id="editModal__periodo-dia" class="modal__datalist">
-                    <?php echo $options;?>
+                    <?php echo $options; ?>
                 </datalist>
 
                 <label for="editModal__periodoInicio" class="modal__label">Periodo:</label>
@@ -377,7 +392,7 @@
                 <label for="editModal__carrera" class="modal__label">Carrera:</label>
                 <input list="editModal__list-carrera" id="editModal__carrera" name="carrera" type="text" class="modal__input">
                 <datalist id="editModal__list-carrera" class="modal__datalist">
-                <?php echo $options;?>
+                    <?php echo $options; ?>
 
                 </datalist>
 
@@ -418,12 +433,12 @@
             <datalist id="list-carrera" class="datalist">
                 <option value="Sistemas Informaticos">
                 <option value="Construccion Civil">
-                <option value="Mecanica Industrial">
+                <option value="Contaduria General">
                 <option value="Mecanica Automotriz">
                 <option value="Electronica">
-                <option value="Electricidad Industrial">
                 <option value="Quimica Industrial">
-                <option value="Contaduria General">
+                <option value="Mecanica Industrial">
+                <option value="Electricidad Industrial">
             </datalist>
 
             <!-- <label for="periodo">Periodo:</label>
@@ -463,13 +478,13 @@
 
             <div>
                 <label for="materia">Materia:</label>
-                <input list="lista-materias"  type="text" id="materia" name="materia">
+                <input list="lista-materias" type="text" id="materia" name="materia">
 
 
-            <!-- <input list="lista-materias" type="text" id="materia" name="materia" placeholder="Nombre de la materia" style="width: 250px;"> -->
+                <!-- <input list="lista-materias" type="text" id="materia" name="materia" placeholder="Nombre de la materia" style="width: 250px;"> -->
                 <datalist id="lista-materias">
-                    <?php 
-                    foreach($materias as $materia) {
+                    <?php
+                    foreach ($materias as $materia) {
 
                         echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[SubNivel]</option>";
                     }
@@ -495,8 +510,8 @@
 
 
                 <datalist id="lista-aulas">
-                    <?php 
-                    foreach($aulas as $aula) {
+                    <?php
+                    foreach ($aulas as $aula) {
                         echo "<option value='$aula[Nombre]'>$aula[Nombre]</option>";
                     }
                     ?>
@@ -510,16 +525,22 @@
         </form>
 
         <!-- Formulario de búsqueda -->
-        <h2>Buscar Docente y Modificar</h2>
+        <h2>Buscar y Modificar</h2>
         <br>
         <form id="buscarDocenteForm">
             <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente" required>
             <input type="text" id="buscarApellido" name="buscarApellido" placeholder="Apellido del docente">
+
+
+            <!-- Nuevos campos para Aulas y Materias -->
+            <input type="text" id="buscarAula" name="buscarAula" placeholder="Nombre del aula">
+            <input type="text" id="buscarMateria" name="buscarMateria" placeholder="Nombre de la materia">
+
             <button type="submit" id="buscarDocente">Buscar</button>
         </form>
 
         <table id="tabla-docentes">
-            <thead>
+            <!-- <thead>
                 <tr>
                     <th>Dia</th>
                     <th>Horas</th>
@@ -532,7 +553,7 @@
                 </tr>
             </thead>
             <tbody>
-            </tbody>
+            </tbody> -->
         </table>
     </div>
     <script src="assets/js/script.js"></script>
