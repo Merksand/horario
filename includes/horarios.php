@@ -13,7 +13,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
             Docentes.Nombre AS NombreDocente,
             Docentes.Apellido AS ApellidoDocente,
             Materias.Nombre AS NombreMateria,
-            Materias.SubNivel AS SubNivelMateria,
+            Materias.Paralelo AS ParaleloMateria,
             Carreras.Nombre AS NombreCarrera,
             Materias.Nivel AS NivelMateria,
             Horarios.Dia AS Dia,
@@ -68,7 +68,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
             echo "<span class='spanDatos textCenter'>"."P" . $fila['periodo'] ." : " . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreMateria'] . "</span>";
-            echo "<span class='spanDatos textCenter'>" . $fila['NivelMateria'] . " " . $fila['SubNivelMateria'] . "</span>";
+            echo "<span class='spanDatos textCenter'>" . $fila['NivelMateria'] . " " . $fila['ParaleloMateria'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreAula'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreCarrera'] . "</span>";
             echo "</div>";

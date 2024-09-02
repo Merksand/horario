@@ -50,7 +50,7 @@ if ($apellido !== null) $setClauses[] = "d.Apellido = '$apellido'";
 if ($dia !== null) $setClauses[] = "h.Dia = '$dia'";
 if ($periodoInicio !== null) $setClauses[] = "h.Periodo = '$periodoInicio'";
 if ($materia !== null) $setClauses[] = "m.Nombre = '$materia'";
-if ($carrera !== null) $setClauses[] = "m.CarreraID = '$carreraID'";
+if ($carrera !== null) $setClauses[] = "m.CarreraID = '$carrera'";
 if ($nivel !== null) $setClauses[] = "m.Nivel = '$nivel'";
 if ($aulaID !== null) $setClauses[] = "dm.AulaID = '$aulaID'";
 
@@ -73,4 +73,4 @@ if (count($setClauses) > 0) {
 
 // Cerrar la conexión
 $conexion->close();
-?>
+

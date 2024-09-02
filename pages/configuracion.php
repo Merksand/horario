@@ -155,12 +155,12 @@
             width: 200px;
         }
 
-        #dialogBorrar {
+        #dialogBorrar,.dialogBorrarAula {
             /* position: relative; */
             margin: auto;
         }
 
-        #dialogBorrar {
+        #dialogBorrar,.dialogBorrarAula {
             border: none;
             border-radius: 5px;
             bottom: 60%;
@@ -170,6 +170,11 @@
         }
 
         #dialogBorrar::backdrop {
+            background-color: #0007;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+        .dialogBorrarAula::backdrop {
             background-color: #0007;
             backdrop-filter: blur(3px);
             -webkit-backdrop-filter: blur(3px);
@@ -376,7 +381,10 @@
         /* .opciones {
             user-select: none;
         } */
-
+        .dialogBorrarAula__title{
+            color: #fff;
+            text-align: center;
+        }
 
         @media (max-width: 600px) {
             #buscar-form {
@@ -402,7 +410,7 @@
     }
 
 
-    $sql2 = "SELECT Nombre,Nivel,SubNivel FROM materias";
+    $sql2 = "SELECT Nombre,Nivel,Paralelo FROM materias";
     $result = $conexion->query($sql2);
     $materias = [];
     while ($row = $result->fetch_assoc()) {
@@ -555,6 +563,19 @@
             </form>
         </dialog>
 
+        <dialog class="dialogBorrarAula">
+            <!-- <span id="close">&times;</span> -->
+            <h3 class="dialogBorrarAula__title">¿Está seguro?</h3>
+            <div class="opciones">
+                <div>
+                    <button class="eliminar eliminarRegistro eliminarAula">SI</button>
+                </div>
+                <div>
+                    <button class="eliminar eliminarTodoDocente noEliminarAula">NO</button>
+                </div>
+            </div>
+        </dialog>
+
         <h2>Gestión de Docentes</h2>
         <form id="docenteForm">
             <!-- <input type="hidden" id="docenteID" name="docenteID"> -->
@@ -624,7 +645,7 @@
                     if ($materias) {
                         foreach ($materias as $materia) {
 
-                            echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[SubNivel]</option>";
+                            echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[Paralelo]</option>";
                         }
                     }
                     ?>

@@ -9,8 +9,8 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $input = json_decode(file_get_contents('php://input'), true);
 
-        if (isset($input['docenteMateriaID'])) {
-            $docenteMateriaID = $input['docenteMateriaID'];
+        if (isset($input['id'])) {
+            $id = $input['id'];
 
             // Incluye la base de datos con la ruta correcta
             include('../database.php');
@@ -19,11 +19,11 @@ try {
             $sql = "DELETE FROM DocenteMateria WHERE DocenteMateriaID = ?";
             $stmt = $conexion->prepare($sql);
             if ($stmt) {
-                $stmt->bind_param("i", $docenteMateriaID);
+                $stmt->bind_param("i", $id);
                 $stmt->execute();
                 $stmt->close();
 
-                echo json_encode(['status' => 'success', 'message' => 'Horario eliminado correctamente']);
+                echo json_encode(['status' => 'success', 'message' => 'Registro eliminado correctamente']);
             } else {
                 throw new Exception("Error al preparar la consulta para eliminar el horario");
             }
@@ -39,4 +39,3 @@ try {
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Error en el servidor: ' . $e->getMessage()]);
 }
-?>

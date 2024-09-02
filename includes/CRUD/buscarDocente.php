@@ -18,8 +18,7 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
         // Generar tabla HTML para Aulas
         if ($resultadoAulas) {
             if ($resultadoAulas->num_rows > 0) {
-                $tablaHTML = '<table id="tabla-aulas">
-                                <thead>
+                $tablaHTML = '<thead>
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Opciones</th>
@@ -28,17 +27,16 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                                 <tbody>';
 
                 while ($fila = $resultadoAulas->fetch_assoc()) {
-                    $tablaHTML .= '<tr>
+                    $tablaHTML .= '<tr data-aula-id = "' . $fila['AulaID'] . '">
                                     <td>' . $fila['Nombre'] . '</td>
                                     <td>
-                                        <button class="editar" onclick="editarDocente(' . $fila['AulaID'] . ')">✏️</button>
+                                        <button class="editar" onclick="editarAula(' . $fila['AulaID'] . ')">✏️</button>
                                         <button class="eliminar" onclick="eliminarAula(' . $fila['AulaID'] . ')">🗑️</button>
                                     </td>
                                 </tr>';
                 }
 
-                $tablaHTML .= '</tbody>
-                            </table>';
+                $tablaHTML .= '</tbody>';
 
                 echo $tablaHTML;
             } else {

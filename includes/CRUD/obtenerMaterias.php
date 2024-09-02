@@ -5,11 +5,9 @@ if (isset($_GET['carrera']) && isset($_GET['nivel'])) {
     $carrera = $_GET['carrera'];
     $nivel = $_GET['nivel'];
 
-    // $nivel2 = 300;
-
     // Consulta para obtener las materias relacionadas con la carrera y el nivel seleccionados
     $query = $conexion->prepare("
-        SELECT m.Nombre, m.Nivel, m.SubNivel 
+        SELECT m.Nombre, m.Nivel, m.Paralelo 
         FROM materias m
         JOIN carreras c ON m.CarreraID = c.CarreraID
         WHERE c.Nombre = ? AND m.Nivel = ?
@@ -23,7 +21,12 @@ if (isset($_GET['carrera']) && isset($_GET['nivel'])) {
     while ($row = $result->fetch_assoc()) {
         $materias[] = $row;
     }
-    
-    // Devolvemos las materias en formato JSON
-    echo json_encode($materias);
+
+    if (empty($materias)) {
+        // Si no hay materias, enviar un mensaje
+        echo json_encode(['mensaje' => 'No existe el nivel seleccionado.']);
+    } else {
+        // Devolvemos las materias en formato JSON
+        echo json_encode($materias);
+    }
 }

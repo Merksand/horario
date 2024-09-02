@@ -10,7 +10,7 @@ if (isset($_GET['materia'])) {
                     Docentes.Nombre AS NombreDocente,
                     Docentes.Apellido AS ApellidoDocente,
                     Materias.Nombre AS NombreMateria,
-                    Materias.SubNivel AS SubNivelMateria,
+                    Materias.Paralelo AS ParaleloMateria,
                     Carreras.Nombre AS NombreCarrera,
                     Horarios.Dia,
                     DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
@@ -52,7 +52,7 @@ if (isset($_GET['materia'])) {
             echo "<span class='spanDatos'>" . $fila['NombreCarrera'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreAula'] . "</span>";
-            echo "<span class='spanDatos'>" . $fila['Nivel'] . $fila['SubNivelMateria'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['Nivel'] . $fila['ParaleloMateria'] . "</span>";
             echo "</div>";
         }
     } else if ($resultadoMateria && $resultadoMateria->num_rows == 0) {

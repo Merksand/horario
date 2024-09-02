@@ -421,28 +421,21 @@ function agregarEventos() {
     }
 
 
-    // Selecciona el ícono de la flecha
     let iconoFlecha = document.querySelector(".iconoFlecha");
 
-    // Selecciona el botón para filtrar horarios
     const botonFiltrarHorario = document.getElementById("filtrar-horarios");
 
-    // Función para realizar la solicitud de filtrado
     function horarioPrincipal() {
-        // Obtén los valores seleccionados de los filtros
         const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
         const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
         const turnoSeleccionado = document.getElementById("filtrar-turno").value;
         const fechaSeleccionada = document.getElementById("fecha").value;
 
-        // Determina el criterio de ordenación
-        const ordenacion = iconoFlecha && iconoFlecha.classList.contains('ordenarPorNombre') ? 'Nombre' : 'OtroCriterio'; // Ajusta según necesites
+        const ordenacion = iconoFlecha && iconoFlecha.classList.contains('ordenarPorNombre') ? 'Nombre' : 'OtroCriterio';
 
         let tabla = document.getElementById("tabla-profesores");
 
-        // Verifica si hay una carrera seleccionada
         if (carreraSeleccionada !== "") {
-            // Crear un objeto URLSearchParams para los parámetros de la URL
             const params = new URLSearchParams({
                 carrera: carreraSeleccionada,
                 fecha: fechaSeleccionada,
@@ -451,10 +444,8 @@ function agregarEventos() {
                 iconoFlecha: ordenacion
             });
 
-            // Construir la URL para la solicitud
             const url = `includes/horarios.php?${params.toString()}`;
 
-            // Usar fetch para hacer la petición
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
@@ -471,21 +462,19 @@ function agregarEventos() {
         }
     }
 
-    // Agregar los event listeners
     if (botonFiltrarHorario) {
         botonFiltrarHorario.addEventListener("click", horarioPrincipal);
     }
 
     if (iconoFlecha) {
         iconoFlecha.addEventListener("click", () => {
-            // Alternar el criterio de ordenación
             iconoFlecha.classList.toggle('ordenarPorNombre');
             horarioPrincipal();
         });
     }
 
 
-
+    // * CRUD /////////////////////////////////////////////
     function showCustomAlert(message, isSuccess) {
         const alertDiv = document.createElement('div');
         alertDiv.className = `custom-alert ${isSuccess ? 'success' : 'error'}`;
@@ -524,7 +513,7 @@ function agregarEventos() {
             const form = document.getElementById('buscar-form');
             const nombre = document.getElementById('buscarNombre').value;
             const apellido = document.getElementById('buscarApellido').value;
-            const materia = document.getElementById('buscarMateria').value; // Asegúrate de agregar estos campos en tu formulario
+            const materia = document.getElementById('buscarMateria').value;
             const aula = document.getElementById('buscarAula').value;
             const params = new URLSearchParams({ nombre, apellido, materia, aula });
 
@@ -534,7 +523,7 @@ function agregarEventos() {
                         throw new Error('Error de conexión ' + response.statusText);
                     }
 
-                    return response.text(); // Cambiar a texto si esperamos HTML
+                    return response.text();
                 })
                 .then(html => {
                     if (html.includes("proporcionados") || html.includes("encontraron ")) {
@@ -543,7 +532,7 @@ function agregarEventos() {
                     }
                     const tablaDocentes = document.querySelector('#tabla-docentes');
                     tablaDocentes.innerHTML = html;
-                    form.reset();
+                    // form.reset();
 
                 })
                 .catch(error => console.error('Error al buscar docentes:', error));
@@ -554,46 +543,66 @@ function agregarEventos() {
 
     //* ELIMINAR DOCENTE
     // window.eliminarDocenteMateria = function(docenteMateriaID) {
-    //     if (confirm('¿Estás seguro de que deseas eliminar este horario?')) {
-    //         fetch('includes/CRUD/eliminarDocente.php', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({ docenteMateriaID })
-    //         })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log('Respuesta del servidor:', data);
-    //             if (data.status === 'success') {
-    //                 alert(data.message);
-    //                 const row = document.querySelector(`tr[data-docente-materia-id="${docenteMateriaID}"]`);
-    //                 if (row) {
-    //                     row.remove();
-    //                 } else {
-    //                     console.error('No se encontró la fila con DocenteMateriaID:', docenteMateriaID);
-    //                 }
-    //             } else {
-    //                 alert(data.message);
-    //             }
-    //         })
-    //         .catch(error => console.error('Error al eliminar el horario:', error));
-    //     }
+    function eliminarRegistroFuncion(id, url, tipoRegistro) {
+        console.log(id);
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log('Respuesta del servidor:', data);
+                if (data.status === 'success') {
+                    // alert(data.message);
+                    showCustomAlert(data.message, true);
+                    const row = document.querySelector(`tr[data-${tipoRegistro}-id="${id}"]`);
+                    if (row) {
+                        row.remove();
+                        return
+                    } else {
+                        console.error('No se encontró la fila con id:', id);
+                        return;
+                    }
+                } else {
+                    // alert(data.message);
+                    showCustomAlert(data.message, false);
+                }
+            })
+            .catch(error => console.error('Error al eliminar el horario:', error));
+    }
     // }
 
+    let dialog = document.querySelector('dialog');
+    let closeDialog = document.getElementById('close');
+    let eliminarRegistro = document.querySelector('.eliminarRegistro');
+
+    if (eliminarRegistro) {
+        eliminarRegistro.addEventListener('click', (e) => {
+            eliminarRegistroFuncion(dialog.getAttribute('data-docente-materia-id'), 'includes/CRUD/eliminarDocente.php', 'docente-materia');
+            console.log(e);
+            dialog.close();
+        });
+    }
+
+    if (closeDialog) {
+        closeDialog.addEventListener('click', (e) => {
+            dialog.close();
+        });
+    }
 
     window.eliminarDocenteMateria = function (docenteMateriaID) {
-        let dialog = document.querySelector('dialog');
-        let closeDialog = document.getElementById('close');
         if (dialog) {
+            console.log(docenteMateriaID);
+            dialog.setAttribute('data-docente-materia-id', docenteMateriaID);
             dialog.showModal();
-        }
-        if (closeDialog) {
-            closeDialog.addEventListener('click', () => dialog.close())
-
         }
     }
 
+
+    //  *  /////////////////////////////
 
 
     window.editarDocente = function (docenteMateriaID) {
@@ -662,19 +671,116 @@ function agregarEventos() {
     };
 
 
+    // * EDITAR Y BORRAR AULA ////////////////////////////////////////////////////
+    let editModalAulaForm = document.getElementById('editModalAula__form');
+    const editModalAula = document.getElementById('editModalAula');
+    const modalBorrar = document.querySelector('.dialogBorrarAula');
+    const noEliminarAula = document.querySelector('.noEliminarAula');
+    const eliminarAula = document.querySelector('.eliminarAula');
+
+
+    if (editModalAula) {
+        editModalAulaForm.addEventListener('reset', (e) => {
+            editModalAula.close();
+        })
+
+    }
+
+    window.eliminarAula = function (aulaID) {
+        if (modalBorrar) {
+            console.log(aulaID);
+            dialog.setAttribute('data-aula-id', aulaID);
+
+            modalBorrar.showModal();
+        }
+    }
+    if (noEliminarAula) {
+        noEliminarAula.addEventListener("click", function () {
+            modalBorrar.close();
+        })
+    }
+
+    if (eliminarAula) {
+        eliminarAula.addEventListener("click", function () {
+            console.log("AULA ELIMINADA");
+            let aulaID = dialog.getAttribute('data-aula-id');
+            console.log("AULAID : ", aulaID);
+            eliminarRegistroFuncion(aulaID, 'includes/CRUD/eliminarAula.php', 'aula');
+            modalBorrar.close();
+        })
+    }
+
+
+    const nombreInput = document.getElementById('editModalAula__nombre');
+    const aulaIDInput = document.getElementById('editModalAula__docenteMateriaID');
+
+    // Manejador del evento submit del formulario
+    if (editModalAulaForm && nombreInput && aulaIDInput) {
+        editModalAulaForm.addEventListener('submit', function (event) { 
+            event.preventDefault(); // Prevenir el envío estándar del formulario
+            const aulaID = aulaIDInput.value;
+            const nombre = nombreInput.value;
+            console.log(aulaID, nombre);
+            // Enviar solicitud al PHP para actualizar el aula
+            fetch('includes/CRUD/actualizarAula.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ aulaID, nombre })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Mostrar mensaje de éxito y actualizar la tabla si es necesario
+                        showCustomAlert(data.message, true);
+                        const row = document.querySelector(`tr[data-aula-id="${aulaID}"]`);
+                        if (row) {
+                            row.querySelector('td').textContent = nombre;
+                        }
+                        editModalAulaForm.reset();
+                        editModalAula.close();
+                    } else {
+                        // Mostrar mensaje de error
+                        showCustomAlert(data.message, false);
+                    }
+                })
+                .catch(error => console.error('Error al actualizar el aula:', error));
+        });
+    }
+
+    // Función para abrir el modal y cargar los datos actuales del aula
+    window.editarAula = function (aulaID, nombreActual) {
+        // Verificar si los elementos existen antes de usarlos
+        if (nombreInput && aulaIDInput && editModalAula) {
+            // Rellenar el campo con el nombre actual del aula
+            // nombreInput.value = nombreActual;
+            aulaIDInput.value = aulaID;
+
+            // Mostrar el modal
+            editModalAula.showModal();
+        } else {
+            console.error('Uno o más elementos del DOM no se encontraron.');
+        }
+    };
+
+
+    // Manejar el envío del formulario para editar el aula
+
+    // * MODAL DINAMICO ////////////////////////////////////////////////////
 
 
     const carreraInput = document.getElementById('editModal__carrera');
     const nivelInput = document.getElementById('editModal__agregarNivel');
     const materiaInput = document.getElementById('editModal__materia-input');
-    
+
     if (carreraInput) carreraInput.addEventListener('input', checkInputs);
     if (nivelInput) nivelInput.addEventListener('change', checkInputs);
-    
+
     function checkInputs() {
         const carrera = carreraInput.value;
         const nivel = nivelInput.value;
-    
+
         if (carrera && nivel) {
             updateMaterias(carrera, nivel);
             console.log(carrera + ' ' + nivel);
@@ -683,34 +789,54 @@ function agregarEventos() {
             materiaInput.placeholder = 'Seleccione un nivel';
         }
     }
-    
+
     function updateMaterias(carrera, nivel) {
         console.log("dentro de updateMaterias");
         fetch(`includes/CRUD/obtenerMaterias.php?carrera=${encodeURIComponent(carrera)}&nivel=${encodeURIComponent(nivel)}`)
             .then(response => response.json())
-            .then(materias => {
+            .then(data => {
                 console.log("dentro de then");
                 const materiaDatalist = document.getElementById('editModal__materia');
                 materiaDatalist.innerHTML = ''; // Limpiar el datalist
-                console.log("Antes de forEach: ", materias);
-                materias.forEach(materia => {
-                    console.log("Materias: ", materia);
-                    const option = document.createElement('option');
-                    option.value = materia.Nombre;
-                    materiaDatalist.appendChild(option);
-                });
-                
-                materiaInput.disabled = false;
-                materiaInput.placeholder = ''; // Quitar el placeholder cuando esté habilitado
+                console.log("Respuesta: ", data);
+
+                if (data.mensaje) {
+                    // Si hay un mensaje en la respuesta, usarlo como placeholder
+                    materiaInput.disabled = true;
+                    materiaInput.placeholder = data.mensaje;
+                } else {
+                    data.forEach(materia => {
+                        console.log("Materia: ", materia);
+                        const option = document.createElement('option');
+                        option.value = materia.Nombre;
+
+                        if (materia.Paralelo) {
+                            option.textContent = `(Paralelo: ${materia.Paralelo})`;
+                        } else {
+                            option.textContent = materia.Nombre;
+                        }
+
+                        materiaDatalist.appendChild(option);
+                    });
+
+
+                    materiaInput.disabled = false;
+                    materiaInput.placeholder = ''; // Quitar el placeholder cuando esté habilitado
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar materias:', error);
+                materiaInput.disabled = true;
+                materiaInput.placeholder = 'Error al cargar materias';
             });
     }
-    
+    // * //////////////////////////////////////////////////
 
 
 
 
+    // * AGREGAR DATOS //////////////////////////////////////////////////
     const form = document.getElementById("form-AgregarDatos");
-
     if (form) {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
@@ -775,44 +901,45 @@ function agregarEventos() {
 
         });
     }
+    // * ////////////////////////////////////////////////
 }
 
 
 
 
-    //* HOME 
+//* HOME 
 
-    function cargarTotales() {
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText);
-                const docentesCount = document.getElementById("docentes-count");
-                const materiasCount = document.getElementById("materias-count");
-                const carrerasCount = document.getElementById("carreras-count");
-                const aulasCount = document.getElementById("aulas-count");
-                const horariosCount = document.getElementById("horarios-count");
+function cargarTotales() {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            const docentesCount = document.getElementById("docentes-count");
+            const materiasCount = document.getElementById("materias-count");
+            const carrerasCount = document.getElementById("carreras-count");
+            const aulasCount = document.getElementById("aulas-count");
+            const horariosCount = document.getElementById("horarios-count");
 
-                if (docentesCount) {
-                    docentesCount.innerText = data.total_docentes;
-                }
-                if (materiasCount) {
-                    materiasCount.innerText = data.total_materias;
-                }
-                if (carrerasCount) {
-                    carrerasCount.innerText = data.total_carreras;
-                }
-                if (aulasCount) {
-                    aulasCount.innerText = data.total_aulas;
-                }
-                if (horariosCount) {
-                    horariosCount.innerText = data.total_horarios;
-                }
+            if (docentesCount) {
+                docentesCount.innerText = data.total_docentes;
             }
-        };
-        xhr.open("GET", "includes/totales.php", true);
-        xhr.send();
-    }
+            if (materiasCount) {
+                materiasCount.innerText = data.total_materias;
+            }
+            if (carrerasCount) {
+                carrerasCount.innerText = data.total_carreras;
+            }
+            if (aulasCount) {
+                aulasCount.innerText = data.total_aulas;
+            }
+            if (horariosCount) {
+                horariosCount.innerText = data.total_horarios;
+            }
+        }
+    };
+    xhr.open("GET", "includes/totales.php", true);
+    xhr.send();
+}
 
 
 

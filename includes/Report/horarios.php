@@ -15,7 +15,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) && isset($_GET['nivel']) &&
             Docentes.Apellido AS ApellidoDocente,
             Materias.Codigo AS CodigoMateria,
             Materias.Nombre AS NombreMateria,
-            Materias.SubNivel AS SubNivelMateria,
+            Materias.Paralelo AS ParaleloMateria,
             Carreras.Nombre AS NombreCarrera,
             Materias.Nivel AS NivelMateria,
             Horarios.Periodo AS periodo,
@@ -145,7 +145,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) && isset($_GET['nivel']) &&
             $pdf->Cell(24, 6, utf8_decode($fila['HoraFin']), 1, 0, "C");
             $pdf->Cell(63, 6, utf8_decode($fila['NombreDocente'] . ' ' . $fila['ApellidoDocente']), 1);
             $pdf->Cell(25, 6, utf8_decode($fila['CodigoMateria']), 1, 0, "C");
-            $pdf->Cell(18, 6, utf8_decode($fila['NivelMateria'] . ' ' . $fila['SubNivelMateria']), 1, 0, "C");
+            $pdf->Cell(18, 6, utf8_decode($fila['NivelMateria'] . ' ' . $fila['ParaleloMateria']), 1, 0, "C");
             $pdf->Cell(70, 6, utf8_decode($fila['NombreAula']), 1, 0, "C");
 
             if ($pdf->mostrarCarreraEnFilas) {

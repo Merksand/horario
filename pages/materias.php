@@ -10,7 +10,7 @@
 <body>
     <?php
     include "../includes/database.php";
-    $query = "SELECT Nombre,Nivel,SubNivel FROM materias";
+    $query = "SELECT Nombre,Nivel,Paralelo FROM materias";
     $result = $conexion->query($query);
     $materias = [];
     while ($row = $result->fetch_assoc()) {
@@ -35,7 +35,7 @@
 
 
 
-                        echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[SubNivel]</option>";
+                        echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[Paralelo]</option>";
                     }
                     ?>
                 </datalist>
