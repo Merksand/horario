@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -49,7 +49,7 @@
         form button,
         form select {
             display: block;
-            width: calc(100% - 22px);
+            width: 100%;
             margin-bottom: 10px;
             padding: 10px;
             font-size: 16px;
@@ -140,15 +140,15 @@
         }
 
         /* Estilos adicionales */
-        #buscarDocenteForm input[type="text"] {
+        /* #buscar-form input[type="text"] {
             width: calc(50% - 22px);
             display: inline-block;
             margin-right: 10px;
             box-sizing: border-box;
-        }
+        } */
 
-        #buscarDocenteForm button {
-            width: calc(100% - 22px);
+        #buscar-form button {
+            /* width: calc(100% - 22px); */
         }
 
         .datalist {
@@ -172,12 +172,10 @@
         #dialogBorrar::backdrop {
             background-color: #0007;
             backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
-        #editModal::backdrop {
-            background-color: #0007;
-            backdrop-filter: blur(3px);
-        }
+
 
         #close {
             cursor: pointer;
@@ -230,7 +228,9 @@
         }
 
         .modal::backdrop {
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: #0007;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
         .modal__title {
@@ -305,6 +305,89 @@
             font-size: 24px;
             margin-right: 10px;
         }
+
+        /* form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        } */
+
+
+        .busqueda-seccion {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .busqueda-seccion h3 {
+            margin-top: 0;
+            margin-bottom: 6px;
+            font-size: 18px;
+            /* color: #333; */
+        }
+
+
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+
+        .busqueda-seccion,
+        #docenteForm input {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .busqueda-seccion .docente {
+            width: 30%;
+            padding: 8px;
+            margin-top: 8px;
+            margin-bottom: 12px;
+            border: 10px solid #a3c;
+            border-radius: 4px;
+        }
+
+        #buscar-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        #buscarDocente {
+            grid-column: span 2;
+        }
+
+        /* .opciones {
+            user-select: none;
+        } */
+
+
+        @media (max-width: 600px) {
+            #buscar-form {
+                /* display: grid; */
+                grid-template-columns: 1fr;
+            }
+
+            #buscarDocente {
+                grid-column: span 1;
+            }
+        }
     </style>
     <?php
     include '../includes/database.php';
@@ -358,7 +441,7 @@
             </div>
         </dialog>
 
-        <dialog id="editModal" class="modal">
+        <dialog id="editModalDocente" class="modal">
             <form method="dialog" id="editModal__form" class="modal__form">
                 <h2 class="modal__title">Editar Docente y Horario</h2>
                 <input type="hidden" id="editModal__docenteMateriaID" name="docenteMateriaID">
@@ -372,7 +455,12 @@
                 <label for="editModal__dia" class="modal__label">Día:</label>
                 <input list="editModal__periodo-dia" id="editModal__dia" name="dia" type="text" class="modal__input">
                 <datalist id="editModal__periodo-dia" class="modal__datalist">
-                    <?php echo $options; ?>
+                    <option value="Lunes">
+                    <option value="Martes">
+                    <option value="Miercoles">
+                    <option value="Jueves">
+                    <option value="Viernes">
+                    <option value="Sabado">
                 </datalist>
 
                 <label for="editModal__periodoInicio" class="modal__label">Periodo:</label>
@@ -386,14 +474,11 @@
                     <option value="6">
                 </datalist>
 
-                <label for="editModal__materia" class="modal__label">Materia:</label>
-                <input type="text" id="editModal__materia" name="materia" class="modal__input">
 
                 <label for="editModal__carrera" class="modal__label">Carrera:</label>
                 <input list="editModal__list-carrera" id="editModal__carrera" name="carrera" type="text" class="modal__input">
                 <datalist id="editModal__list-carrera" class="modal__datalist">
                     <?php echo $options; ?>
-
                 </datalist>
 
                 <label for="editModal__agregarNivel" class="modal__label">Nivel:</label>
@@ -407,8 +492,42 @@
                     <option value="600">
                 </datalist>
 
+                <label for="editModal__materia-input" class="modal__label">Materia:</label>
+                <input list="editModal__materia" id="editModal__materia-input" name="materia" type="text" class="modal__input" disabled placeholder="Seleccione un nivel y carrera">
+                <datalist id="editModal__materia">
+                </datalist>
+
+
+
+
+
+                <!-- <label for="editModal__materia-input" class="modal__label">Materia:</label>
+                <input list="editModal__materia" id="editModal__materia-input" name="materia" type="text" class="modal__input" disabled>
+                <datalist id="editModal__materia" class="modal__datalist">
+                </datalist> -->
+
+
+
+                <!-- <label for="editModal__materia-input" class="modal__label">Materia:</label> -->
+
+                <!-- <input  list="editModal__materia" id="editModal__materia-input" name="materia" type="hidden" class="modal__input" disabled> -->
+                <!-- <datalist id="editModal__materia" class="modal__datalist"> -->
+                <!--  -->
+                <!-- </datalist> -->
+
                 <label for="editModal__aula" class="modal__label">Aula:</label>
-                <input type="text" id="editModal__aula" name="aula" class="modal__input">
+                <input list="lista-aulass" type="text" id="editModal__aula" name="aula" class="modal__input">
+                <datalist id="lista-aulass">
+                    <?php
+                    foreach ($aulas as $aula) {
+                        echo "<option value='$aula[Nombre]'>$aula[Nombre]</option>";
+                    }
+                    ?>
+                </datalist>
+
+
+
+
 
                 <menu class="modal__menu">
                     <button type="submit" class="modal__btn modal__btn--submit">Guardar Cambios</button>
@@ -416,6 +535,26 @@
                 </menu>
             </form>
         </dialog>
+
+
+
+
+        <dialog id="editModalAula" class="modal">
+            <form method="dialog" id="editModalAula__form" class="modal__form">
+                <h2 class="modal__title">Editar Aula</h2>
+                <input type="hidden" id="editModalAula__docenteMateriaID" name="docenteMateriaID">
+
+                <label for="editModalAula__nombre" class="modal__label">Nombre:</label>
+                <input type="text" id="editModalAula__nombre" name="nombre" class="modal__input">
+
+
+                <menu class="modal__menu">
+                    <button type="submit" class="modal__btn modal__btn--submit">Guardar Cambios</button>
+                    <button type="reset" class="modal__btn modal__btn--reset">Cancelar</button>
+                </menu>
+            </form>
+        </dialog>
+
         <h2>Gestión de Docentes</h2>
         <form id="docenteForm">
             <!-- <input type="hidden" id="docenteID" name="docenteID"> -->
@@ -479,14 +618,14 @@
             <div>
                 <label for="materia">Materia:</label>
                 <input list="lista-materias" type="text" id="materia" name="materia">
-
-
                 <!-- <input list="lista-materias" type="text" id="materia" name="materia" placeholder="Nombre de la materia" style="width: 250px;"> -->
                 <datalist id="lista-materias">
                     <?php
-                    foreach ($materias as $materia) {
+                    if ($materias) {
+                        foreach ($materias as $materia) {
 
-                        echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[SubNivel]</option>";
+                            echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[SubNivel]</option>";
+                        }
                     }
                     ?>
                 </datalist>
@@ -527,17 +666,27 @@
         <!-- Formulario de búsqueda -->
         <h2>Buscar y Modificar</h2>
         <br>
-        <form id="buscarDocenteForm">
-            <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente" required>
-            <input type="text" id="buscarApellido" name="buscarApellido" placeholder="Apellido del docente">
+        <form id="buscar-form">
+            <div class="busqueda-seccion docente">
+                <h3>Buscar Docente</h3>
+                <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente" required>
+                <input type="text" id="buscarApellido" name="buscarApellido" placeholder="Apellido del docente">
+            </div>
 
+            <div class="busqueda-seccion">
+                <h3>Buscar Aula o Materia</h3>
+                <input type="text" id="buscarAula" name="buscarAula" placeholder="Nombre del aula">
+                <input type="text" id="buscarMateria" name="buscarMateria" placeholder="Nombre de la materia">
+            </div>
 
-            <!-- Nuevos campos para Aulas y Materias -->
-            <input type="text" id="buscarAula" name="buscarAula" placeholder="Nombre del aula">
-            <input type="text" id="buscarMateria" name="buscarMateria" placeholder="Nombre de la materia">
+            <!-- <div class="busqueda-seccion"> -->
+            <!-- <h3>Materias</h3> -->
+            <!-- </div> -->
 
             <button type="submit" id="buscarDocente">Buscar</button>
         </form>
+
+
 
         <table id="tabla-docentes">
             <!-- <thead>

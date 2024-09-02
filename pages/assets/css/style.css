@@ -666,11 +666,7 @@ main.min-main {
 
 } */
 
-.data-item,
-.stat-card {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
+
 
 
 
@@ -705,6 +701,11 @@ ion-icon[name='receipt']{
   background: none;
   border: none;
   font-size: 1.4rem;
+}
+.data-item,
+.stat-card,.busqueda-seccion {
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 .textCenter{
   /* text-align: center; */

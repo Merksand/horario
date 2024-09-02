@@ -486,82 +486,72 @@ function agregarEventos() {
 
 
 
+    function showCustomAlert(message, isSuccess) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `custom-alert ${isSuccess ? 'success' : 'error'}`;
 
+        const icon = document.createElement('span');
+        icon.className = 'custom-alert-icon';
+        icon.innerHTML = isSuccess ? '✔' : '✖';
+
+        const text = document.createElement('span');
+        text.textContent = message;
+
+        alertDiv.appendChild(icon);
+        alertDiv.appendChild(text);
+        document.body.appendChild(alertDiv);
+
+        // Animar la entrada
+        setTimeout(() => {
+            alertDiv.style.opacity = '1';
+        }, 10);
+
+        // Animar la salida después de 3 segundos
+        setTimeout(() => {
+            alertDiv.style.opacity = '0';
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 300);
+        }, 5000);
+    }
 
 
     const buscarDocente = document.getElementById("buscarDocente");
+
     if (buscarDocente) {
         buscarDocente.addEventListener("click", (e) => {
             e.preventDefault();
+            const form = document.getElementById('buscar-form');
             const nombre = document.getElementById('buscarNombre').value;
             const apellido = document.getElementById('buscarApellido').value;
-            // const fecha = document.querySelector('.fechaDocente').value;
-            const params = new URLSearchParams({ nombre, apellido });
+            const materia = document.getElementById('buscarMateria').value; // Asegúrate de agregar estos campos en tu formulario
+            const aula = document.getElementById('buscarAula').value;
+            const params = new URLSearchParams({ nombre, apellido, materia, aula });
 
             fetch(`includes/CRUD/buscarDocente.php?${params.toString()}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error de conexión ' + response.statusText);
                     }
-                    return response.json();
+
+                    return response.text(); // Cambiar a texto si esperamos HTML
                 })
-                .then(data => {
-                    if (data.aviso) {
-                        // console.log(data.error);
-                        console.log(data.aviso);
-                        // alert(data.aviso);
-                        showCustomAlert(data.aviso, false)
-                        document.getElementById('buscarNombre').style.border = '3px solid red'
-                        document.getElementById('buscarApellido').style.border = '3px solid red'
+                .then(html => {
+                    if (html.includes("proporcionados") || html.includes("encontraron ")) {
+                        showCustomAlert(html, false)
                         return;
                     }
-                    document.getElementById('buscarNombre').style.border = 'none'
-                    document.getElementById('buscarApellido').style.border = 'none'
-                    console.log(data);
                     const tablaDocentes = document.querySelector('#tabla-docentes');
+                    tablaDocentes.innerHTML = html;
+                    form.reset();
 
-                    tablaDocentes.innerHTML = `
-                    <thead>
-                <tr>
-                    <th>Dia</th>
-                    <th>Horas</th>
-                    <th>Nombre Completo</th>
-                    <th>Materia</th>
-                    <th>Carrera</th>
-                    <th>Nivel</th>
-                    <th>Aula</th>
-                    <th>Opciones</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-                    `;
-                    const tablaDocentesTbody = document.querySelector('#tabla-docentes tbody');
-                    tablaDocentesTbody.innerHTML = ' ';
-                    data.forEach(docenteMateria => {
-
-                        tablaDocentesTbody.innerHTML += `
-                            <tr data-docente-materia-id="${docenteMateria.DocenteMateriaID}">
-                                <td>${docenteMateria.dia}</td>
-                                <td>${docenteMateria.horaInicio} - ${docenteMateria.horaFin}</td>
-                                <td>${docenteMateria.nombre} ${docenteMateria.apellido}</td>
-                                <td>${docenteMateria.materia}</td>
-                                <td>${docenteMateria.nombreCarrera}</td>
-                                <td>${docenteMateria.nivel}</td>
-                                <td>${docenteMateria.aula}</td>
-                                <td>
-                                    <button class="editar" onclick= "editarDocente(${docenteMateria.DocenteMateriaID})">✏️</button>
-                                    <button class="eliminar" onclick="eliminarDocenteMateria(${docenteMateria.DocenteMateriaID})">🗑️</button>
-                                </td>
-                            </tr>
-                        `;
-                    });
                 })
                 .catch(error => console.error('Error al buscar docentes:', error));
         });
     }
 
-    
+
+
     //* ELIMINAR DOCENTE
     // window.eliminarDocenteMateria = function(docenteMateriaID) {
     //     if (confirm('¿Estás seguro de que deseas eliminar este horario?')) {
@@ -604,55 +594,27 @@ function agregarEventos() {
         }
     }
 
-    function showCustomAlert(message, isSuccess) {
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `custom-alert ${isSuccess ? 'success' : 'error'}`;
 
-        const icon = document.createElement('span');
-        icon.className = 'custom-alert-icon';
-        icon.innerHTML = isSuccess ? '✔' : '✖';
-
-        const text = document.createElement('span');
-        text.textContent = message;
-
-        alertDiv.appendChild(icon);
-        alertDiv.appendChild(text);
-        document.body.appendChild(alertDiv);
-
-        // Animar la entrada
-        setTimeout(() => {
-            alertDiv.style.opacity = '1';
-        }, 10);
-
-        // Animar la salida después de 3 segundos
-        setTimeout(() => {
-            alertDiv.style.opacity = '0';
-            setTimeout(() => {
-                alertDiv.remove();
-            }, 300);
-        }, 5000);
-    }
 
     window.editarDocente = function (docenteMateriaID) {
-        // alert(484499)
-        const editModal = document.getElementById('editModal');
+        console.log("Click a edit");
+        const editModalDocente = document.getElementById('editModalDocente');
         const editForm = document.getElementById('editModal__form');
         const idDocenteModal = document.getElementById('editModal__docenteMateriaID').value = docenteMateriaID;
-        if (editModal) {
-            editModal.showModal();
-        }
-        if (editForm) {
 
+        if (editModalDocente) editModalDocente.showModal();
+
+        // Llama a la función para actualizar los inputs de carrera y nivel
+        // updateCarreraAndNivel();
+
+        if (editForm) {
             editForm.addEventListener('reset', () => {
-                editModal.close();
+                editModalDocente.close();
             });
+
             editForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 let formData = new FormData(editForm);
-
-                for (let [key, value] of formData.entries()) {
-                    console.log(key + ': ' + value);
-                }
                 fetch("includes/CRUD/actualizarDocente.php", {
                     method: "POST",
                     body: formData
@@ -661,22 +623,17 @@ function agregarEventos() {
                         if (!response.ok) {
                             throw new Error('Error de conexión ' + response.statusText);
                         }
-                        return response.text()
+                        return response.text();
                     })
                     .then(data => {
-                        // editModal.close();
                         console.log(data);
                         if (data.includes("Datos actualizados correctamente")) {
                             showCustomAlert("Docente editado con éxito", true);
-                            document.getElementById("buscarDocente").click();
-
-
                             let nombreLleno = false;
                             let apellidoLleno = false;
 
                             for (let [key, value] of formData.entries()) {
                                 console.log(key + ': ' + value);
-
                                 if (key === 'nombre' && value.trim() !== '') {
                                     nombreLleno = true;
                                     document.getElementById("buscarNombre").value = value;
@@ -685,29 +642,70 @@ function agregarEventos() {
                                     document.getElementById("buscarApellido").value = value;
                                 }
                             }
-
                             if (nombreLleno || apellidoLleno) {
                                 document.getElementById("buscarDocente").click();
                                 document.getElementById("buscarNombre").value = '';
                                 document.getElementById("buscarApellido").value = '';
                             }
                             editForm.reset();
-
-
                         } else {
-                            editModal.close();
+                            editModalDocente.close();
                             showCustomAlert("Error al editar docente: " + data, false);
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
                         showCustomAlert("Error en la solicitud: " + error.message, false);
-
                     });
-
             });
         }
+    };
+
+
+
+
+    const carreraInput = document.getElementById('editModal__carrera');
+    const nivelInput = document.getElementById('editModal__agregarNivel');
+    const materiaInput = document.getElementById('editModal__materia-input');
+    
+    if (carreraInput) carreraInput.addEventListener('input', checkInputs);
+    if (nivelInput) nivelInput.addEventListener('change', checkInputs);
+    
+    function checkInputs() {
+        const carrera = carreraInput.value;
+        const nivel = nivelInput.value;
+    
+        if (carrera && nivel) {
+            updateMaterias(carrera, nivel);
+            console.log(carrera + ' ' + nivel);
+        } else {
+            materiaInput.disabled = true;
+            materiaInput.placeholder = 'Seleccione un nivel';
+        }
     }
+    
+    function updateMaterias(carrera, nivel) {
+        console.log("dentro de updateMaterias");
+        fetch(`includes/CRUD/obtenerMaterias.php?carrera=${encodeURIComponent(carrera)}&nivel=${encodeURIComponent(nivel)}`)
+            .then(response => response.json())
+            .then(materias => {
+                console.log("dentro de then");
+                const materiaDatalist = document.getElementById('editModal__materia');
+                materiaDatalist.innerHTML = ''; // Limpiar el datalist
+                console.log("Antes de forEach: ", materias);
+                materias.forEach(materia => {
+                    console.log("Materias: ", materia);
+                    const option = document.createElement('option');
+                    option.value = materia.Nombre;
+                    materiaDatalist.appendChild(option);
+                });
+                
+                materiaInput.disabled = false;
+                materiaInput.placeholder = ''; // Quitar el placeholder cuando esté habilitado
+            });
+    }
+    
+
 
 
 
@@ -741,83 +739,80 @@ function agregarEventos() {
                 .catch(error => console.error('Error:', error));
         })
     }
-}
 
 
+    let docenteForm = document.getElementById("docenteForm");
+    if (docenteForm) {
+        docenteForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(docenteForm);
 
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
 
-let docenteForm = document.getElementById("docenteForm");
-if (docenteForm) {
-    docenteForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const formData = new FormData(docenteForm);
-
-        for (let [key, value] of formData.entries()) {
-            console.log(key + ': ' + value);
-        }
-
-        fetch("includes/CRUD/agregarDatos.php", {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.text())
-            .then(data => {
-                if (data.includes("con éxito")) {
-                    alert("DATOS AGREGADOS");
-                    console.log(data);
-                    form.reset();
-                }
-                if (data.includes("Error")) {
-                    alert("Error al agregar datos: " + data);
-                    console.log(data);
-                }
+            fetch("includes/CRUD/agregarDatos.php", {
+                method: 'POST',
+                body: formData
             })
-            .catch(error => {
-                alert("Error de conexión: " + error);
-                console.log(error);
-            });
+                .then(response => response.text())
+                .then(data => {
+                    if (data.includes("con éxito")) {
+                        alert("DATOS AGREGADOS");
+                        console.log(data);
+                        form.reset();
+                    }
+                    if (data.includes("Error")) {
+                        alert("Error al agregar datos: " + data);
+                        console.log(data);
+                    }
+                })
+                .catch(error => {
+                    alert("Error de conexión: " + error);
+                    console.log(error);
+                });
 
 
-    });
+        });
+    }
 }
 
 
 
 
+    //* HOME 
 
-//* HOME 
+    function cargarTotales() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                const docentesCount = document.getElementById("docentes-count");
+                const materiasCount = document.getElementById("materias-count");
+                const carrerasCount = document.getElementById("carreras-count");
+                const aulasCount = document.getElementById("aulas-count");
+                const horariosCount = document.getElementById("horarios-count");
 
-function cargarTotales() {
-    const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const data = JSON.parse(xhr.responseText);
-            const docentesCount = document.getElementById("docentes-count");
-            const materiasCount = document.getElementById("materias-count");
-            const carrerasCount = document.getElementById("carreras-count");
-            const aulasCount = document.getElementById("aulas-count");
-            const horariosCount = document.getElementById("horarios-count");
-
-            if (docentesCount) {
-                docentesCount.innerText = data.total_docentes;
+                if (docentesCount) {
+                    docentesCount.innerText = data.total_docentes;
+                }
+                if (materiasCount) {
+                    materiasCount.innerText = data.total_materias;
+                }
+                if (carrerasCount) {
+                    carrerasCount.innerText = data.total_carreras;
+                }
+                if (aulasCount) {
+                    aulasCount.innerText = data.total_aulas;
+                }
+                if (horariosCount) {
+                    horariosCount.innerText = data.total_horarios;
+                }
             }
-            if (materiasCount) {
-                materiasCount.innerText = data.total_materias;
-            }
-            if (carrerasCount) {
-                carrerasCount.innerText = data.total_carreras;
-            }
-            if (aulasCount) {
-                aulasCount.innerText = data.total_aulas;
-            }
-            if (horariosCount) {
-                horariosCount.innerText = data.total_horarios;
-            }
-        }
-    };
-    xhr.open("GET", "includes/totales.php", true);
-    xhr.send();
-}
+        };
+        xhr.open("GET", "includes/totales.php", true);
+        xhr.send();
+    }
 
 
 
