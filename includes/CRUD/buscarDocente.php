@@ -59,7 +59,8 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                         DATE_FORMAT(HoraInicio, '%H:%i') AS horaInicio,
                         DATE_FORMAT(HoraFin, '%H:%i') AS horaFin,
                         Horarios.Dia AS dia,
-                        Horarios.HorarioID AS horarioID
+                        Horarios.HorarioID AS horarioID,
+                        Materias.Paralelo AS paralelo
                     FROM
                         DocenteMateria
                         INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
@@ -92,8 +93,8 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                                         <th>Dia</th>
                                         <th>Horas</th>
                                         <th>Nombre Completo</th>
-                                        <th>Materia</th>
                                         <th>Carrera</th>
+                                        <th>Materia</th>
                                         <th>Nivel</th>
                                         <th>Aula</th>
                                         <th>Opciones</th>
@@ -102,20 +103,22 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                                 <tbody>';
 
                 while ($fila = $resultado->fetch_assoc()) {
-                    $tablaHTML .=  '<tr data-docente-materia-id="' . $fila['DocenteMateriaID'] . '">
-                                    <td>' . $fila['dia'] . '</td>
-                                    <td>' . $fila['horaInicio'] . ' - ' . $fila['horaFin'] . '</td>
-                                    <td>' . $fila['nombre'] . ' ' . $fila['apellido'] . '</td>
-                                    <td>' . $fila['materia'] . '</td>
-                                    <td>' . $fila['nombreCarrera'] . '</td>
-                                    <td>' . $fila['nivel'] . '</td>
-                                    <td>' . $fila['aula'] . '</td>
-                                    <td>
-                                        <button class="editar" onclick="editarDocente(' . $fila['DocenteMateriaID'] . ')">✏️</button>
-                                        <button class="eliminar" onclick="eliminarDocenteMateria(' . $fila['DocenteMateriaID'] . ')">🗑️</button>
-                                    </td>
-                                </tr>';
+                    $tablaHTML .= '<tr data-docente-materia-id="' . $fila['DocenteMateriaID'] . '">
+                                        <td class="dia">' . $fila['dia'] . '</td>
+                                        <td class="horaInicio">' . $fila['horaInicio'] . ' - ' . $fila['horaFin'] . '</td>
+                                        <td class="nombreCompleto">' . $fila['nombre'] . ' ' . $fila['apellido'] . '</td>
+                                        <td class="nombreCarrera">' . $fila['nombreCarrera'] . '</td>
+                                        <td class="materia">' . $fila['materia'] . '</td>
+                                        <td class="nivel">' . $fila['nivel'] . ' ' . $fila['paralelo'] . '</td>
+                                        <td class="aula">' . $fila['aula'] . '</td>
+                                        <td>
+                                            <button class="editar" onclick="editarDocente(' . $fila['DocenteMateriaID'] . ')">✏️</button>
+                                            <button class="eliminar" onclick="eliminarDocenteMateria(' . $fila['DocenteMateriaID'] . ')">🗑️</button>
+                                        </td>
+                                    </tr>';
                 }
+
+
 
                 $tablaHTML .= '</tbody>';
 
@@ -128,7 +131,7 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
         }
     } else if (!empty($materia)) {
         // Consulta y tabla para materias
-        $consultaMaterias = "SELECT Materias.MateriaID as MateriaID,Materias.Codigo as Codigo, Materias.Nombre as NombreMateria,Materias.Nivel as Nivel, Carreras.Nombre as NombreCarrera FROM Materias 
+        $consultaMaterias = "SELECT Materias.Paralelo as para, Materias.MateriaID as MateriaID,Materias.Codigo as Codigo, Materias.Nombre as NombreMateria,Materias.Nivel as Nivel, Carreras.Nombre as NombreCarrera FROM Materias 
                             inner join Carreras on Carreras.CarreraID = Materias.CarreraID  
                             WHERE Materias.Nombre LIKE '%" . $conexion->real_escape_string($materia) . "%'" . " ORDER BY Carreras.Nombre, Materias.Nivel";
         $resultadoMaterias = $conexion->query($consultaMaterias);
@@ -148,14 +151,14 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                             </thead>
                             <tbody>';
                 while ($fila = $resultadoMaterias->fetch_assoc()) {
-                    $tablaHTML .= '<tr>
+                    $tablaHTML .= '<tr data-materia-id="' . $fila['MateriaID'] . '">
                                 <td>' . $fila['NombreMateria'] . '</td>
                                 <td>' . $fila['Codigo'] . '</td>
-                                <td>' . $fila['Nivel'] . '</td>
+                                <td>' . $fila['Nivel'] . ' ' . $fila['para'] . '</td>
                                 <td>' . $fila['NombreCarrera'] . '</td>
                                 <td>
-                                    <button class="editar" onclick="editarDocente(' . $fila['MateriaID'] . ')">✏️</button>
-                                    <button class="eliminar" onclick="eliminarDocenteMateria(' . $fila['MateriaID'] . ')">🗑️</button>
+                                    <button class="editar" onclick="editarMateria(' . $fila['MateriaID'] . ')">✏️</button>
+                                    <button class="eliminar" onclick="eliminarMateria(' . $fila['MateriaID'] . ')">🗑️</button>
                                 </td>
                             </tr>';
                 }

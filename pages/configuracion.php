@@ -155,12 +155,14 @@
             width: 200px;
         }
 
-        #dialogBorrar,.dialogBorrarAula {
+        #dialogBorrar,
+        .dialogBorrarAula {
             /* position: relative; */
             margin: auto;
         }
 
-        #dialogBorrar,.dialogBorrarAula {
+        #dialogBorrar,
+        .dialogBorrarAula {
             border: none;
             border-radius: 5px;
             bottom: 60%;
@@ -174,6 +176,7 @@
             backdrop-filter: blur(3px);
             -webkit-backdrop-filter: blur(3px);
         }
+
         .dialogBorrarAula::backdrop {
             background-color: #0007;
             backdrop-filter: blur(3px);
@@ -381,7 +384,7 @@
         /* .opciones {
             user-select: none;
         } */
-        .dialogBorrarAula__title{
+        .dialogBorrarAula__title {
             color: #fff;
             text-align: center;
         }
@@ -443,9 +446,9 @@
                 <div>
                     <button class="eliminar eliminarRegistro">Eliminar Registro</button>
                 </div>
-                <div>
+                <!-- <div>
                     <button class="eliminar eliminarTodoDocente">Eliminar Docente y todos sus registros</button>
-                </div>
+                </div> -->
             </div>
         </dialog>
 
@@ -459,7 +462,7 @@
 
                 <label for="editModal__apellido" class="modal__label">Apellido:</label>
                 <input type="text" id="editModal__apellido" name="apellido" class="modal__input">
-
+<!-- 
                 <label for="editModal__dia" class="modal__label">Día:</label>
                 <input list="editModal__periodo-dia" id="editModal__dia" name="dia" type="text" class="modal__input">
                 <datalist id="editModal__periodo-dia" class="modal__datalist">
@@ -469,9 +472,9 @@
                     <option value="Jueves">
                     <option value="Viernes">
                     <option value="Sabado">
-                </datalist>
+                </datalist> -->
 
-                <label for="editModal__periodoInicio" class="modal__label">Periodo:</label>
+                <!-- <label for="editModal__periodoInicio" class="modal__label">Periodo:</label>
                 <input list="editModal__inicio-periodo" id="editModal__periodoInicio" name="periodoInicio" type="text" class="modal__input">
                 <datalist id="editModal__inicio-periodo" class="modal__datalist">
                     <option value="1">
@@ -480,7 +483,7 @@
                     <option value="4">
                     <option value="5">
                     <option value="6">
-                </datalist>
+                </datalist> -->
 
 
                 <label for="editModal__carrera" class="modal__label">Carrera:</label>
@@ -490,8 +493,8 @@
                 </datalist>
 
                 <label for="editModal__agregarNivel" class="modal__label">Nivel:</label>
-                <input list="editModal__periodo-nivel" id="editModal__agregarNivel" name="nivel" type="text" class="modal__input">
-                <datalist id="editModal__periodo-nivel" class="modal__datalist">
+                <input list="editModal__periodo-nivel" id="editModal__agregarNivel" name="nivel" type="text" class="modal__input" placeholder="Primero seleccione una carrera">
+                <datalist id="editModal__periodo-nivel" class="modal__datalist" >
                     <option value="100">
                     <option value="200">
                     <option value="300">
@@ -576,9 +579,32 @@
             </div>
         </dialog>
 
+
+        <dialog id="editModalMateria" class="modal">
+            <form method="dialog" id="editModalMateria__form" class="modal__form">
+                <h2 class="modal__title">Editar Materia</h2>
+                <input type="hidden" id="editModalMateria__materiaID" name="materiaID">
+
+                <label for="editModalMateria__nombre" class="modal__label">Nombre:</label>
+                <input type="text" id="editModalMateria__nombre" name="nombre" class="modal__input">
+
+                <label for="editModalMateria__codigo" class="modal__label">Código:</label>
+                <input type="text" id="editModalMateria__codigo" name="codigo" class="modal__input">
+<!-- 
+                <label for="editModalMateria__nivel" class="modal__label">Nivel:</label>
+                <input type="text" id="editModalMateria__nivel" name="nivel" class="modal__input"> -->
+
+                <menu class="modal__menu">
+                    <button type="submit" class="modal__btn modal__btn--submit">Guardar Cambios</button>
+                    <button type="reset" class="modal__btn modal__btn--reset">Cancelar</button>
+                </menu>
+            </form>
+        </dialog>
+
+
         <h2>Gestión de Docentes</h2>
         <form id="docenteForm">
-            <!-- <input type="hidden" id="docenteID" name="docenteID"> -->
+            <input type="hidden" id="docenteID" name="docenteID">
             <div>
                 <label for="agregarNombre">Nombre del Docente:</label>
                 <input type="text" id="agregarNombre" name="nombre">

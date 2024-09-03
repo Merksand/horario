@@ -24,7 +24,7 @@ if (isset($_GET['carrera']) && isset($_GET['nivel'])) {
 
     if (empty($materias)) {
         // Si no hay materias, enviar un mensaje
-        echo json_encode(['mensaje' => 'No existe el nivel seleccionado.']);
+        echo json_encode(['mensaje' => 'No existe el nivel seleccionado en la carrera.']);
     } else {
         // Devolvemos las materias en formato JSON
         echo json_encode($materias);

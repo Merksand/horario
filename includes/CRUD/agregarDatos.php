@@ -64,6 +64,8 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
                 }
             }
             $stmt->close();
+        } else if (!empty($nombre_docente) || !empty($apellido_docente)) {
+            echo "Falta rellenar la siguiente casilla";
         }
     }
     // Función para obtener CarreraID basado en el nombre de la carrera
@@ -84,7 +86,7 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
     }
 
     // Validar y agregar Materia
-    if (isset($_POST['nombre_materia']) && isset($_POST['codigo_materia']) && isset($_POST['nivel_materia']) && isset($_POST['carrera_materia']) && !empty ($_POST['nombre_materia']) || !empty($_POST['codigo_materia']) || !empty($_POST['nivel_materia'])) {
+    if (isset($_POST['nombre_materia']) && isset($_POST['codigo_materia']) && isset($_POST['nivel_materia']) && isset($_POST['carrera_materia']) && !empty($_POST['nombre_materia']) || !empty($_POST['codigo_materia']) || !empty($_POST['nivel_materia'])) {
         $nombre_materia = sanitizar($_POST['nombre_materia']);
         $codigo_materia = sanitizar($_POST['codigo_materia']);
         $nivel_materia = sanitizar($_POST['nivel_materia']);
@@ -120,12 +122,12 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
         } else {
             echo "Faltan datos por rellenar";
         }
-    } 
+    }
 
 
     // Manejo de errores
-}else {
-    echo "Faltan datos por rellenaraaa";
+} else {
+    echo "Faltan datos por rellenara";
 }
 if (!empty($errores)) {
     foreach ($errores as $error) {

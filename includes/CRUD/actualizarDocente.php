@@ -26,7 +26,6 @@ if ($aula) {
         $aulaRow = $aulaResult->fetch_assoc();
         $aulaID = $aulaRow['AulaID'];
     } else {
-        // Manejar el caso en que el aula no se encuentra
         echo "El aula especificada no existe.";
         $conexion->close();
         exit;
@@ -35,10 +34,57 @@ if ($aula) {
     $aulaID = null;
 }
 
+if ($nivel) {
+    $materiasQuery = "SELECT MateriaID FROM Materias WHERE Nivel = '$nivel'";
+    $materiasResult = $conexion->query($materiasQuery);
+    
+    if ($materiasResult->num_rows > 0) {
+        $materias = [];
+        while ($materiaRow = $materiasResult->fetch_assoc()) {
+            $materias[] = $materiaRow['MateriaID'];
+        }
+    } else {
+        echo "No existen materias para el nivel especificado.";
+        $conexion->close();
+        exit;
+    }
+}
+
+if($carrera){
+    $carreraQuery = "SELECT CarreraID FROM Carreras WHERE Nombre = '$carrera'";
+    $carreraResult = $conexion->query($carreraQuery);
+    
+    if ($carreraResult->num_rows > 0) {
+        $carreraRow = $carreraResult->fetch_assoc();
+        $carreraID = $carreraRow['CarreraID'];
+    } else {
+        // Manejar el caso en que la carrera no se encuentra
+        echo "La carrera especificada no existe.";
+        $conexion->close();
+        exit;
+    }
+}
+
+if($materia){
+    $materiaQuery = "SELECT MateriaID FROM Materias WHERE Nombre = '$materia' AND CarreraID = '$carreraID' AND Nivel = '$nivel'";
+    $materiaResult = $conexion->query($materiaQuery);
+    
+    if ($materiaResult->num_rows > 0) {
+        $materiaRow = $materiaResult->fetch_assoc();
+        $materiaID = $materiaRow['MateriaID'];
+    } else {
+        // Manejar el caso en que la materia no se encuentra
+        echo "La materia especificada no existe.";
+        $conexion->close();
+        exit;
+    }
+}
+
 // Construir la consulta SQL
 $sql = "UPDATE DocenteMateria dm
         JOIN Docentes d ON dm.DocenteID = d.DocenteID
         JOIN Materias m ON dm.MateriaID = m.MateriaID
+        JOIN Carreras c ON m.CarreraID = c.CarreraID
         JOIN Aulas a ON dm.AulaID = a.AulaID
         JOIN Horarios h ON dm.HorarioID = h.HorarioID
         SET ";
@@ -47,11 +93,11 @@ $setClauses = []; // Para almacenar las cláusulas SET
 
 if ($nombre !== null) $setClauses[] = "d.Nombre = '$nombre'";
 if ($apellido !== null) $setClauses[] = "d.Apellido = '$apellido'";
-if ($dia !== null) $setClauses[] = "h.Dia = '$dia'";
+// if ($dia !== null) $setClauses[] = "dm.Dia = '$dia'";
 if ($periodoInicio !== null) $setClauses[] = "h.Periodo = '$periodoInicio'";
-if ($materia !== null) $setClauses[] = "m.Nombre = '$materia'";
-if ($carrera !== null) $setClauses[] = "m.CarreraID = '$carrera'";
-if ($nivel !== null) $setClauses[] = "m.Nivel = '$nivel'";
+if ($materia !== null) $setClauses[] = "dm.MateriaID = '$materiaID'";
+// if ($carrera !== null) $setClauses[] = "dm.CarreraID = '$carreraID'";
+// if ($nivel !== null) $setClauses[] = "dm.Nivel = '$nivel'";
 if ($aulaID !== null) $setClauses[] = "dm.AulaID = '$aulaID'";
 
 // Verificar si hay cláusulas SET para evitar una consulta inválida
@@ -63,7 +109,7 @@ if (count($setClauses) > 0) {
     $resultado = $conexion->query($sql);
     
     if ($resultado) {
-        echo "Datos actualizados correctamente";
+        echo "Datos actualizados correctamente ".$sql;
     } else {
         echo "Error al actualizar los datos: " . $conexion->error;
     }
