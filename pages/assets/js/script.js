@@ -474,7 +474,8 @@ function agregarEventos() {
     }
 
 
-    // * CRUD /////////////////////////////////////////////
+
+
     function showCustomAlert(message, isSuccess) {
         const alertDiv = document.createElement('div');
         alertDiv.className = `custom-alert ${isSuccess ? 'success' : 'error'}`;
@@ -503,6 +504,192 @@ function agregarEventos() {
             }, 300);
         }, 5000);
     }
+
+    // * CRUD /////////////////////////////////////////////
+
+
+    // * Datos dinamicos de registro docente con su horarios /////////////////////////////////////////
+
+    const turnoInput = document.getElementById('turno');
+    const diaInput = document.getElementById('dia');
+    const periodoInicioInput = document.getElementById('periodoInicio');
+    const periodoFinInput = document.getElementById('periodoFin');
+
+
+    // Habilitar el campo "Día" después de seleccionar un "Turno"
+    if (turnoInput) turnoInput.addEventListener('change', habilitarDia)
+    if (diaInput) diaInput.addEventListener('change', habilitarPeriodoInicio)
+    if (periodoInicioInput) periodoInicioInput.addEventListener('change', habilitarPeriodoFin)
+    function habilitarDia() {
+        if (turnoInput.value) {
+            diaInput.disabled = false;
+            diaInput.placeholder = "Selecciona un día";
+        } else {
+            diaInput.disabled = true;
+            diaInput.placeholder = "Selecciona un turno primero";
+            periodoInicioInput.disabled = true;
+            periodoInicioInput.placeholder = "Selecciona un día primero";
+            periodoFinInput.disabled = true;
+            periodoFinInput.placeholder = "Selecciona un periodo de inicio primero";
+        }
+    }
+
+    // Habilitar el campo "Periodo Inicio" después de seleccionar un "Día"
+    function habilitarPeriodoInicio() {
+        if (diaInput.value) {
+            periodoInicioInput.disabled = false;
+            periodoInicioInput.placeholder = "Selecciona un periodo de inicio";
+        } else {
+            periodoInicioInput.disabled = true;
+            periodoInicioInput.placeholder = "Selecciona un día primero";
+            periodoFinInput.disabled = true;
+            periodoFinInput.placeholder = "Selecciona un periodo de inicio primero";
+        }
+    }
+
+    // Habilitar el campo "Periodo Fin" después de seleccionar un "Periodo Inicio"
+    function habilitarPeriodoFin() {
+        if (periodoInicioInput.value) {
+            periodoFinInput.disabled = false;
+            periodoFinInput.placeholder = "Selecciona un periodo de fin";
+        } else {
+            periodoFinInput.disabled = true;
+            periodoFinInput.placeholder = "Selecciona un periodo de inicio primero";
+        }
+    };
+
+
+
+    let diaEvento = document.getElementById('dia')
+    if (diaEvento) diaEvento.addEventListener("input", obtenerHorarios);
+    function obtenerHorarios() {
+        const turno = document.getElementById('turno').value;
+        const dia = document.getElementById('dia').value;
+
+        if (turno && dia) {
+            fetch('includes/CRUD/obtenerHorarios.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ turno, dia })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const inicioPeriodo = document.getElementById('inicio-periodo');
+                    const finPeriodo = document.getElementById('fin-periodo');
+                    inicioPeriodo.innerHTML = '';
+                    finPeriodo.innerHTML = '';
+
+                    data.horarios.forEach(horario => {
+                        const inicioOption = document.createElement('option');
+                        inicioOption.value = horario.HoraInicio;
+                        inicioOption.textContent = "Periodo: " + horario.Periodo;
+                        inicioPeriodo.appendChild(inicioOption);
+
+                        const finOption = document.createElement('option');
+                        finOption.value = horario.HoraFin;
+                        finOption.textContent = "Periodo: " + horario.Periodo;
+                        finPeriodo.appendChild(finOption);
+                    });
+                })
+                .catch(error => console.error('Error al cargar horarios:', error));
+        }
+    }
+
+    // *  RELACIONAR INFORMACION DOCENTES CON CLASES////////////////////////////
+    let inputCarrera = document.getElementById("carrera")
+    let inputMateria = document.getElementById("materia")
+    let inputNivel = document.getElementById("agregarNivel")
+
+
+    function verificarInput() {
+        console.log(1);
+        const selectedCarrera = inputCarrera.value;
+        const selectedNivel = inputNivel.value;
+        if (selectedCarrera && selectedNivel) {
+
+            updateMaterias(selectedCarrera, selectedNivel);
+            console.log(selectedCarrera + ' ' + selectedNivel);
+        } else if (!inputNivel.value.length > 0) {
+            console.log("mayor a cero");
+            inputNivel.placeholder = ''
+            inputNivel.disabled = false;
+        }
+        else {
+            inputMateria.disabled = true;
+            inputMateria.placeholder = 'Seleccione un nivel';
+        }
+
+    }
+    if (inputCarrera) inputCarrera.addEventListener('input', verificarInput);
+    if (inputNivel) inputNivel.addEventListener('change', verificarInput);
+    if (inputNivel) inputNivel.addEventListener("input", verificarInput);
+
+
+
+    const inputNombre = document.getElementById('agregarNombreCompleto');
+    const dataList = document.getElementById('listaDocentes');
+
+    if (inputNombre) {
+        inputNombre.addEventListener('input', function () {
+            const valorIngresado = inputNombre.value;
+
+            const opcionSeleccionada = Array.from(dataList.options).find(option => option.value === valorIngresado);
+            if (opcionSeleccionada) {
+                const docenteID = opcionSeleccionada.getAttribute('data-docente-id');
+                console.log('DocenteID:', docenteID);
+            } else {
+                console.log('No se encontró el DocenteID para el nombre ingresado.');
+            }
+        });
+    }
+
+
+    let docenteForm = document.getElementById("docenteForm");
+    if (docenteForm) {
+        docenteForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(docenteForm);
+
+
+            console.log(formData);
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
+
+            fetch("includes/CRUD/agregarDocente.php", {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log("siuuuuuuuuuu", data);
+                    if (data.success) {
+                        alert("DATOS AGREGADOS");
+                        console.log(data);
+                        form.reset();
+                    }
+                    if (data.error) {
+                        showCustomAlert(data, false);
+                        alert("Error al agregar datos: " + data);
+                        console.log(data);
+                    }
+                    console.log("nooooo");
+                })
+                .catch(error => {
+                    alert("Error de conexión: " + error);
+                    console.log(error);
+                });
+
+        });
+    }
+
+
+
+    // * ////////////////////////////////////////////////////
+
 
 
     const buscarDocente = document.getElementById("buscarDocente");
@@ -758,7 +945,7 @@ function agregarEventos() {
 
     // Manejar el envío del formulario para editar el aula
 
-    // * MODAL DINAMICO ////////////////////////////////////////////////////
+    // * MODAL DINAMICO (Obtencion de materias)////////////////////////////////////////////////////
 
 
     const carreraInput = document.getElementById('editModal__carrera');
@@ -788,13 +975,18 @@ function agregarEventos() {
             .then(data => {
                 console.log("dentro de then");
                 const materiaDatalist = document.getElementById('editModal__materia');
+                const listaMaterias = document.getElementById("lista-materias")
                 materiaDatalist.innerHTML = '';
+                listaMaterias.innerHTML = ''
                 console.log("Respuesta: ", data);
 
                 if (data.mensaje) {
                     materiaInput.disabled = true;
                     materiaInput.placeholder = data.mensaje;
+                    document.getElementById("materia").disabled = true
+                    document.getElementById("materia").placeholder = data.mensaje;
                 } else {
+                    // console.log(data);
                     data.forEach(materia => {
                         console.log("Materia: ", materia);
                         const option = document.createElement('option');
@@ -807,11 +999,19 @@ function agregarEventos() {
                         }
 
                         materiaDatalist.appendChild(option);
+                        listaMaterias.appendChild(option)
+                        // document.getElementById("materia").disabled = false;
                     });
 
 
                     materiaInput.disabled = false;
                     materiaInput.placeholder = ''; // Quitar el placeholder cuando esté habilitado
+                    inputMateria.disabled = false
+                    inputMateria.placeholder = ''
+                    document.getElementById("materia").disabled = false;
+                    document.getElementById("materia").placeholder = '';
+
+
                 }
             })
             .catch(error => {
@@ -938,42 +1138,8 @@ function agregarEventos() {
         })
     }
 
-// * ////////////////////////////
-    // let docenteForm = document.getElementById("docenteForm");
-    // if (docenteForm) {
-    //     docenteForm.addEventListener("submit", function (e) {
-    //         e.preventDefault();
-    //         const formData = new FormData(docenteForm);
-
-    //         for (let [key, value] of formData.entries()) {
-    //             console.log(key + ': ' + value);
-    //         }
-
-    //         fetch("includes/CRUD/agregarDatos.php", {
-    //             method: 'POST',
-    //             body: formData
-    //         })
-    //             .then(response => response.text())
-    //             .then(data => {
-    //                 console.log(data);
-    //                 if (data.includes("con éxito")) {
-    //                     alert("DATOS AGREGADOS");
-    //                     console.log(data);
-    //                     form.reset();
-    //                 }
-    //                 if (data.includes("Error")) {
-    //                     alert("Error al agregar datos: " + data);
-    //                     console.log(data);
-    //                 }
-    //             })
-    //             .catch(error => {
-    //                 alert("Error de conexión: " + error);
-    //                 console.log(error);
-    //             });
 
 
-    //     });
-    // }
     // * ////////////////////////////////////////////////
 }
 

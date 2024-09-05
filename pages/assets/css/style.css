@@ -821,7 +821,7 @@ ion-icon[name='receipt']{
 
   #materia,
   #fecha {
-    padding: 0px;
+    /* padding: 0px; */
   }
 
   #fecha {

@@ -388,6 +388,13 @@
             color: #fff;
             text-align: center;
         }
+        .opcional{
+            text-align: center;
+            color: #fff;
+            font-weight: bolder;
+            font-size:1.2rem ;
+            text-transform: uppercase;
+        }
 
         @media (max-width: 600px) {
             #buscar-form {
@@ -427,15 +434,35 @@
         $aulas[] = $row;
     }
 
+    $docente = "SELECT DocenteID, Nombre, Apellido FROM Docentes";
+    $docenteQuery = $conexion->query($docente);
+    $docentes = "";
+    while ($row = $docenteQuery->fetch_assoc()) {
+        $docentes .= "<option data-docente-id = '{$row['DocenteID']}' value='{$row['Nombre']} {$row['Apellido']}'></option>";
+    }
+
 
 
     $queryAulas = "SELECT Nombre FROM Aulas ORDER BY SUBSTRING_INDEX(Nombre, '-', 1),CAST(SUBSTRING_INDEX(Nombre, '-', -1) AS UNSIGNED)";
-    $result = $conexion->query($queryAulas);
-    $filtrar_carrera = "";
-    while ($row = $result->fetch_assoc()) {
-        $filtrar_carrera .= "<option value='{$row['Nombre']}'>{$row['Nombre']}</option>";
+    $resultAulas = $conexion->query($queryAulas);
+    $filtrar_aulas = "";
+    while ($row = $resultAulas->fetch_assoc()) {
+        $filtrar_aulas .= "<option value='{$row['Nombre']}'>";
     }
 
+    $queryHorarios = "SELECT DISTINCT Dia FROM Horarios";
+    $resultHorario = $conexion->query($queryHorarios);
+    $horarios = "";
+    while ($row = $resultHorario->fetch_assoc()) {
+        $horarios .= "<option value='{$row['Dia']}'>";
+    }
+
+    $queryObservacion = "SELECT * FROM ObservacionesDocente";
+    $resultObservacion = $conexion->query($queryObservacion);
+    $observaciones = "";
+    while ($row = $resultObservacion->fetch_assoc()) {
+        $observaciones .= "<option data-observacion-id = '{$row['ObservacionID']}' value='{$row['Descripcion']}'>";
+    }
 
     $conexion->close();
     ?>
@@ -462,16 +489,16 @@
 
                 <label for="editModal__apellido" class="modal__label">Apellido:</label>
                 <input type="text" id="editModal__apellido" name="apellido" class="modal__input">
-<!-- 
-                <label for="editModal__dia" class="modal__label">Día:</label>
+
+                <!-- <label for="editModal__dia" class="modal__label">Día:</label>
                 <input list="editModal__periodo-dia" id="editModal__dia" name="dia" type="text" class="modal__input">
                 <datalist id="editModal__periodo-dia" class="modal__datalist">
-                    <option value="Lunes">
-                    <option value="Martes">
-                    <option value="Miercoles">
-                    <option value="Jueves">
-                    <option value="Viernes">
-                    <option value="Sabado">
+                    <option value="Lunes">1</option>
+                    <option value="Martes">2</option>
+                    <option value="Miercoles">3</option>
+                    <option value="Jueves">4</option>
+                    <option value="Viernes">5</option>
+                    <option value="Sabado">6</option>
                 </datalist> -->
 
                 <!-- <label for="editModal__periodoInicio" class="modal__label">Periodo:</label>
@@ -494,7 +521,7 @@
 
                 <label for="editModal__agregarNivel" class="modal__label">Nivel:</label>
                 <input list="editModal__periodo-nivel" id="editModal__agregarNivel" name="nivel" type="text" class="modal__input" placeholder="Primero seleccione una carrera">
-                <datalist id="editModal__periodo-nivel" class="modal__datalist" >
+                <datalist id="editModal__periodo-nivel" class="modal__datalist">
                     <option value="100">
                     <option value="200">
                     <option value="300">
@@ -590,7 +617,7 @@
 
                 <label for="editModalMateria__codigo" class="modal__label">Código:</label>
                 <input type="text" id="editModalMateria__codigo" name="codigo" class="modal__input">
-<!-- 
+                <!-- 
                 <label for="editModalMateria__nivel" class="modal__label">Nivel:</label>
                 <input type="text" id="editModalMateria__nivel" name="nivel" class="modal__input"> -->
 
@@ -606,82 +633,49 @@
         <form id="docenteForm">
             <input type="hidden" id="docenteID" name="docenteID">
             <div>
-                <label for="agregarNombre">Nombre del Docente:</label>
-                <input type="text" id="agregarNombre" name="nombre">
+                <label for="agregarNombre">Nombre Completo del Docente:</label>
+                <input list="listaDocentes" type="text" id="agregarNombreCompleto" name="nombre">
+                <datalist id="listaDocentes" class="datalist">
+                    <?php echo $docentes; ?>
+
+                </datalist>
+                <!-- <label for="agregarApellido">Apellido</label> -->
+                <!-- <input type="text" id="agregarApellido" name="apellido"> -->
+
             </div>
-            <div>
-                <label for="agregarApellido">Apellido del Docente:</label>
-                <input type="text" id="agregarApellido" class="apellido" name="apellido">
-            </div>
+
+            <label for="turno">Turno:</label>
+            <input list="list-turno" id="turno" name="turno" type="text" placeholder="Selecciona un turno">
+            <datalist id="list-turno" class="datalist">
+                <option value="Mañana">
+                <option value="Tarde">
+                <option value="Noche">
+            </datalist>
+
+            <label for="dia">Dia:</label>
+            <input list="periodo-dia" id="dia" name="dia" type="text" placeholder="Selecciona un turno primero" disabled>
+            <datalist id="periodo-dia" class="datalist">
+                <?php echo $horarios; ?>
+            </datalist>
+
+            <label for="periodo">Periodo Inicio:</label>
+            <input list="inicio-periodo" id="periodoInicio" name="periodoInicio" type="text" placeholder="Selecciona un día primero" disabled>
+            <datalist id="inicio-periodo" class="datalist">
+            </datalist>
+
+            <label for="periodoFin">Periodo Fin:</label>
+            <input list="fin-periodo" id="periodoFin" name="periodoFin" type="text" placeholder="Selecciona un periodo de inicio primero" disabled>
+            <datalist id="fin-periodo" class="datalist">
+            </datalist>
 
             <label for="carrera">Carrera:</label>
             <input list="list-carrera" id="carrera" name="carrera" type="text">
             <datalist id="list-carrera" class="datalist">
-                <option value="Sistemas Informaticos">
-                <option value="Construccion Civil">
-                <option value="Contaduria General">
-                <option value="Mecanica Automotriz">
-                <option value="Electronica">
-                <option value="Quimica Industrial">
-                <option value="Mecanica Industrial">
-                <option value="Electricidad Industrial">
+                <?php echo $options; ?>
             </datalist>
 
-            <!-- <label for="periodo">Periodo:</label>
-            <input list="list-periodo" id="periodo" name="periodo" type="text">
-            <datalist id="list-periodo" class="datalist">
-                <option value="18:30 - 19:10">
-                <option value="19:10 - 19:50">
-                <option value="19:50 - 20:30">
-                <option value="20:30 - 21:10">
-                <option value="21:10 - 21:50">
-                <option value="21:50 - 22:30">
-            </datalist> -->
-
-            <label for="periodoInicio">Periodo Inicio:</label>
-            <input list="inicio-periodo" id="periodoInicio" name="periodoInicio" type="text">
-            <datalist id="inicio-periodo" class="datalist">
-                <option value="1">
-                <option value="2">
-                <option value="3">
-                <option value="4">
-                <option value="5">
-                <option value="6">
-            </datalist>
-
-
-            <label for="dia">Dia:</label>
-            <input list="periodo-dia" id="dia" name="dia" type="text">
-            <datalist id="periodo-dia" class="datalist">
-                <option value="Lunes">
-                <option value="Martes">
-                <option value="Miércoles">
-                <option value="Jueves">
-                <option value="Viernes">
-            </datalist>
-
-
-
-            <div>
-                <label for="materia">Materia:</label>
-                <input list="lista-materias" type="text" id="materia" name="materia">
-                <!-- <input list="lista-materias" type="text" id="materia" name="materia" placeholder="Nombre de la materia" style="width: 250px;"> -->
-                <datalist id="lista-materias">
-                    <?php
-                    if ($materias) {
-                        foreach ($materias as $materia) {
-
-                            echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[Paralelo]</option>";
-                        }
-                    }
-                    ?>
-                </datalist>
-
-
-
-            </div>
             <label for="agregarNivel">Nivel:</label>
-            <input list="periodo-nivel" id="agregarNivel" name="nivel" type="text">
+            <input list="periodo-nivel" id="agregarNivel" class="gestionNivel" name="nivel" type="text" placeholder="Seleccione una carrera" disabled>
             <datalist id="periodo-nivel" class="datalist">
                 <option value="100">
                 <option value="200">
@@ -690,20 +684,41 @@
                 <option value="500">
                 <option value="600">
             </datalist>
+
+            <div>
+                <label for="materia">Materia:</label>
+                <input list="lista-materias" type="text" id="materia" name="materia" disabled placeholder="Seleccione un nivel">
+                <datalist id="lista-materias">
+                </datalist>
+            </div>
+
             <div>
                 <label for="aula">Aula:</label>
                 <input list="lista-aulas" type="text" id="aula" name="aula">
-
-
                 <datalist id="lista-aulas">
-                    <?php
-                    foreach ($aulas as $aula) {
-                        echo "<option value='$aula[Nombre]'>$aula[Nombre]</option>";
-                    }
-                    ?>
+                    <?php echo $filtrar_aulas; ?>
+                </datalist>
+            </div>
+
+                    <label class="opcional">Observaciones de sábados (Opcional)</label>
+            <div>
+                <label for="docentes">Docente</label>
+                <input list="lista-docentes" type="text" id="docentes" name="docenteID">
+                <datalist id="lista-docentes">
+                    <?php echo $docentes; ?>
                 </datalist>
 
+                <label for="carreraID">Carrera</label>
+                <input list="lista-carreras" type="text" id="carreraID" name="carreraID">
+                <datalist id="lista-carreras">
+                    <?php echo $options; ?>
+                </datalist>
 
+                <label for="observacionID">Observacion</label>
+                <input list="lista-obervaciones" type="text" id="observacionID" name="observacionID" placeholder="Ejemplo: Un sábado por mes">
+                <datalist id="lista-obervaciones">
+                    <?php echo $observaciones; ?>
+                </datalist>
             </div>
             <div>
                 <button type="submit" id="btn-submit">Agregar Informacion</button>
@@ -717,6 +732,7 @@
             <div class="busqueda-seccion docente">
                 <h3>Buscar Docente</h3>
                 <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente" required>
+
                 <input type="text" id="buscarApellido" name="buscarApellido" placeholder="Apellido del docente">
             </div>
 

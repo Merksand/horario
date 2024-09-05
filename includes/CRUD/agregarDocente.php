@@ -1,9 +1,10 @@
 <?php
-include('../database.php');
+include '../database.php';
+header('Content-Type: application/json');
+if (empty($_POST["nombre"]) && empty($_POST["apellido"]) && empty($_POST["periodoInicio"]) && empty($_POST["dia"]) && empty($_POST["materia"]) && empty($_POST["nivel"]) && empty($_POST["carrera"]) && empty($_POST["aula"])) {
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $conexion->real_escape_string($_POST['nombre']);
-    $apellido = $conexion->real_escape_string($_POST['apellido']);
+    // $apellido = $conexion->real_escape_string($_POST['apellido']);
     $periodoInicio = $conexion->real_escape_string($_POST['periodoInicio']);
     $dia = $conexion->real_escape_string($_POST['dia']);
     $materia = $conexion->real_escape_string($_POST['materia']);
@@ -57,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo json_encode(['error' => 'Error al insertar docente: ' . $conexion->error]);
     }
 } else {
-    echo json_encode(['error' => 'Método no permitido']);
+    echo json_encode(['error' => 'Rellene todos los datos ']);
 }
 
 $conexion->close();
