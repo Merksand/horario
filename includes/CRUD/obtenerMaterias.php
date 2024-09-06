@@ -7,7 +7,7 @@ if (isset($_GET['carrera']) && isset($_GET['nivel'])) {
 
     // Consulta para obtener las materias relacionadas con la carrera y el nivel seleccionados
     $query = $conexion->prepare("
-        SELECT m.Nombre, m.Nivel, m.Paralelo 
+        SELECT m.MateriaID, m.Nombre, m.Nivel, m.Paralelo 
         FROM materias m
         JOIN carreras c ON m.CarreraID = c.CarreraID
         WHERE c.Nombre = ? AND m.Nivel = ?

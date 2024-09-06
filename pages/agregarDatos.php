@@ -68,6 +68,7 @@
         select {
             margin-bottom: 10px;
         }
+
         .custom-alert {
             position: fixed;
             top: 20px;
@@ -150,7 +151,32 @@
                 </select>
             </div>
 
+
+            <div class="form-group">
+                <h3>Agregar Nuevo Período Académico</h3>
+                <div>
+                    <label for="gestion">Gestión (Año):</label>
+                    <input type="number" id="gestion" name="gestion" min="2024" max="2100">
+                </div>
+                <div>
+                    <label for="semestre">Semestre:</label>
+                    <select id="semestre" name="semestre">
+                        <option value="1">Primer Semestre</option>
+                        <option value="2">Segundo Semestre</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="fecha_inicio">Fecha de Inicio:</label>
+                    <input type="date" id="fecha_inicio" name="fecha_inicio">
+                </div>
+                <div>
+                    <label for="fecha_fin">Fecha de Fin:</label>
+                    <input type="date" id="fecha_fin" name="fecha_fin">
+                </div>
+            </div>
+
             <button type="submit">Agregar</button>
+
         </form>
     </div>
 

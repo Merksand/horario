@@ -1,128 +1,156 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Datos Académicos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .form-group datalist {
-            width: 100%;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
+<?php
+// Conexión a la base de datos
+include_once "../database.php";
 
-    <div class="container">
-        <h2>Agregar Datos Académicos</h2>
+// Verificar que se recibieron los datos
+if (!empty($_POST['docenteID1'] && !empty($_POST['turno']) && !empty($_POST['dia']) && !empty($_POST['periodoInicio']) && !empty($_POST['periodoFin']) && !empty($_POST['carrera']) && !empty($_POST['nivel']) && !empty($_POST['materia']) && !empty($_POST['aula']))) {
 
-        <!-- Formulario para agregar Aula -->
-        <div class="form-group">
-            <label for="aula">Agregar Aula:</label>
-            <input type="text" id="aula" placeholder="Nombre del Aula">
-        </div>
+    // Valores para la tabla DocenteMateria
+    echo $docenteID1 = $_POST['docenteID1'];
+    echo $turno = $_POST['turno'];
+    echo $dia = $_POST['dia'];
+    echo $periodoInicio = $_POST['periodoInicio'];
+    echo $periodoFin = $_POST['periodoFin'];
+    echo $carrera = $_POST['carrera'];
+    echo $nivel = $_POST['nivel'];
+    echo $materia = $_POST['materia'];
+    echo $aula = $_POST['aula'];
 
-        <!-- Formulario para agregar Docente -->
-        <div class="form-group">
-            <label for="docente">Agregar Docente:</label>
-            <input type="text" id="docenteNombre" placeholder="Nombre del Docente">
-            <input type="text" id="docenteApellido" placeholder="Apellido del Docente">
-        </div>
+    // echo $aula = $_POST['docenteID2'];
+    // echo $aula = $_POST['nombre2'];
+    // echo $aula = $_POST['carreraID'];
+    // echo $aula = $_POST['observacionID'];
 
-        <!-- Formulario para agregar Materia -->
-        <div class="form-group">
-            <label for="materia">Agregar Materia:</label>
-            <input type="text" id="materiaNombre" placeholder="Nombre de la Materia">
-            <input type="text" id="materiaCodigo" placeholder="Código de la Materia">
-            <input type="number" id="materiaNivel" placeholder="Nivel de la Materia">
-        </div>
+    // Consulta para insertar en DocenteMateria
+    $sqlDocenteMateria = "INSERT INTO DocenteMateria (docenteID, turno, dia, periodoInicio, periodoFin, carrera, nivel, materia, aula) 
+                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conexion->prepare($sqlDocenteMateria);
+    $stmt->bind_param("issssssss", $docenteID1, $turno, $dia, $periodoInicio, $periodoFin, $carrera, $nivel, $materia, $aula);
 
-        <!-- Formulario para seleccionar Carrera -->
-        <div class="form-group">
-            <label for="carrera">Asignar a Carrera:</label>
-            <input list="carreras" id="carrera" placeholder="Seleccione la Carrera">
-            <datalist id="carreras">
-                <option value="Ingeniería Informática">
-                <option value="Derecho">
-                <option value="Medicina">
-                <option value="Arquitectura">
-            </datalist>
-        </div>
+    if ($stmt->execute()) {
+        echo "Datos insertados correctamente en DocenteMateria";
+    } else {
+        echo "Error al insertar en DocenteMateria: " . $conexion->error;
+    }
 
-        <!-- Formulario para agregar Horario -->
-        <div class="form-group">
-            <label for="dia">Día:</label>
-            <input list="dias" id="dia" placeholder="Seleccione el Día">
-            <datalist id="dias">
-                <option value="Lunes">
-                <option value="Martes">
-                <option value="Miércoles">
-                <option value="Jueves">
-                <option value="Viernes">
-                <option value="Sábado">
-            </datalist>
-        </div>
+    // Valores para la tabla DocenteCarreraObservacion
+    $docenteID2 = $_POST['docenteID2'];
+    $carreraID = $_POST['carreraID'];
 
-        <div class="form-group">
-            <label for="periodo">Periodo:</label>
-            <input type="number" id="periodo" placeholder="Periodo">
-        </div>
+    // Consulta para insertar en DocenteCarreraObservacion
+    $sqlDocenteCarreraObservacion = "INSERT INTO DocenteCarreraObservacion (docenteID, carreraID) 
+                                     VALUES (?, ?)";
+    $stmt2 = $conexion->prepare($sqlDocenteCarreraObservacion);
+    $stmt2->bind_param("ii", $docenteID2, $carreraID);
 
-        <div class="form-group">
-            <label for="horaInicio">Hora de Inicio:</label>
-            <input type="time" id="horaInicio">
-        </div>
+    if ($stmt2->execute()) {
+        echo "Datos insertados correctamente en DocenteCarreraObservacion";
+    } else {
+        echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
+    }
 
-        <div class="form-group">
-            <label for="horaFin">Hora de Fin:</label>
-            <input type="time" id="horaFin">
-        </div>
+    // Cerrar las declaraciones
+    $stmt->close();
+    $stmt2->close();
+} else {
+    echo "Faltan datos requeridos.";
+}
 
-        <button type="submit">Agregar</button>
-    </div>
+// Cerrar la conexión
+$conexion->close();
 
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+/* 
+<?php
+// Conexión a la base de datos
+include_once "../database.php";
+
+// Verificar que se recibieron los datos
+if (!empty($_POST['docenteID1'] && !empty($_POST['turno']) && !empty($_POST['dia']) && !empty($_POST['periodoInicio']) && !empty($_POST['periodoFin']) && !empty($_POST['carrera']) && !empty($_POST['nivel']) && !empty($_POST['materia']) && !empty($_POST['aula']))) {
+
+    // Valores para la tabla DocenteMateria
+    echo $docenteID1 = $_POST['docenteID1'];
+    echo $turno = $_POST['turno'];
+    echo $dia = $_POST['dia'];
+    echo $periodoInicio = $_POST['periodoInicio'];
+    echo $periodoFin = $_POST['periodoFin'];
+    echo $carrera = $_POST['carrera'];
+    echo $nivel = $_POST['nivel'];
+    echo $materia = $_POST['materia'];
+    echo $aula = $_POST['aula'];
+
+
+
+    // Consulta para insertar en DocenteMateria
+    $sqlDocenteMateria = "INSERT INTO DocenteMateria (docenteID, turno, dia, periodoInicio, periodoFin, carrera, nivel, materia, aula) 
+                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conexion->prepare($sqlDocenteMateria);
+    $stmt->bind_param("issssssss", $docenteID1, $turno, $dia, $periodoInicio, $periodoFin, $carrera, $nivel, $materia, $aula);
+
+    if ($stmt->execute()) {
+        echo "Datos insertados correctamente en DocenteMateria";
+    } else {
+        echo "Error al insertar en DocenteMateria: " . $conexion->error;
+    }
+
+    // Valores para la tabla DocenteCarreraObservacion
+    $docenteID2 = $_POST['docenteID2'];
+    $carreraID = $_POST['carreraID'];
+
+    // Consulta para insertar en DocenteCarreraObservacion
+    $sqlDocenteCarreraObservacion = "INSERT INTO DocenteCarreraObservacion (docenteID, carreraID) 
+                                     VALUES (?, ?)";
+    $stmt2 = $conexion->prepare($sqlDocenteCarreraObservacion);
+    $stmt2->bind_param("ii", $docenteID2, $carreraID);
+
+    if ($stmt2->execute()) {
+        echo "Datos insertados correctamente en DocenteCarreraObservacion";
+    } else {
+        echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
+    }
+
+    // Cerrar las declaraciones
+    $stmt->close();
+    $stmt2->close();
+} else if (!empty($_POST['docenteID2'] && !empty($_POST['carreraID']) && !empty($_POST['observacionID']))) {
+    echo $docente = $_POST['docenteID2'];
+    echo $carrera = $_POST['carreraID'];
+    echo $observacion = $_POST['observacionID'];
+
+    // Consulta para insertar en DocenteCarreraObservacion
+    $consultaCarreraID = "SELECT carreraID FROM Carrera WHERE nombre = '$carrera'";
+    $consultaObservacion = "SELECT observacionID FROM Observacion WHERE descripcion = '$observacion'";
+
+    $resCarreraID = $conexion->query($consultaCarreraID);
+    $resObservacion = $conexion->query($consultaObservacion);
+
+    $sqlDocenteCarreraObservacion = "INSERT INTO DocenteCarreraObservacion (docenteID, carreraID, observacionID) 
+                                     VALUES (?, ?, ?)";
+    $stmt2 = $conexion->prepare($sqlDocenteCarreraObservacion);
+    $stmt2->bind_param("iii", $docente, $resCarreraID, $resObservacion);
+    if ($stmt2->execute()) {
+        echo "Datos insertados correctamente en DocenteCarreraObservacion";
+    } else {
+        echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
+    }
+
+} else {
+    echo "Faltan datos requeridos.";
+}
+
+// Cerrar la conexión
+$conexion->close();
+
+
+
+
+
+*/

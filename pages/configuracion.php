@@ -388,11 +388,12 @@
             color: #fff;
             text-align: center;
         }
-        .opcional{
+
+        .opcional {
             text-align: center;
             color: #fff;
             font-weight: bolder;
-            font-size:1.2rem ;
+            font-size: 1.2rem;
             text-transform: uppercase;
         }
 
@@ -617,6 +618,17 @@
 
                 <label for="editModalMateria__codigo" class="modal__label">Código:</label>
                 <input type="text" id="editModalMateria__codigo" name="codigo" class="modal__input">
+
+                <label for="editModalMateria__nivel" class="modal__label">Nivel:</label>
+                <input list="editModalMateria__nivel-lista" type="text" id="editModalMateria__nivel" name="nivel" class="modal__input">
+                <datalist id="editModalMateria__nivel-lista" class="modal__datalist">
+                    <option value="100">
+                    <option value="200">
+                    <option value="300">
+                    <option value="400">
+                    <option value="500">
+                    <option value="600">
+                </datalist>
                 <!-- 
                 <label for="editModalMateria__nivel" class="modal__label">Nivel:</label>
                 <input type="text" id="editModalMateria__nivel" name="nivel" class="modal__input"> -->
@@ -631,17 +643,17 @@
 
         <h2>Gestión de Docentes</h2>
         <form id="docenteForm">
-            <input type="hidden" id="docenteID" name="docenteID">
+            <!-- <input type="hidden" id="docenteID" name="docenteID1"> -->
+            <input type="hidden" id="docenteID1" name="docenteID1">
             <div>
-                <label for="agregarNombre">Nombre Completo del Docente:</label>
-                <input list="listaDocentes" type="text" id="agregarNombreCompleto" name="nombre">
+                <!-- <label for="agregarNombre">Nombre Completo del Docente:</label> -->
+                <!-- <input list="listaDocentes" type="text" id="agregarNombreCompleto" name="nombre"> -->
+                <label for="agregarNombreCompleto">Nombre Completo del Docente 1:</label>
+                <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1">
                 <datalist id="listaDocentes" class="datalist">
                     <?php echo $docentes; ?>
 
                 </datalist>
-                <!-- <label for="agregarApellido">Apellido</label> -->
-                <!-- <input type="text" id="agregarApellido" name="apellido"> -->
-
             </div>
 
             <label for="turno">Turno:</label>
@@ -659,11 +671,13 @@
             </datalist>
 
             <label for="periodo">Periodo Inicio:</label>
+            <input type="hidden" name="periodoInicioID" id="periodoInicioHidden">
             <input list="inicio-periodo" id="periodoInicio" name="periodoInicio" type="text" placeholder="Selecciona un día primero" disabled>
             <datalist id="inicio-periodo" class="datalist">
             </datalist>
 
             <label for="periodoFin">Periodo Fin:</label>
+            <input type="hidden" name="periodoFinID" id="periodoFinHidden">
             <input list="fin-periodo" id="periodoFin" name="periodoFin" type="text" placeholder="Selecciona un periodo de inicio primero" disabled>
             <datalist id="fin-periodo" class="datalist">
             </datalist>
@@ -699,11 +713,17 @@
                     <?php echo $filtrar_aulas; ?>
                 </datalist>
             </div>
+            <label for="observacionID">Observaciónn (OPCIONAL)</label>
+            <input list="lista-obervaciones" type="text" id="observacionID" name="observacion" placeholder="Ejemplo: Un sábado por mes">
+            <datalist id="lista-obervaciones">
+                <?php echo $observaciones; ?>
+            </datalist>
 
-                    <label class="opcional">Observaciones de sábados (Opcional)</label>
+            <!-- <label class="opcional">Observaciones de sábados (Opcional)</label>
             <div>
-                <label for="docentes">Docente</label>
-                <input list="lista-docentes" type="text" id="docentes" name="docenteID">
+                <label for="docentesID">Nombre Completo del Docente 2:</label>
+                <input type="hidden" id="docenteID2" name="docenteID2">
+                <input list="listaDocentes" type="text" id="docentesID" data-datalist="docentes" data-hidden-id="docenteID2" name="nombre2">
                 <datalist id="lista-docentes">
                     <?php echo $docentes; ?>
                 </datalist>
@@ -719,7 +739,7 @@
                 <datalist id="lista-obervaciones">
                     <?php echo $observaciones; ?>
                 </datalist>
-            </div>
+            </div> -->
             <div>
                 <button type="submit" id="btn-submit">Agregar Informacion</button>
             </div>
@@ -731,7 +751,7 @@
         <form id="buscar-form">
             <div class="busqueda-seccion docente">
                 <h3>Buscar Docente</h3>
-                <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente" required>
+                <input type="text" id="buscarNombre" name="buscarNombre" placeholder="Nombre del docente">
 
                 <input type="text" id="buscarApellido" name="buscarApellido" placeholder="Apellido del docente">
             </div>

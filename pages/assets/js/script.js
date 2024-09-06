@@ -584,13 +584,15 @@ function agregarEventos() {
 
                     data.horarios.forEach(horario => {
                         const inicioOption = document.createElement('option');
-                        inicioOption.value = horario.HoraInicio;
+                        inicioOption.value = horario.HoraInicio +" "+ horario.HoraFin;
                         inicioOption.textContent = "Periodo: " + horario.Periodo;
+                        inicioOption.setAttribute("data-horario-id", horario.HorarioID)
                         inicioPeriodo.appendChild(inicioOption);
 
                         const finOption = document.createElement('option');
-                        finOption.value = horario.HoraFin;
+                        finOption.value = horario.HoraInicio +" a "+ horario.HoraFin;;
                         finOption.textContent = "Periodo: " + horario.Periodo;
+                        finOption.setAttribute("data-horario-id", horario.HorarioID)
                         finPeriodo.appendChild(finOption);
                     });
                 })
@@ -613,7 +615,6 @@ function agregarEventos() {
             updateMaterias(selectedCarrera, selectedNivel);
             console.log(selectedCarrera + ' ' + selectedNivel);
         } else if (!inputNivel.value.length > 0) {
-            console.log("mayor a cero");
             inputNivel.placeholder = ''
             inputNivel.disabled = false;
         }
@@ -629,22 +630,34 @@ function agregarEventos() {
 
 
 
-    const inputNombre = document.getElementById('agregarNombreCompleto');
-    const dataList = document.getElementById('listaDocentes');
+   // Seleccionamos todos los inputs que tienen que ver con nombres de docentes
+const inputsNombre = document.querySelectorAll('input[list="listaDocentes"]');
 
-    if (inputNombre) {
-        inputNombre.addEventListener('input', function () {
-            const valorIngresado = inputNombre.value;
+// Añadimos el evento 'input' a cada uno de ellos
+inputsNombre.forEach(input => {
+    input.addEventListener('input', function () {
+        const valorIngresado = this.value;  // Capturamos el valor ingresado en este input
+        const dataList = document.getElementById('listaDocentes');  // Lista de opciones
 
-            const opcionSeleccionada = Array.from(dataList.options).find(option => option.value === valorIngresado);
-            if (opcionSeleccionada) {
-                const docenteID = opcionSeleccionada.getAttribute('data-docente-id');
-                console.log('DocenteID:', docenteID);
-            } else {
-                console.log('No se encontró el DocenteID para el nombre ingresado.');
+        // Buscamos en el datalist la opción que coincida con el valor ingresado
+        const opcionSeleccionada = Array.from(dataList.options).find(option => option.value === valorIngresado);
+
+        if (opcionSeleccionada) {
+            const docenteID = opcionSeleccionada.getAttribute('data-docente-id');  // Obtenemos el ID del docente
+
+            // Buscamos el campo oculto relacionado con este input, basado en el atributo "data-hidden-id"
+            const inputHiddenID = document.getElementById(this.getAttribute('data-hidden-id'));
+
+            if (inputHiddenID) {
+                inputHiddenID.value = docenteID;  // Asignamos el ID del docente al input oculto
+                console.log("Docente ID asignado:", docenteID, "al input oculto", inputHiddenID.id);
             }
-        });
-    }
+        } else {
+            console.log('No se encontró el DocenteID para el nombre ingresado.');
+        }
+    });
+});
+
 
 
     let docenteForm = document.getElementById("docenteForm");
@@ -665,18 +678,14 @@ function agregarEventos() {
             })
                 .then(response => response.text())
                 .then(data => {
-                    console.log("siuuuuuuuuuu", data);
-                    if (data.success) {
-                        alert("DATOS AGREGADOS");
+                    console.log(data);
+                    if (data.includes("Faltan")) {
+                        
                         console.log(data);
-                        form.reset();
-                    }
-                    if (data.error) {
-                        showCustomAlert(data, false);
-                        alert("Error al agregar datos: " + data);
+                        showCustomAlert(data, false)
+                    }else{
                         console.log(data);
                     }
-                    console.log("nooooo");
                 })
                 .catch(error => {
                     alert("Error de conexión: " + error);
@@ -973,12 +982,11 @@ function agregarEventos() {
         fetch(`includes/CRUD/obtenerMaterias.php?carrera=${encodeURIComponent(carrera)}&nivel=${encodeURIComponent(nivel)}`)
             .then(response => response.json())
             .then(data => {
-                console.log("dentro de then");
+                console.log("Prueba: ", data);
                 const materiaDatalist = document.getElementById('editModal__materia');
                 const listaMaterias = document.getElementById("lista-materias")
                 materiaDatalist.innerHTML = '';
                 listaMaterias.innerHTML = ''
-                console.log("Respuesta: ", data);
 
                 if (data.mensaje) {
                     materiaInput.disabled = true;
@@ -986,20 +994,27 @@ function agregarEventos() {
                     document.getElementById("materia").disabled = true
                     document.getElementById("materia").placeholder = data.mensaje;
                 } else {
-                    // console.log(data);
                     data.forEach(materia => {
                         console.log("Materia: ", materia);
                         const option = document.createElement('option');
                         option.value = materia.Nombre;
+                        // option.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
+                            if (materia.Paralelo) {
+                                option.textContent = `(Paralelo: ${materia.Paralelo})`;
+                            } else {
+                                option.textContent = materia.Nombre;
+                            }
+                        
 
-                        if (materia.Paralelo) {
-                            option.textContent = `(Paralelo: ${materia.Paralelo})`;
-                        } else {
-                            option.textContent = materia.Nombre;
+                        if (listaMaterias) {
+                            const optionLista = document.createElement('option');
+                            optionLista.value = materia.Nombre;
+                            optionLista.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
+                            listaMaterias.appendChild(optionLista);
                         }
-
+                        console.log("OPTION: ", option);
+                        console.log(materiaDatalist);
                         materiaDatalist.appendChild(option);
-                        listaMaterias.appendChild(option)
                         // document.getElementById("materia").disabled = false;
                     });
 
@@ -1048,17 +1063,19 @@ function agregarEventos() {
                 event.preventDefault();
                 const nombre = nombreInputMateria.value;
                 const codigo = codigoInput.value;
+                const nivel = nivelInputNivel.value;
 
                 fetch('includes/CRUD/actualizarMateria.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ materiaID, nombre, codigo })
+                    body: JSON.stringify({ materiaID, nombre, nivel })
                 })
                     .then(response => response.json())
                     .then(data => {
                         console.log(data.consulta);
+                        console.log(data);
                         if (data.status === 'success') {
                             showCustomAlert(data.message, true);
                             const row = document.querySelector(`tr[data-materia-id="${materiaID}"]`);
@@ -1073,7 +1090,7 @@ function agregarEventos() {
                                     if (row.querySelector('td:nth-child(2)')) row.querySelector('td:nth-child(2)').textContent = codigo;
                                 }
 
-                                // row.querySelector('td:nth-child(3)').textContent = nivel;
+                                row.querySelector('td:nth-child(3)').textContent = nivel;
                             }
                             editModalMateriaForm.reset();
                             editModalMateria.close();
@@ -1082,7 +1099,7 @@ function agregarEventos() {
                         }
                     })
                     .catch(error => console.error('Error al actualizar la materia:', error));
-            });
+            },{once:true});
         }
     };
     window.eliminarMateria = function (materiaID) {
