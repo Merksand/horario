@@ -108,7 +108,7 @@
             <!-- Formulario para agregar Aula -->
             <div class="form-group">
                 <label for="aula">Agregar Aula:</label>
-                <input type="text" id="aula" name="nombre_aula" placeholder="Nombre del Aula, ejemplo: MA-1">
+                <input type="text" id="aulas" name="nombre_aula" placeholder="Nombre del Aula, ejemplo: MA-1">
             </div>
 
             <!-- Formulario para agregar Docente -->
@@ -121,7 +121,7 @@
             <!-- Formulario para agregar Materia -->
             <div class="form-group materia">
                 <label for="carrera">Asignar Carrera:</label>
-                <select id="carrera" name="carrera_materia">
+                <select id="carreras" name="carrera_materia">
                     <option value="">Seleccione la Carrera</option>
                     <option value="Sistemas Informáticos">Sistemas Informáticos</option>
                     <option value="Construcción Civil">Construcción Civil</option>
@@ -150,7 +150,6 @@
                     <option value="600">600</option>
                 </select>
             </div>
-
 
             <div class="form-group">
                 <h3>Agregar Nuevo Período Académico</h3>

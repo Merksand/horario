@@ -124,6 +124,26 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
         }
     }
 
+    if (isset($_POST["gestion"]) && isset($_POST["semestre"]) && isset($_POST["fecha_inicio"]) && isset($_POST["fecha_fin"]) ) {
+        $gestion = sanitizar($_POST["gestion"]);
+        $semestre = sanitizar($_POST["semestre"]);
+        $fecha_inicio = sanitizar($_POST["fecha_inicio"]);
+        echo "No mames";
+        $fecha_fin = sanitizar($_POST["fecha_fin"]);
+        if (!empty($gestion) && !empty($semestre) && !empty($fecha_inicio) && !empty($fecha_fin)) {
+            $stmt = $conexion->prepare("INSERT INTO GestionSemestre (Gestion, Semestre, FechaInicio, FechaFin) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param('ssss', $gestion, $semestre, $fecha_inicio, $fecha_fin);
+            if ($stmt->execute()) {
+                echo "Gestion agregada con válido";
+            } else {
+                echo "Error al agregar Gestion: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            echo "Faltan datos por rellenarsaas". $stmt;
+        }
+    }
+
 
     // Manejo de errores
 } else {
@@ -135,3 +155,4 @@ if (!empty($errores)) {
     }
 }
 $conexion->close();
+// ! AGREGAR DATOS ACADEMICO

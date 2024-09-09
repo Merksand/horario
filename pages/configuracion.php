@@ -412,12 +412,12 @@
     include '../includes/database.php';
 
 
-    $sql = "SELECT Nombre FROM Carreras";
+    $sql = "SELECT CarreraID,Nombre FROM Carreras";
     $result = $conexion->query($sql);
 
     $options = "";
     while ($row = $result->fetch_assoc()) {
-        $options .= "<option value='{$row['Nombre']}'></option>";
+        $options .= "<option data-carrera-id = '{$row['CarreraID']}' value='{$row['Nombre']}'></option>";
     }
 
 
@@ -444,11 +444,11 @@
 
 
 
-    $queryAulas = "SELECT Nombre FROM Aulas ORDER BY SUBSTRING_INDEX(Nombre, '-', 1),CAST(SUBSTRING_INDEX(Nombre, '-', -1) AS UNSIGNED)";
+    $queryAulas = "SELECT AulaID,Nombre FROM Aulas ORDER BY SUBSTRING_INDEX(Nombre, '-', 1),CAST(SUBSTRING_INDEX(Nombre, '-', -1) AS UNSIGNED)";
     $resultAulas = $conexion->query($queryAulas);
     $filtrar_aulas = "";
     while ($row = $resultAulas->fetch_assoc()) {
-        $filtrar_aulas .= "<option value='{$row['Nombre']}'>";
+        $filtrar_aulas .= "<option data-aula-id = '{$row['AulaID']}' value='{$row['Nombre']}'>";
     }
 
     $queryHorarios = "SELECT DISTINCT Dia FROM Horarios";
@@ -614,7 +614,7 @@
                 <input type="hidden" id="editModalMateria__materiaID" name="materiaID">
 
                 <label for="editModalMateria__nombre" class="modal__label">Nombre:</label>
-                <input type="text" id="editModalMateria__nombre" name="nombre" class="modal__input">
+                <input type="text" id="editModalMateria__nombre" name="nombre" class="modal__input" >
 
                 <label for="editModalMateria__codigo" class="modal__label">Código:</label>
                 <input type="text" id="editModalMateria__codigo" name="codigo" class="modal__input">
@@ -629,9 +629,6 @@
                     <option value="500">
                     <option value="600">
                 </datalist>
-                <!-- 
-                <label for="editModalMateria__nivel" class="modal__label">Nivel:</label>
-                <input type="text" id="editModalMateria__nivel" name="nivel" class="modal__input"> -->
 
                 <menu class="modal__menu">
                     <button type="submit" class="modal__btn modal__btn--submit">Guardar Cambios</button>
@@ -643,12 +640,9 @@
 
         <h2>Gestión de Docentes</h2>
         <form id="docenteForm">
-            <!-- <input type="hidden" id="docenteID" name="docenteID1"> -->
             <input type="hidden" id="docenteID1" name="docenteID1">
             <div>
-                <!-- <label for="agregarNombre">Nombre Completo del Docente:</label> -->
-                <!-- <input list="listaDocentes" type="text" id="agregarNombreCompleto" name="nombre"> -->
-                <label for="agregarNombreCompleto">Nombre Completo del Docente 1:</label>
+                <label for="agregarNombreCompleto">Nombre Completo del Docente:</label>
                 <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1">
                 <datalist id="listaDocentes" class="datalist">
                     <?php echo $docentes; ?>
@@ -683,8 +677,9 @@
             </datalist>
 
             <label for="carrera">Carrera:</label>
-            <input list="list-carrera" id="carrera" name="carrera" type="text">
-            <datalist id="list-carrera" class="datalist">
+            <input type="hidden" name="carreraID" id="carreraHidden">
+            <input list="lista-carrera" id="carrera" name="carrera" type="text">
+            <datalist id="lista-carrera" class="datalist">
                 <?php echo $options; ?>
             </datalist>
 
@@ -701,6 +696,7 @@
 
             <div>
                 <label for="materia">Materia:</label>
+                <input type="hidden" name="materiaID" id="materiaHidden">
                 <input list="lista-materias" type="text" id="materia" name="materia" disabled placeholder="Seleccione un nivel">
                 <datalist id="lista-materias">
                 </datalist>
@@ -708,38 +704,19 @@
 
             <div>
                 <label for="aula">Aula:</label>
+                <input type="hidden" name="aulaID" id="aulaHidden">
                 <input list="lista-aulas" type="text" id="aula" name="aula">
                 <datalist id="lista-aulas">
                     <?php echo $filtrar_aulas; ?>
                 </datalist>
             </div>
             <label for="observacionID">Observaciónn (OPCIONAL)</label>
-            <input list="lista-obervaciones" type="text" id="observacionID" name="observacion" placeholder="Ejemplo: Un sábado por mes">
-            <datalist id="lista-obervaciones">
+            <input type="hidden" name="observacionID" id="observacionHidden">
+            <input list="lista-observaciones" type="text" id="observacion" name="observacion" placeholder="Ejemplo: Un sábado por mes">
+            <datalist id="lista-observaciones">
                 <?php echo $observaciones; ?>
             </datalist>
 
-            <!-- <label class="opcional">Observaciones de sábados (Opcional)</label>
-            <div>
-                <label for="docentesID">Nombre Completo del Docente 2:</label>
-                <input type="hidden" id="docenteID2" name="docenteID2">
-                <input list="listaDocentes" type="text" id="docentesID" data-datalist="docentes" data-hidden-id="docenteID2" name="nombre2">
-                <datalist id="lista-docentes">
-                    <?php echo $docentes; ?>
-                </datalist>
-
-                <label for="carreraID">Carrera</label>
-                <input list="lista-carreras" type="text" id="carreraID" name="carreraID">
-                <datalist id="lista-carreras">
-                    <?php echo $options; ?>
-                </datalist>
-
-                <label for="observacionID">Observacion</label>
-                <input list="lista-obervaciones" type="text" id="observacionID" name="observacionID" placeholder="Ejemplo: Un sábado por mes">
-                <datalist id="lista-obervaciones">
-                    <?php echo $observaciones; ?>
-                </datalist>
-            </div> -->
             <div>
                 <button type="submit" id="btn-submit">Agregar Informacion</button>
             </div>

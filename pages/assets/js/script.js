@@ -477,33 +477,40 @@ function agregarEventos() {
 
 
     function showCustomAlert(message, isSuccess) {
+        // Eliminar cualquier aviso existente antes de mostrar uno nuevo
+        const existingAlert = document.querySelector('.custom-alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+    
         const alertDiv = document.createElement('div');
         alertDiv.className = `custom-alert ${isSuccess ? 'success' : 'error'}`;
-
+    
         const icon = document.createElement('span');
         icon.className = 'custom-alert-icon';
         icon.innerHTML = isSuccess ? '✔' : '✖';
-
+    
         const text = document.createElement('span');
         text.textContent = message;
-
+    
         alertDiv.appendChild(icon);
         alertDiv.appendChild(text);
         document.body.appendChild(alertDiv);
-
+    
         // Animar la entrada
         setTimeout(() => {
             alertDiv.style.opacity = '1';
         }, 10);
-
-        // Animar la salida después de 3 segundos
+    
+        // Ocultar después de un tiempo
         setTimeout(() => {
             alertDiv.style.opacity = '0';
             setTimeout(() => {
                 alertDiv.remove();
             }, 300);
-        }, 5000);
+        }, 4500);
     }
+    
 
     // * CRUD /////////////////////////////////////////////
 
@@ -514,16 +521,22 @@ function agregarEventos() {
     const diaInput = document.getElementById('dia');
     const periodoInicioInput = document.getElementById('periodoInicio');
     const periodoFinInput = document.getElementById('periodoFin');
-
+    const periodoInicioHidden = document.getElementById('periodoInicioHidden');
+    const periodoFinHidden = document.getElementById('periodoFinHidden');
 
     // Habilitar el campo "Día" después de seleccionar un "Turno"
-    if (turnoInput) turnoInput.addEventListener('change', habilitarDia)
-    if (diaInput) diaInput.addEventListener('change', habilitarPeriodoInicio)
-    if (periodoInicioInput) periodoInicioInput.addEventListener('change', habilitarPeriodoFin)
+    if (turnoInput) turnoInput.addEventListener('change', habilitarDia);
+    if (diaInput) diaInput.addEventListener('change', habilitarPeriodoInicio);
+    if (periodoInicioInput) periodoInicioInput.addEventListener('change', habilitarPeriodoFin);
+
     function habilitarDia() {
         if (turnoInput.value) {
             diaInput.disabled = false;
+
             diaInput.placeholder = "Selecciona un día";
+
+
+
         } else {
             diaInput.disabled = true;
             diaInput.placeholder = "Selecciona un turno primero";
@@ -539,6 +552,8 @@ function agregarEventos() {
         if (diaInput.value) {
             periodoInicioInput.disabled = false;
             periodoInicioInput.placeholder = "Selecciona un periodo de inicio";
+            periodoInicioInput.disabled = false;
+            periodoFinInput.disabled = false;
         } else {
             periodoInicioInput.disabled = true;
             periodoInicioInput.placeholder = "Selecciona un día primero";
@@ -558,10 +573,9 @@ function agregarEventos() {
         }
     };
 
-
-
-    let diaEvento = document.getElementById('dia')
+    let diaEvento = document.getElementById('dia');
     if (diaEvento) diaEvento.addEventListener("input", obtenerHorarios);
+
     function obtenerHorarios() {
         const turno = document.getElementById('turno').value;
         const dia = document.getElementById('dia').value;
@@ -584,17 +598,40 @@ function agregarEventos() {
 
                     data.horarios.forEach(horario => {
                         const inicioOption = document.createElement('option');
-                        inicioOption.value = horario.HoraInicio +" "+ horario.HoraFin;
+                        inicioOption.value = horario.HoraInicio + " " + horario.HoraFin;
                         inicioOption.textContent = "Periodo: " + horario.Periodo;
-                        inicioOption.setAttribute("data-horario-id", horario.HorarioID)
+                        inicioOption.setAttribute("data-horario-id", horario.HorarioID);
                         inicioPeriodo.appendChild(inicioOption);
 
                         const finOption = document.createElement('option');
-                        finOption.value = horario.HoraInicio +" a "+ horario.HoraFin;;
+                        finOption.value = horario.HoraInicio + " a " + horario.HoraFin;
                         finOption.textContent = "Periodo: " + horario.Periodo;
-                        finOption.setAttribute("data-horario-id", horario.HorarioID)
+                        finOption.setAttribute("data-horario-id", horario.HorarioID);
                         finPeriodo.appendChild(finOption);
                     });
+
+                    // Actualizar los valores ocultos con los IDs seleccionados
+                    if (periodoInicioInput) {
+                        periodoInicioInput.addEventListener('change', function () {
+                            const selectedOption = inicioPeriodo.querySelector('option[value="' + periodoInicioInput.value + '"]');
+                            if (selectedOption) {
+                                periodoInicioHidden.value = selectedOption.getAttribute('data-horario-id');
+                            } else {
+                                periodoInicioHidden.value = '';
+                            }
+                        });
+                    }
+
+                    if (periodoFinInput) {
+                        periodoFinInput.addEventListener('change', function () {
+                            const selectedOption = finPeriodo.querySelector('option[value="' + periodoFinInput.value + '"]');
+                            if (selectedOption) {
+                                periodoFinHidden.value = selectedOption.getAttribute('data-horario-id');
+                            } else {
+                                periodoFinHidden.value = '';
+                            }
+                        });
+                    }
                 })
                 .catch(error => console.error('Error al cargar horarios:', error));
         }
@@ -630,40 +667,61 @@ function agregarEventos() {
 
 
 
-   // Seleccionamos todos los inputs que tienen que ver con nombres de docentes
-const inputsNombre = document.querySelectorAll('input[list="listaDocentes"]');
+    // Seleccionamos todos los inputs que tienen que ver con nombres de docentes
+    const inputsNombre = document.querySelectorAll('input[list="listaDocentes"]');
 
-// Añadimos el evento 'input' a cada uno de ellos
-inputsNombre.forEach(input => {
-    input.addEventListener('input', function () {
-        const valorIngresado = this.value;  // Capturamos el valor ingresado en este input
-        const dataList = document.getElementById('listaDocentes');  // Lista de opciones
+    // Añadimos el evento 'input' a cada uno de ellos
+    inputsNombre.forEach(input => {
+        input.addEventListener('input', function () {
+            const valorIngresado = this.value;  // Capturamos el valor ingresado en este input
+            const dataList = document.getElementById('listaDocentes');  // Lista de opciones
 
-        // Buscamos en el datalist la opción que coincida con el valor ingresado
-        const opcionSeleccionada = Array.from(dataList.options).find(option => option.value === valorIngresado);
+            // Buscamos en el datalist la opción que coincida con el valor ingresado
+            const opcionSeleccionada = Array.from(dataList.options).find(option => option.value === valorIngresado);
 
-        if (opcionSeleccionada) {
-            const docenteID = opcionSeleccionada.getAttribute('data-docente-id');  // Obtenemos el ID del docente
+            if (opcionSeleccionada) {
+                const docenteID = opcionSeleccionada.getAttribute('data-docente-id');  // Obtenemos el ID del docente
 
-            // Buscamos el campo oculto relacionado con este input, basado en el atributo "data-hidden-id"
-            const inputHiddenID = document.getElementById(this.getAttribute('data-hidden-id'));
+                // Buscamos el campo oculto relacionado con este input, basado en el atributo "data-hidden-id"
+                const inputHiddenID = document.getElementById(this.getAttribute('data-hidden-id'));
 
-            if (inputHiddenID) {
-                inputHiddenID.value = docenteID;  // Asignamos el ID del docente al input oculto
-                console.log("Docente ID asignado:", docenteID, "al input oculto", inputHiddenID.id);
+                if (inputHiddenID) {
+                    inputHiddenID.value = docenteID;  // Asignamos el ID del docente al input oculto
+                    console.log("Docente ID asignado:", docenteID, "al input oculto", inputHiddenID.id);
+                }
+            } else {
+                console.log('No se encontró el DocenteID para el nombre ingresado.');
             }
-        } else {
-            console.log('No se encontró el DocenteID para el nombre ingresado.');
-        }
+        });
     });
-});
+    // ! TODO FALTA SOLUCIONAR ESTE PROBLEMA DE ATRIBUTO MATERIA MATERIAHIDDEN
 
+    // Función para asignar evento y actualizar hidden inputs
+    function asignarEventoInput(inputId, datalistId, hiddenId, datasetAttribute) {
+        let input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('input', function () {
+                let datalist = document.getElementById(datalistId);
+                let option = Array.from(datalist.options).find(opt => opt.value === input.value);
+                let res = document.getElementById(hiddenId).value = option ? option.dataset[datasetAttribute] : '';
 
+            });
+        }
+    }
 
+    asignarEventoInput('materia', 'lista-materias', 'materiaHidden', 'materiaId');
+    asignarEventoInput('aula', 'lista-aulas', 'aulaHidden', 'aulaId');
+    asignarEventoInput('observacion', 'lista-observaciones', 'observacionHidden', 'observacionId');
+    asignarEventoInput('carrera', 'lista-carrera', 'carreraHidden', 'carreraId')
+
+    materiaHidden = document.getElementById("materiaHidden");
+
+    // ! PROBLEMA DE DOCENTEMATERIA DE CREAR EN PAR ID, 
     let docenteForm = document.getElementById("docenteForm");
     if (docenteForm) {
         docenteForm.addEventListener("submit", function (e) {
             e.preventDefault();
+
             const formData = new FormData(docenteForm);
 
 
@@ -679,13 +737,16 @@ inputsNombre.forEach(input => {
                 .then(response => response.text())
                 .then(data => {
                     console.log(data);
-                    if (data.includes("Faltan")) {
+                    if (data.includes("correctamente")) {
                         
-                        console.log(data);
+                        showCustomAlert(data, true)
+                        // docenteForm.reset()
+                    }else if (data.includes("rellena") || data.includes("rango") || data.includes("completa todos los campos")) {
                         showCustomAlert(data, false)
-                    }else{
-                        console.log(data);
+                    }else if(data.includes("Error al insertar")){
+                        showCustomAlert("El registro ya existe", false)
                     }
+
                 })
                 .catch(error => {
                     alert("Error de conexión: " + error);
@@ -696,9 +757,7 @@ inputsNombre.forEach(input => {
     }
 
 
-
     // * ////////////////////////////////////////////////////
-
 
 
     const buscarDocente = document.getElementById("buscarDocente");
@@ -765,7 +824,6 @@ inputsNombre.forEach(input => {
                         return;
                     }
                 } else {
-                    // alert(data.message);
                     showCustomAlert(data.message, false);
                 }
             })
@@ -820,10 +878,6 @@ inputsNombre.forEach(input => {
             editForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const formData = new FormData(editForm);
-                // const nombre = formData.get('nombre');
-                // const apellido = formData.get('apellido');
-                // const dia = formData.get('dia');
-                // const periodoInicio = formData.get('periodoInicio');
                 const carrera = formData.get('carrera');
                 const nivel = formData.get('nivel');
                 const aula = formData.get('aula');
@@ -839,11 +893,6 @@ inputsNombre.forEach(input => {
                             showCustomAlert("Docente editado con éxito", true);
                             const row = document.querySelector(`tr[data-docente-materia-id="${docenteMateriaID}"]`);
                             if (row) {
-                                // if (nombre) row.querySelector('.nombreCompleto').textContent = nombre;
-                                // if (apellido) row.querySelector('.nombre').textContent = apellido;
-                                // if (apellido) row.querySelector('.apellido').textContent = apellido;
-                                // if (dia) row.querySelector('.dia').textContent = dia;
-                                // if (periodoInicio) row.querySelector('.horaInicio').textContent = periodoInicio;
                                 if (carrera) row.querySelector('.nombreCarrera').textContent = carrera;
                                 if (nivel) row.querySelector('.nivel').textContent = nivel;
                                 if (aula) row.querySelector('.aula').textContent = aula;
@@ -995,25 +1044,27 @@ inputsNombre.forEach(input => {
                     document.getElementById("materia").placeholder = data.mensaje;
                 } else {
                     data.forEach(materia => {
-                        console.log("Materia: ", materia);
+                        // console.log("Materia: ", materia);
                         const option = document.createElement('option');
                         option.value = materia.Nombre;
+                        option.setAttribute("data-materia-id", materia.MateriaID)
                         // option.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
-                            if (materia.Paralelo) {
-                                option.textContent = `(Paralelo: ${materia.Paralelo})`;
-                            } else {
-                                option.textContent = materia.Nombre;
-                            }
-                        
+                        if (materia.Paralelo) {
+                            option.textContent = `(Paralelo: ${materia.Paralelo})`;
+                        } else {
+                            option.textContent = materia.Nombre;
+                        }
+
 
                         if (listaMaterias) {
                             const optionLista = document.createElement('option');
                             optionLista.value = materia.Nombre;
                             optionLista.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
+                            optionLista.setAttribute("data-materia-id", materia.MateriaID)
                             listaMaterias.appendChild(optionLista);
                         }
-                        console.log("OPTION: ", option);
-                        console.log(materiaDatalist);
+                        // console.log("OPTION: ", option);
+                        // console.log(materiaDatalist);
                         materiaDatalist.appendChild(option);
                         // document.getElementById("materia").disabled = false;
                     });
@@ -1035,6 +1086,11 @@ inputsNombre.forEach(input => {
                 materiaInput.placeholder = 'Error al cargar materias';
             });
     }
+
+
+
+
+
     // * //////////////////////////////////////////////////
 
     // * EDITAR Y ELIIMINAR MATERIAS ////////////////////////////////////////
@@ -1099,7 +1155,7 @@ inputsNombre.forEach(input => {
                         }
                     })
                     .catch(error => console.error('Error al actualizar la materia:', error));
-            },{once:true});
+            }, { once: true });
         }
     };
     window.eliminarMateria = function (materiaID) {
@@ -1121,7 +1177,8 @@ inputsNombre.forEach(input => {
 
 
 
-
+// TODO 
+// !
 
     // * BARRA AGREGAR NUEVOS DATOS //////////////////////////////////////////////////
     const form = document.getElementById("form-AgregarDatos");
@@ -1135,6 +1192,7 @@ inputsNombre.forEach(input => {
             })
                 .then(response => response.text())
                 .then(data => {
+                    console.log(data);
                     if (data.includes("Error") || data.includes("ya existe") || data.includes("Falta")) {
                         if (data.includes("Faltan datos") || data.includes("Error de validación")) {
                             showCustomAlert("Por favor, complete todos los campos requeridos.", false);

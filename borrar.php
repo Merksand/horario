@@ -1,156 +1,87 @@
 <?php
-// Conexión a la base de datos
-include_once "../database.php";
-
-// Verificar que se recibieron los datos
-if (!empty($_POST['docenteID1'] && !empty($_POST['turno']) && !empty($_POST['dia']) && !empty($_POST['periodoInicio']) && !empty($_POST['periodoFin']) && !empty($_POST['carrera']) && !empty($_POST['nivel']) && !empty($_POST['materia']) && !empty($_POST['aula']))) {
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Valores para la tabla DocenteMateria
-    echo $docenteID1 = $_POST['docenteID1'];
-    echo $turno = $_POST['turno'];
-    echo $dia = $_POST['dia'];
-    echo $periodoInicio = $_POST['periodoInicio'];
-    echo $periodoFin = $_POST['periodoFin'];
-    echo $carrera = $_POST['carrera'];
-    echo $nivel = $_POST['nivel'];
-    echo $materia = $_POST['materia'];
-    echo $aula = $_POST['aula'];
-
-    // echo $aula = $_POST['docenteID2'];
-    // echo $aula = $_POST['nombre2'];
-    // echo $aula = $_POST['carreraID'];
-    // echo $aula = $_POST['observacionID'];
-
-    // Consulta para insertar en DocenteMateria
-    $sqlDocenteMateria = "INSERT INTO DocenteMateria (docenteID, turno, dia, periodoInicio, periodoFin, carrera, nivel, materia, aula) 
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conexion->prepare($sqlDocenteMateria);
-    $stmt->bind_param("issssssss", $docenteID1, $turno, $dia, $periodoInicio, $periodoFin, $carrera, $nivel, $materia, $aula);
-
-    if ($stmt->execute()) {
-        echo "Datos insertados correctamente en DocenteMateria";
-    } else {
-        echo "Error al insertar en DocenteMateria: " . $conexion->error;
+    foreach ($_POST as $campo => $valor) {
+        echo "<p><strong>$campo</strong>: $valor</p>". "\n";
     }
-
-    // Valores para la tabla DocenteCarreraObservacion
-    $docenteID2 = $_POST['docenteID2'];
-    $carreraID = $_POST['carreraID'];
-
-    // Consulta para insertar en DocenteCarreraObservacion
-    $sqlDocenteCarreraObservacion = "INSERT INTO DocenteCarreraObservacion (docenteID, carreraID) 
-                                     VALUES (?, ?)";
-    $stmt2 = $conexion->prepare($sqlDocenteCarreraObservacion);
-    $stmt2->bind_param("ii", $docenteID2, $carreraID);
-
-    if ($stmt2->execute()) {
-        echo "Datos insertados correctamente en DocenteCarreraObservacion";
-    } else {
-        echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
-    }
-
-    // Cerrar las declaraciones
-    $stmt->close();
-    $stmt2->close();
-} else {
-    echo "Faltan datos requeridos.";
 }
 
-// Cerrar la conexión
-$conexion->close();
 
 
+// * BIEN
 
-
-
-
-
-
-
-
-/* 
 <?php
 // Conexión a la base de datos
-include_once "../database.php";
+require_once '../database.php';
 
-// Verificar que se recibieron los datos
-if (!empty($_POST['docenteID1'] && !empty($_POST['turno']) && !empty($_POST['dia']) && !empty($_POST['periodoInicio']) && !empty($_POST['periodoFin']) && !empty($_POST['carrera']) && !empty($_POST['nivel']) && !empty($_POST['materia']) && !empty($_POST['aula']))) {
+// Verificación de si se envió el formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Sanitización de entradas
+    $docenteID1 = filter_input(INPUT_POST, 'docenteID1', FILTER_SANITIZE_NUMBER_INT);
+    $periodoInicioID = filter_input(INPUT_POST, 'periodoInicioID', FILTER_SANITIZE_NUMBER_INT);
+    $periodoFinID = filter_input(INPUT_POST, 'periodoFinID', FILTER_SANITIZE_NUMBER_INT);
+    $materiaID = filter_input(INPUT_POST, 'materiaID', FILTER_SANITIZE_NUMBER_INT);
+    $aulaID = filter_input(INPUT_POST, 'aulaID', FILTER_SANITIZE_NUMBER_INT);
+    $observacionID = filter_input(INPUT_POST, 'observacionID', FILTER_SANITIZE_NUMBER_INT);
+    $carreraID = filter_input(INPUT_POST, 'carreraID', FILTER_SANITIZE_NUMBER_INT); // Captura de CarreraID
 
-    // Valores para la tabla DocenteMateria
-    echo $docenteID1 = $_POST['docenteID1'];
-    echo $turno = $_POST['turno'];
-    echo $dia = $_POST['dia'];
-    echo $periodoInicio = $_POST['periodoInicio'];
-    echo $periodoFin = $_POST['periodoFin'];
-    echo $carrera = $_POST['carrera'];
-    echo $nivel = $_POST['nivel'];
-    echo $materia = $_POST['materia'];
-    echo $aula = $_POST['aula'];
+    // Validación de campos obligatorios para la tabla DocenteMateria
+    if ($docenteID1 && $periodoInicioID && $periodoFinID && $materiaID && $aulaID) {
+        // Obtener el HorarioID (usando periodoInicioID y periodoFinID)
+        $sqlHorario = "SELECT HorarioID FROM Horarios WHERE HorarioID = ?";
+        $stmtHorario = $conexion->prepare($sqlHorario);
+        $stmtHorario->bind_param("i", $periodoInicioID); // Asumiendo que el periodoInicioID coincide con el HorarioID
+        $stmtHorario->execute();
+        $resultadoHorario = $stmtHorario->get_result();
+        $horario = $resultadoHorario->fetch_assoc();
 
+        if ($horario) {
+            $horarioID = $horario['HorarioID'];
 
+            // Insertar en la tabla DocenteMateria
+            $sqlDocenteMateria = "INSERT INTO DocenteMateria (DocenteID, MateriaID, AulaID, HorarioID, GestionSemestreID) 
+                                  VALUES (?, ?, ?, ?, (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1))";
+            $stmtDocenteMateria = $conexion->prepare($sqlDocenteMateria);
+            $stmtDocenteMateria->bind_param("iiii", $docenteID1, $materiaID, $aulaID, $horarioID);
 
-    // Consulta para insertar en DocenteMateria
-    $sqlDocenteMateria = "INSERT INTO DocenteMateria (docenteID, turno, dia, periodoInicio, periodoFin, carrera, nivel, materia, aula) 
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conexion->prepare($sqlDocenteMateria);
-    $stmt->bind_param("issssssss", $docenteID1, $turno, $dia, $periodoInicio, $periodoFin, $carrera, $nivel, $materia, $aula);
-
-    if ($stmt->execute()) {
-        echo "Datos insertados correctamente en DocenteMateria";
+            if ($stmtDocenteMateria->execute()) {
+                echo "Datos insertados correctamente en DocenteMateria.";
+            } else {
+                echo "Error al insertar en DocenteMateria: " . $conexion->error;
+            }
+        } else {
+            echo "No se encontró un horario válido.";
+        }
     } else {
-        echo "Error al insertar en DocenteMateria: " . $conexion->error;
+        echo "Por favor, completa todos los campos obligatorios para la tabla DocenteMateria.";
     }
 
-    // Valores para la tabla DocenteCarreraObservacion
-    $docenteID2 = $_POST['docenteID2'];
-    $carreraID = $_POST['carreraID'];
+    // Verificación de si hay datos para insertar en DocenteCarreraObservacion
+    if ($docenteID1 && $observacionID && $carreraID) {  // Verificación de CarreraID
+        // Verificar si ya existe una observación para este docente y carrera
+        $sqlVerificar = "SELECT * FROM DocenteCarreraObservacion WHERE DocenteID = ? AND ObservacionID = ? AND CarreraID = ?";
+        $stmtVerificar = $conexion->prepare($sqlVerificar);
+        $stmtVerificar->bind_param("iii", $docenteID1, $observacionID, $carreraID);
+        $stmtVerificar->execute();
+        $resultadoVerificar = $stmtVerificar->get_result();
 
-    // Consulta para insertar en DocenteCarreraObservacion
-    $sqlDocenteCarreraObservacion = "INSERT INTO DocenteCarreraObservacion (docenteID, carreraID) 
-                                     VALUES (?, ?)";
-    $stmt2 = $conexion->prepare($sqlDocenteCarreraObservacion);
-    $stmt2->bind_param("ii", $docenteID2, $carreraID);
+        if ($resultadoVerificar->num_rows > 0) {
+            echo "Ya existe una observación para este docente.";
+        } else {
+            // Insertar en la tabla DocenteCarreraObservacion
+            $sqlObservacion = "INSERT INTO DocenteCarreraObservacion (DocenteID, ObservacionID, CarreraID) 
+                               VALUES (?, ?, ?)";
+            $stmtObservacion = $conexion->prepare($sqlObservacion);
+            $stmtObservacion->bind_param("iii", $docenteID1, $observacionID, $carreraID);
 
-    if ($stmt2->execute()) {
-        echo "Datos insertados correctamente en DocenteCarreraObservacion";
+            if ($stmtObservacion->execute()) {
+                echo "Datos insertados correctamente en DocenteCarreraObservacion.";
+            } else {
+                echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
+            }
+        }
     } else {
-        echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
+        echo "Faltan datos para insertar en la tabla DocenteCarreraObservacion. OBser: $observacionID Carrera: $carreraID docen: $docenteID1";
     }
-
-    // Cerrar las declaraciones
-    $stmt->close();
-    $stmt2->close();
-} else if (!empty($_POST['docenteID2'] && !empty($_POST['carreraID']) && !empty($_POST['observacionID']))) {
-    echo $docente = $_POST['docenteID2'];
-    echo $carrera = $_POST['carreraID'];
-    echo $observacion = $_POST['observacionID'];
-
-    // Consulta para insertar en DocenteCarreraObservacion
-    $consultaCarreraID = "SELECT carreraID FROM Carrera WHERE nombre = '$carrera'";
-    $consultaObservacion = "SELECT observacionID FROM Observacion WHERE descripcion = '$observacion'";
-
-    $resCarreraID = $conexion->query($consultaCarreraID);
-    $resObservacion = $conexion->query($consultaObservacion);
-
-    $sqlDocenteCarreraObservacion = "INSERT INTO DocenteCarreraObservacion (docenteID, carreraID, observacionID) 
-                                     VALUES (?, ?, ?)";
-    $stmt2 = $conexion->prepare($sqlDocenteCarreraObservacion);
-    $stmt2->bind_param("iii", $docente, $resCarreraID, $resObservacion);
-    if ($stmt2->execute()) {
-        echo "Datos insertados correctamente en DocenteCarreraObservacion";
-    } else {
-        echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
-    }
-
-} else {
-    echo "Faltan datos requeridos.";
 }
-
-// Cerrar la conexión
-$conexion->close();
-
-
-
-
-
-*/
+?>
