@@ -715,6 +715,10 @@ ion-icon[name='receipt']{
   /* background: none; */
 }
 
+
+.pdfAula,.pdfAulaSemana{
+  margin-left: 15px;
+}
 /*------------------> Responsive*/
 @media (max-height: 660px) {
   .barra-lateral .nombre-pagina {

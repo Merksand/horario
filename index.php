@@ -8,6 +8,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +17,7 @@ if (!isset($_SESSION['usuario_id'])) {
     <link rel="icon" href="img/logo-tran.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
     <div class="menu">
         <ion-icon name="menu-outline"></ion-icon>
@@ -73,6 +75,12 @@ if (!isset($_SESSION['usuario_id'])) {
                         <span>Reportes</span>
                     </a>
                 </li>
+                <li onclick="cargarContenido('pages/generarReportes.php')">
+                    <a class="inbox" href="#">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                        <span>Generar Reportes</span>
+                    </a>
+                </li>
                 <li onclick="cargarContenido('pages/configuracion.php')">
                     <a class="inbox" href="#">
                         <ion-icon name="settings-outline"></ion-icon>
@@ -83,6 +91,12 @@ if (!isset($_SESSION['usuario_id'])) {
                     <a class="inbox" href="#">
                         <ion-icon name="add-circle-outline"></ion-icon>
                         <span>Agregar nuevos datos</span>
+                    </a>
+                </li>
+                <li onclick="cargarContenido('pages/copiarDatos.php')">
+                    <a class="inbox" href="#">
+                        <ion-icon name="add-circle-outline"></ion-icon>
+                        <span>Copiar Datos De Carrera</span>
                     </a>
                 </li>
                 <li>
@@ -115,11 +129,11 @@ if (!isset($_SESSION['usuario_id'])) {
                 <div class="info-usuario">
                     <div class="nombre-apellido">
                         <span class="nombre">
-                        <?php echo $_SESSION['nombre'] ; ?>
-                        
+                            <?php echo $_SESSION['nombre']; ?>
+
                         </span>
                         <span class="apellido">
-                        <?php echo $_SESSION['apellido'] ; ?>
+                            <?php echo $_SESSION['apellido']; ?>
                         </span>
                     </div>
                     <!-- <ion-icon name="ellipsis-vertical-outline"></ion-icon> -->

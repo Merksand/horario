@@ -22,15 +22,17 @@ if (isset($_GET['aula'])) {
                     INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
                     INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
-                    INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID";
+                    INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
+                    INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
+                    WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
 
-    if ($aula !== 'Todas') {
-        $consulta .= " WHERE Aulas.Nombre ='$aula'";
+    if ($aula) {
+        $consulta .= " AND Aulas.Nombre ='$aula'";
 
         if (!empty($turno) && $turno !== 'Todas') {
-            $consulta .= " AND Horarios.Turno = '$turno'" ;
+            $consulta .= " AND Horarios.Turno = '$turno'";
         }
-        
+
         if (!empty($_GET['fecha'])) {
             $consulta .= " AND  CASE DAYOFWEEK('$fecha')
             WHEN 1 THEN 'Domingo'

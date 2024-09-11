@@ -51,7 +51,7 @@
             <input type="date" id="fecha" style="width: 150px;" name="fecha">
             <input type="submit" value="Filtrar" id="filtrar-horarios" name="filtrar-horario">
         </div>
-        <button class="iconoPdf" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
+        <button class="iconoPdf pdfReportes" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
 
     </div>
 

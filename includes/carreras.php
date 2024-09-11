@@ -23,16 +23,17 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
                     INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
                     INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
-                    INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID";
+                    INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
+                    INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID";
     /* WHERE Carreras.Nombre = '$carrera'"; */
 
 
     if ($carrera !== "Todas" && $nivel !== "Todas") {
-        $consulta .= " WHERE Carreras.Nombre = '$carrera' AND Materias.Nivel = $nivel";
+        $consulta .= " WHERE Carreras.Nombre = '$carrera' AND Materias.Nivel = $nivel AND GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
     } else if ($carrera !== "Todas" && $nivel == "Todas") {
-        $consulta .= " WHERE Carreras.Nombre = '$carrera'";
+        $consulta .= " WHERE Carreras.Nombre = '$carrera' AND GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
     } elseif ($carrera == "Todas" && $nivel !== "Todas") {
-        $consulta .= " WHERE Materias.Nivel = '$nivel'";
+        $consulta .= " WHERE Materias.Nivel = '$nivel' AND GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
     } else if (empty($carrera)) {
         echo "No seleccionó ninguna carrera";
     }

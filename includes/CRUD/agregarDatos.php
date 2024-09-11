@@ -7,7 +7,7 @@ function sanitizar($dato)
 {
     return htmlspecialchars(trim($dato));
 }
-if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !empty($_POST['nombre_aula']) || !empty($_POST['nombre_materia']) || !empty($_POST['codigo_materia'])) {
+if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !empty($_POST['nombre_aula']) || !empty($_POST['nombre_materia']) || !empty($_POST['codigo_materia']) || !empty($_POST["fecha_inicio"]) || !empty($_POST["gestion"])) {
     $errores = [];
 
     // Validar y agregar Aula
@@ -124,30 +124,42 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
         }
     }
 
-    if (isset($_POST["gestion"]) && isset($_POST["semestre"]) && isset($_POST["fecha_inicio"]) && isset($_POST["fecha_fin"]) ) {
-        $gestion = sanitizar($_POST["gestion"]);
-        $semestre = sanitizar($_POST["semestre"]);
-        $fecha_inicio = sanitizar($_POST["fecha_inicio"]);
-        echo "No mames";
-        $fecha_fin = sanitizar($_POST["fecha_fin"]);
-        if (!empty($gestion) && !empty($semestre) && !empty($fecha_inicio) && !empty($fecha_fin)) {
-            $stmt = $conexion->prepare("INSERT INTO GestionSemestre (Gestion, Semestre, FechaInicio, FechaFin) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param('ssss', $gestion, $semestre, $fecha_inicio, $fecha_fin);
-            if ($stmt->execute()) {
-                echo "Gestion agregada con válido";
+    if (isset($_POST["gestion"]) && isset($_POST["semestre"])) {
+        // Validar que los campos requeridos no estén vacíos
+        if (!empty($_POST["gestion"]) && !empty($_POST["semestre"]) && !empty($_POST["fecha_inicio"]) && !empty($_POST["fecha_fin"])) {
+            $gestion = sanitizar($_POST["gestion"]);
+            $semestre = sanitizar($_POST["semestre"]);
+            $fecha_inicio = sanitizar($_POST["fecha_inicio"]);
+            $fecha_fin = sanitizar($_POST["fecha_fin"]);
+    
+            // Extraer los años de las fechas
+            $year_gestion = (int)$gestion;
+            $year_inicio = (int)date('Y', strtotime($fecha_inicio));
+            $year_fin = (int)date('Y', strtotime($fecha_fin));
+    
+            // Validar que los años coincidan
+            if ($year_gestion === $year_inicio && $year_gestion === $year_fin) {
+                // Preparar y ejecutar la consulta SQL
+                $stmt = $conexion->prepare("INSERT INTO GestionSemestre (Gestion, Semestre, FechaInicio, FechaFin) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param('ssss', $gestion, $semestre, $fecha_inicio, $fecha_fin);
+    
+                if ($stmt->execute()) {
+                    echo "Gestión agregada correctamente";
+                } else {
+                    echo "Error al agregar Gestión: " . $stmt->error;
+                }
+                $stmt->close();
             } else {
-                echo "Error al agregar Gestion: " . $stmt->error;
+                echo "El año de gestión debe coincidir con las fechas de inicio y fin.";
             }
-            $stmt->close();
-        } else {
-            echo "Faltan datos por rellenarsaas". $stmt;
         }
     }
+    
 
 
     // Manejo de errores
 } else {
-    echo "Faltan datos por rellenara";
+    echo "Faltan datos por rellenar";
 }
 if (!empty($errores)) {
     foreach ($errores as $error) {

@@ -25,8 +25,8 @@
             <span class="bloquesFiltro">
                 <label for="filtrar-aula">Aula:</label>
                 <select class="filtrarAula" style="width: 250px;" name="filtrar-aula">
-                    <option value=""></option>
-                    <option value="Todas">Todas</option>
+                    <option value="">Seleccione un aula</option>
+                    <!-- <option value="Todas">Todas</option> -->
                     <?php echo $filtrar_carrera; ?>
                 </select>
             </span>
@@ -43,6 +43,9 @@
                 <input type="date" id="fecha" style="width: 150px;" name="fecha">
             </span>
             <input type="submit" value="Semana completa" id="filtrar-aula" name="filtrar-aula">
+
+            <button class="iconoPdf pdfAula" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
+            <button class="iconoPdf pdfAulaSemana" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
 
 
             <!-- <select id="filtrar-aula" class="filtrarAula" style="width: 250px;" name="filtrar-carrera">

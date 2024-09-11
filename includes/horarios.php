@@ -10,6 +10,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
 
     $consulta = "
         SELECT
+            GestionSemestre.GestionSemestreID AS GestionSemestreID,
             Docentes.Nombre AS NombreDocente,
             Docentes.Apellido AS ApellidoDocente,
             Materias.Nombre AS NombreMateria,
@@ -28,7 +29,9 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
             INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
             INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
             INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
+            INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
         WHERE
+            GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1) AND
             CASE DAYOFWEEK('$fecha')
                 WHEN 1 THEN 'Domingo'
                 WHEN 2 THEN 'Lunes'
@@ -45,19 +48,19 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
     if ($carrera !== "Todas") {
         $consulta .= " AND Carreras.Nombre = '$carrera'";
     }
-    if($turno !== "Todas"){
+    if ($turno !== "Todas") {
         $consulta .= " AND Horarios.Turno = '$turno'";
     }
 
     if ($iconoFlecha === 'Nombre') {
         // $consulta .= " ORDER BY Horarios.Dia ASC,NombreMateria ASC,NombreDocente,NivelMateria"; 
-        $consulta .= " ORDER BY NombreDocente ASC,HoraInicio,NivelMateria,NombreMateria ASC,NombreDocente,NivelMateria"; 
-        
+        $consulta .= " ORDER BY NombreDocente ASC,HoraInicio,NivelMateria,NombreMateria ASC,NombreDocente,NivelMateria";
+
         // $consulta .= " ORDER BY Horarios.Dia, Horarios.HoraInicio";
-        
+
     } else {
         // $consulta .= " ORDER BY Horarios.HoraInicio, Horarios.HoraFin"; 
-        $consulta .= " ORDER BY Horarios.HoraInicio ASC, Horarios.HoraFin ASC;"; 
+        $consulta .= " ORDER BY Horarios.HoraInicio ASC, Horarios.HoraFin ASC;";
     }
 
     $resultado = $conexion->query($consulta);
@@ -65,7 +68,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
         while ($fila = $resultado->fetch_assoc()) {
             echo "<div class='fila-profesor'>";
             echo "<span class='spanDatos textCenter'>" . $fila['Dia'] . "</span>";
-            echo "<span class='spanDatos textCenter'>"."P" . $fila['periodo'] ." : " . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
+            echo "<span class='spanDatos textCenter'>" . "P" . $fila['periodo'] . " : " . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos '>" . $fila['NombreMateria'] . "</span>";
             echo "<span class='spanDatos textCenter'>" . $fila['NivelMateria'] . " " . $fila['ParaleloMateria'] . "</span>";

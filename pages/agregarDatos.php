@@ -160,6 +160,7 @@
                 <div>
                     <label for="semestre">Semestre:</label>
                     <select id="semestre" name="semestre">
+                        <option value="">Seleccione un semestre</option>
                         <option value="1">Primer Semestre</option>
                         <option value="2">Segundo Semestre</option>
                     </select>

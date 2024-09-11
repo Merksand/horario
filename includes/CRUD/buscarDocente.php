@@ -48,6 +48,7 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
     } else if (!empty($nombre) || !empty($apellido)) {
         // Consulta para Docentes
         $consulta = "SELECT
+                        GestionSemestre.GestionSemestreID AS GestionSemestreID,
                         DocenteMateria.DocenteMateriaID as DocenteMateriaID,    
                         Docentes.DocenteID AS id,
                         Docentes.Nombre AS nombre,
@@ -67,7 +68,8 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                         INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
                         INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                         INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
-                        INNER JOIN Horarios ON Horarios.HorarioID = DocenteMateria.HorarioID";
+                        INNER JOIN Horarios ON Horarios.HorarioID = DocenteMateria.HorarioID
+                        INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID";
 
         // Aplicación de filtros
         $filtros = [];
@@ -81,6 +83,8 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
         if (!empty($filtros)) {
             $consulta .= ' WHERE ' . implode(' AND ', $filtros);
         }
+
+        $consulta .= ' AND GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)';
         $consulta .= ' ORDER BY Horarios.HorarioID, horaInicio';
 
         $resultado = $conexion->query($consulta);

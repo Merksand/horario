@@ -25,10 +25,11 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
                     INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
-                WHERE ";
+                    INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
+                WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1) ";
 
     if (!empty($nombre) && !empty($apellido)) {
-        $consulta .= " Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
+        $consulta .= " AND Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
         if (!empty($fecha)) {
             $consulta .= " AND  CASE DAYOFWEEK('$fecha')
                 WHEN 1 THEN 'Domingo'
@@ -41,7 +42,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             END = Horarios.Dia ";
         }
     } elseif (!empty($apellido)) {
-        $consulta .= " Docentes.Apellido LIKE '%$apellido%'";
+        $consulta .= " AND Docentes.Apellido LIKE '%$apellido%'";
         if (!empty($fecha)) {
             $consulta .= " AND  CASE DAYOFWEEK('$fecha')
                 WHEN 1 THEN 'Domingo'
@@ -54,7 +55,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             END = Horarios.Dia ";
         }
     } elseif (!empty($nombre)) {
-        $consulta .= " Docentes.Nombre LIKE '%$nombre%'";
+        $consulta .= " AND Docentes.Nombre LIKE '%$nombre%'";
         if (!empty($fecha)) {
             $consulta .= " AND  CASE DAYOFWEEK('$fecha')
                 WHEN 1 THEN 'Domingo'

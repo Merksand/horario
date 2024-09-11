@@ -395,10 +395,10 @@ function agregarEventos() {
 
 
 
-    const botonReporte = document.querySelector(".iconoPdf");
+    const reporteHorarios = document.querySelector(".pdfReportes");
 
-    if (botonReporte) {
-        botonReporte.addEventListener("click", () => {
+    if (reporteHorarios) {
+        reporteHorarios.addEventListener("click", () => {
             const carreraSeleccionada = document.getElementById("filtrar-carrera").value;
             const nivelSeleccionado = document.getElementById("filtrar-nivel").value;
             const turnoSeleccionado = document.getElementById("filtrar-turno").value;
@@ -415,10 +415,65 @@ function agregarEventos() {
             // Redirigir a la página que generará el PDF
             // window.location.href = `../../../includes/Report/horarios.php?${params.toString()}`;
 
-            const url = `../../../includes/Report/horarios.php?${params.toString()}`;
+            const url = `../../../includes/Report/report_Horarios.php?${params.toString()}`;
             window.open(url, '_blank');
         });
     }
+
+
+    const reporteAula = document.querySelector(".pdfAula");
+
+    if (reporteAula) {
+        reporteAula.addEventListener("click", () => {
+            const aulaSeleccionada = document.querySelector(".filtrarAula").value;
+            const turnoSeleccionado = document.getElementById("filtrar-turno-evento").value;
+            const fechaSeleccionada = document.getElementById("fecha").value;
+
+            if (aulaSeleccionada) {
+
+                // Crear un objeto URLSearchParams para los parámetros de la URL
+                const params = new URLSearchParams({
+                    aula: aulaSeleccionada,
+                    fecha: fechaSeleccionada,
+                    turno: turnoSeleccionado
+                });
+
+                // Redirigir a la página que generará el PDF
+                // window.location.href = `../../../includes/Report/horarios.php?${params.toString()}`;
+
+                const url = `../../../includes/Report/report_Aula.php?${params.toString()}`;
+                window.open(url, '_blank');
+            }
+        });
+    }
+
+
+    const reporteAulaSemana = document.querySelector(".pdfAulaSemana");
+
+    if (reporteAulaSemana) {
+        reporteAulaSemana.addEventListener("click", () => {
+            const aulaSeleccionada = document.querySelector(".filtrarAula").value;
+            const turnoSeleccionado = document.getElementById("filtrar-turno-evento").value;
+            const fechaSeleccionada = document.getElementById("fecha").value;
+
+            if (aulaSeleccionada) {
+
+                // Crear un objeto URLSearchParams para los parámetros de la URL
+                const params = new URLSearchParams({
+                    aula: aulaSeleccionada,
+                    fecha: fechaSeleccionada,
+                    turno: turnoSeleccionado
+                });
+
+                // Redirigir a la página que generará el PDF
+                // window.location.href = `../../../includes/Report/horarios.php?${params.toString()}`;
+
+                const url = `../../../includes/Report/report_Aula-Semana.php?${params.toString()}`;
+                window.open(url, '_blank');
+            }
+        });
+    }
+
 
 
     let iconoFlecha = document.querySelector(".iconoFlecha");
@@ -482,26 +537,26 @@ function agregarEventos() {
         if (existingAlert) {
             existingAlert.remove();
         }
-    
+
         const alertDiv = document.createElement('div');
         alertDiv.className = `custom-alert ${isSuccess ? 'success' : 'error'}`;
-    
+
         const icon = document.createElement('span');
         icon.className = 'custom-alert-icon';
         icon.innerHTML = isSuccess ? '✔' : '✖';
-    
+
         const text = document.createElement('span');
         text.textContent = message;
-    
+
         alertDiv.appendChild(icon);
         alertDiv.appendChild(text);
         document.body.appendChild(alertDiv);
-    
+
         // Animar la entrada
         setTimeout(() => {
             alertDiv.style.opacity = '1';
         }, 10);
-    
+
         // Ocultar después de un tiempo
         setTimeout(() => {
             alertDiv.style.opacity = '0';
@@ -510,7 +565,7 @@ function agregarEventos() {
             }, 300);
         }, 4500);
     }
-    
+
 
     // * CRUD /////////////////////////////////////////////
 
@@ -716,7 +771,7 @@ function agregarEventos() {
 
     materiaHidden = document.getElementById("materiaHidden");
 
-    // ! PROBLEMA DE DOCENTEMATERIA DE CREAR EN PAR ID, 
+
     let docenteForm = document.getElementById("docenteForm");
     if (docenteForm) {
         docenteForm.addEventListener("submit", function (e) {
@@ -738,18 +793,18 @@ function agregarEventos() {
                 .then(data => {
                     console.log(data);
                     if (data.includes("correctamente")) {
-                        
+
                         showCustomAlert(data, true)
                         // docenteForm.reset()
-                    }else if (data.includes("rellena") || data.includes("rango") || data.includes("completa todos los campos")) {
+                    } else if (data.includes("rellena") || data.includes("rango") || data.includes("completa todos los campos")) {
                         showCustomAlert(data, false)
-                    }else if(data.includes("Error al insertar")){
+                    } else if (data.includes("Error al insertar")) {
                         showCustomAlert("El registro ya existe", false)
                     }
 
                 })
                 .catch(error => {
-                    alert("Error de conexión: " + error);
+                    showCustomAlert("Error de conexión: " + error);
                     console.log(error);
                 });
 
@@ -1177,8 +1232,8 @@ function agregarEventos() {
 
 
 
-// TODO 
-// !
+    // TODO 
+    // !
 
     // * BARRA AGREGAR NUEVOS DATOS //////////////////////////////////////////////////
     const form = document.getElementById("form-AgregarDatos");
@@ -1192,27 +1247,89 @@ function agregarEventos() {
             })
                 .then(response => response.text())
                 .then(data => {
-                    console.log(data);
-                    if (data.includes("Error") || data.includes("ya existe") || data.includes("Falta")) {
+                    console.log("Dato arrojado: " + data);
+
+                    // Verifica si hay errores o mensajes relevantes
+                    if (data.includes("Error") || data.includes("ya existe") || data.includes("Falta") || data.includes("gestión")) {
                         if (data.includes("Faltan datos") || data.includes("Error de validación")) {
+                            // Caso: Campos incompletos o validación fallida
                             showCustomAlert("Por favor, complete todos los campos requeridos.", false);
                         } else if (data.includes("ya existe")) {
+                            // Caso: El dato ya existe
                             showCustomAlert("Ya existe el dato ingresado.", false);
+                        } else if (data.includes("Error al agregar Gestión")) {
+                            // Caso: Error específico al agregar la gestión
+                            showCustomAlert("Error al agregar la Gestión Académica.", false);
+                        } else if (data.includes("gestión")) {
+                            // Caso: Exito o fallo en la gestión académica
+                            if (data.includes("correctamente")) {
+                                showCustomAlert("Gestión académica agregada correctamente.", true);
+                            } else if (data.includes("coincidir")) {
+                                showCustomAlert(data, false);
+                            }
+                            else {
+                                showCustomAlert("Error en la gestión académica: " + data, false);
+                            }
                         } else {
+                            // Otros errores genéricos
                             showCustomAlert("Error al agregar dato: " + data, false);
                         }
                     } else {
+                        // Si no hay errores, los datos se agregaron correctamente
                         console.log("form Docente agregar: ", data);
-                        showCustomAlert("DATOS AGREGADOS", true);
+                        showCustomAlert("Datos agregados con éxito.", true);
                         console.log(data);
-                        form.reset();
+                        form.reset();  // Reiniciar el formulario
                     }
-                    console.log("Dato arrojado: " + data);
                 })
                 .catch(error => console.error('Error:', error));
         })
     }
+    let formCopiar = document.getElementById('form-CopiarDatos');
+    if (formCopiar) {
+        formCopiar.addEventListener('submit', function (e) {
+            e.preventDefault();
 
+            const carrera_copiar = document.getElementById('carrera_copiar').value;
+            const gestion_copiar = document.getElementById('gestion_copiar').value;
+            const nueva_gestion = document.getElementById('nueva_gestion').value;
+
+            // Verificar que todos los campos estén completos antes de enviar el formulario
+            if (carrera_copiar === "" || gestion_copiar === "" || nueva_gestion === "") {
+                showCustomAlert("Por favor, complete todos los campos antes de continuar.", false);
+                return;
+            }
+
+            // Crear el cuerpo de la petición
+            const formData = new FormData();
+            formData.append('carrera_copiar', carrera_copiar);
+            formData.append('gestion_copiar', gestion_copiar);
+            formData.append('nueva_gestion', nueva_gestion);
+
+            // Enviar los datos a través de fetch
+            fetch('includes/copiar_datos.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log("Respuesta del servidor: " + data);
+                    if (data.includes("correctamente")) {
+                        showCustomAlert("Datos copiados correctamente.", true);
+                    } else if (data.includes("mismo que la gestión")) {
+                        showCustomAlert("La nueva gestión no puede ser la misma que la gestión a copiar.", false);
+                    } else if (data.includes("Error")) {
+                        showCustomAlert("Hubo un error al copiar los datos.", false);
+                    } else {
+                        showCustomAlert("Por favor, complete todos los campos.", false);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showCustomAlert("Error al intentar copiar los datos.", false);
+                });
+        });
+    }
 
 
     // * ////////////////////////////////////////////////

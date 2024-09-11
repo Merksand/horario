@@ -24,7 +24,9 @@ if (isset($_GET['materia'])) {
                     INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
-                WHERE Materias.Nombre LIKE '%$materia%'";
+                    INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
+                WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1) AND
+                Materias.Nombre LIKE '%$materia%'";
 
     if (!empty($_GET['fecha'])) {
         $consulta .= " AND  CASE DAYOFWEEK('$fecha')

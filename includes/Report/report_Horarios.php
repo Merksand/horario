@@ -11,6 +11,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) && isset($_GET['nivel']) &&
 
     $consulta = "
         SELECT
+            GestionSemestre.GestionSemestreID AS GestionSemestreID,
             Docentes.Nombre AS NombreDocente,
             Docentes.Apellido AS ApellidoDocente,
             Materias.Codigo AS CodigoMateria,
@@ -30,7 +31,9 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) && isset($_GET['nivel']) &&
             INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
             INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
             INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
+            INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
         WHERE
+            GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1) AND
             CASE DAYOFWEEK('$fecha')
                 WHEN 1 THEN 'Domingo'
                 WHEN 2 THEN 'Lunes'
@@ -132,7 +135,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) && isset($_GET['nivel']) &&
     }
 
     $pdf = new PDF();
-    $pdf->AddPage("H");
+    $pdf->AddPage("V");
     $pdf->AliasNbPages();
 
     $pdf->SetFont('Arial', '', 10);
