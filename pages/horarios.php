@@ -50,9 +50,9 @@
             <label for="fecha">Fecha:</label>
             <input type="date" id="fecha" style="width: 150px;" name="fecha">
             <input type="submit" value="Filtrar" id="filtrar-horarios" name="filtrar-horario">
+            <button class="iconoPdf pdfReportes" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
         </div>
-        <button class="iconoPdf pdfReportes" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
-
+        
     </div>
 
     <div class="seccionFiltrosHorarios pilares">

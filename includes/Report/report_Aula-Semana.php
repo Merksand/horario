@@ -50,7 +50,7 @@ if (isset($_GET['aula'])) {
             global $aula;
             $this->Image('../../img/logo-tran.png', 10, 5, 25);
             $this->SetFont('Arial', 'B', 10);
-            date_default_timezone_set("America/New_York");
+            date_default_timezone_set("America/La_Paz");
             $dias_espanol = array(
                 'Sunday' => 'Domingo',
                 'Monday' => 'Lunes',
@@ -133,7 +133,7 @@ if (isset($_GET['aula'])) {
         }
     }
 
-    $pdf->Output('Prueba.pdf', 'I'); // nombre del archivo, modo de salida
+    $pdf->Output('Reporte.pdf', 'I'); // nombre del archivo, modo de salida
 } else {
     echo "Faltan parámetros en la solicitud.";
 }

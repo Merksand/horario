@@ -703,10 +703,12 @@ ion-icon[name='receipt']{
   font-size: 1.4rem;
 }
 .data-item,
-.stat-card,.busqueda-seccion {
+.stat-card,.busqueda-seccion,.lista-materias,.container__reportes,#form-CopiarDatos,.container {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
+
+
 .textCenter{
   /* text-align: center; */
 }
@@ -716,7 +718,7 @@ ion-icon[name='receipt']{
 }
 
 
-.pdfAula,.pdfAulaSemana{
+.iconoPdf{
   margin-left: 15px;
 }
 /*------------------> Responsive*/

@@ -9,9 +9,7 @@
 
 <body>
     <style>
-        /* Estilos para el formulario de copiar datos */
         #form-CopiarDatos {
-            background-color: #f9f9f9;
             border: 1px solid #ddd;
             padding: 20px;
             border-radius: 8px;
@@ -25,7 +23,6 @@
             text-align: center;
             margin-bottom: 20px;
             font-size: 24px;
-            color: #333;
         }
 
         /* Estilo para los grupos de formulario */
@@ -36,7 +33,6 @@
         #form-CopiarDatos label {
             display: block;
             font-weight: bold;
-            color: #333;
             margin-bottom: 8px;
             font-size: 14px;
         }

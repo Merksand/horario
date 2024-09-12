@@ -44,8 +44,8 @@
             </span>
             <input type="submit" value="Semana completa" id="filtrar-aula" name="filtrar-aula">
 
-            <button class="iconoPdf pdfAula" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
-            <button class="iconoPdf pdfAulaSemana" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;"></i></button>
+            <button class="iconoPdf pdfAula" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;" title="PDF Del Dia"></i></button>
+            <button class="iconoPdf pdfAulaSemana" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;" title="PDF Semanal"></i></button>
 
 
             <!-- <select id="filtrar-aula" class="filtrarAula" style="width: 250px;" name="filtrar-carrera">

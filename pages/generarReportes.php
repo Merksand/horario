@@ -26,7 +26,7 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
+            /* background-color: #fff; */
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -92,7 +92,8 @@
 
     $carreras = "";
     while ($row = $resultCarreras->fetch_assoc()) {
-        $carreras .= "<option value='" . $row['CarreraID'] . "'>" . $row['Nombre'] . "</option>";
+        // $carreras .= "<option value='" . $row['CarreraID'] . "'>" . $row['Nombre'] . "</option>";
+        $carreras .= "<option data-carrera-id = '{$row['CarreraID']}' value='{$row['Nombre']}'></option>";
     }
 
     $queryDocentes = "SELECT DocenteID, Nombre,Apellido FROM docentes";
@@ -120,68 +121,63 @@
     }
     ?>
 
-    <div class="container">
+    <div class="container container__reportes">
         <h2>Generar Reportes Académicos</h2>
-        <form id="form-reportes">
+        <form id="form-reportes" action="../includes/Report/modulo_report.php" method="POST">
             <!-- Seleccionar tipo de reporte -->
             <div class="form-group">
                 <label for="tipo_reporte">Tipo de Reporte:</label>
-                <select id="tipo_reporte" name="tipo_reporte" required>
+                <select id="tipo_reporte" name="tipo_reporte">
                     <option value="">Seleccione el tipo de reporte</option>
-                    <option value="docente">Reporte por Docente</option>
-                    <option value="carrera">Reporte por Carrera</option>
+                    <option value="docente">Reporte por Docente por gestión y semestre</option>
+                    <option value="carrera">Reporte por Docentes por Carrera</option>
                     <option value="materia">Reporte por Materia</option>
                     <option value="gestion_semestre">Reporte por Gestión/Semestre</option>
                 </select>
             </div>
 
-            <!-- Seleccionar Carrera -->
-            <div class="form-group">
-                <label for="carrera">Carrera:</label>
-                <select id="carreras" name="carreras">
-                    <!-- <option value="" disabled selected>Seleccione una carrera</option> -->
-                    <option value="">Seleccione una carrera</option>
-                    <?php echo $carreras; ?>
-                </select>
-            </div>
+
 
             <!-- Seleccionar Docente -->
             <div class="form-group">
-                <label for="docente">Docente:</label>
-                <input list="docentes" id="docente" name="docente">
-                <datalist id="docentes">
+                <label for="docente">Docentfe:</label>
+                <input type="hidden" id="docenteID1" name="docenteID1">
+                <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1">
+                <datalist id="listaDocentes" class="datalist">
                     <?php echo $docentes; ?>
+
                 </datalist>
             </div>
 
             <div class="form-group">
                 <label for="carrera">Carrera:</label>
-                <select id="carrera" name="carrera" required>
+                <input type="hidden" name="carreraID" id="carreraHidden">
+                <input list="lista-carrera" id="carrera" name="carrera" type="text">
+                <datalist id="lista-carrera" class="datalist">
                     <?php echo $carreras; ?>
-                </select>
+                </datalist>
             </div>
 
             <!-- Seleccionar Nivel -->
             <div class="form-group">
                 <label for="nivel">Nivel:</label>
-                <select id="nivel" name="nivel" required>
-                    <option value="">Seleccione un Nivel</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="300">300</option>
-                    <option value="400">400</option>
-                    <option value="500">500</option>
-                    <option value="600">600</option>
-                    <!-- Niveles dinámicos basados en la carrera seleccionada -->
-                </select>
+                <input list="periodo-nivel" id="agregarNivel" class="gestionNivel" name="nivel" type="text" placeholder="Seleccione una carrera" disabled>
+                <datalist id="periodo-nivel" class="datalist">
+                    <option value="100">
+                    <option value="200">
+                    <option value="300">
+                    <option value="400">
+                    <option value="500">
+                    <option value="600">
+                </datalist>
             </div>
 
             <!-- Seleccionar Materia -->
             <div class="form-group">
                 <label for="materia">Materia:</label>
-                <input list="materias" id="materia" name="materia">
-                <datalist id="materias">
-                    <!-- <?php echo $materias; ?> -->
+                <input type="hidden" name="materiaID" id="materiaHidden">
+                <input list="lista-materias" type="text" id="materia" name="materia" disabled placeholder="Seleccione un nivel">
+                <datalist id="lista-materias">
                 </datalist>
             </div>
 

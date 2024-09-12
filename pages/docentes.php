@@ -23,6 +23,8 @@
                 <input type="submit" value="Filtrar" id="btn-filtrar" name="btn-filtrar" class="btna">
             </form>
             <input type="submit" value="Semana completa" id="filtrar-semana" name="filtrar-horario">
+            <button class="iconoPdf pdfDocente" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;" title="PDF Del Dia"></i></button>
+            <button class="iconoPdf pdfDocenteSemana" target="_blank"><i class="fa-solid fa-file-pdf fa-lg" style="color: #14e16d;" title="PDF Semanal"></i></button>
         </div>
     </div>
     <div class="seccionFiltrosDocentes pilares">

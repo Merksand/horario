@@ -1,10 +1,10 @@
 <?php
 require('../../pages/assets/fpdf/fpdf.php');
 
-if (isset($_GET['aula'])) {
-    $aula = $_GET['aula'] ?? '';
+if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha'])) {
+    $nombre = $_GET['nombre'] ?? '';
+    $apellido = $_GET['apellido'] ?? '';
     $fecha = $_GET['fecha'] ?? '';
-    $turno = $_GET['turno'] ?? '';
 
     include '../database.php';
 
@@ -13,13 +13,15 @@ if (isset($_GET['aula'])) {
                     Docentes.Apellido AS ApellidoDocente,
                     Materias.Nombre AS NombreMateria,
                     Carreras.Nombre AS NombreCarrera,
-                    Materias.Nivel AS NivelMateria,
-                    Horarios.Dia AS Dia,
-                    Horarios.Periodo AS Periodo,
+                    Horarios.Dia,
                     DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
                     DATE_FORMAT(HoraFin, '%H:%i') AS HoraFin,
-                    Carreras.Nombre AS NombreCarrera,
-                    Materias.Codigo AS CodigoMateria
+                    Aulas.Nombre AS NombreAula,
+                    Materias.Nivel As NivelMateria,
+                    Materias.Codigo AS CodigoMateria,
+                    Horarios.Periodo AS Periodo,
+                    Horarios.Dia AS Dia,
+                    Aulas.Nombre AS Aula
                 FROM
                     DocenteMateria
                     INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
@@ -28,28 +30,26 @@ if (isset($_GET['aula'])) {
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
                     INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
-                    WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
+                WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1) ";
 
-    if ($aula) {
-        $consulta .= " AND Aulas.Nombre ='$aula'";
-
-        if (!empty($turno) && $turno !== 'Todas') {
-            $consulta .= " AND Horarios.Turno = '$turno'";
-        }
-
-        if (!empty($_GET['fecha'])) {
-            $consulta .= " AND  CASE DAYOFWEEK('$fecha')
-            WHEN 1 THEN 'Domingo'
-            WHEN 2 THEN 'Lunes'
-            WHEN 3 THEN 'Martes'
-            WHEN 4 THEN 'Miércoles'
-            WHEN 5 THEN 'Jueves'
-            WHEN 6 THEN 'Viernes'
-            WHEN 7 THEN 'Sábado'
-            END = Horarios.Dia ";
-        }
+    if (!empty($nombre) && !empty($apellido)) {
+        $consulta .= " AND Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
+    } elseif (!empty($apellido)) {
+        $consulta .= " AND Docentes.Apellido LIKE '%$apellido%'";
+    } elseif (!empty($nombre)) {
+        $consulta .= " AND Docentes.Nombre LIKE '%$nombre%'";
+    } else {
+        echo "<div class='datosIncorrectos'>No se proporcionaron nombre y/o apellido.</div>";
+        exit;
     }
+    $consulta .= " ORDER BY Horarios.HorarioID";
+
     $resultado = $conexion->query($consulta);
+
+    $docente = "SELECT * FROM Docentes WHERE Nombre LIKE '%$nombre%' AND Apellido LIKE '%$apellido%'";
+    $resultado2 = $conexion->query($docente);
+
+    $docente = $resultado2->fetch_assoc();
 
     class PDF extends FPDF
     {
@@ -57,8 +57,8 @@ if (isset($_GET['aula'])) {
 
         function Header()
         {
-            global $aula;
-            $this->Image('../../img/logo-tran.png', 10, 5, 25);
+            global $docente;
+            $this->Image('../../img/logo-tran.png', 175, 5, 25);
             $this->SetFont('Arial', 'B', 10);
             date_default_timezone_set("America/La_Paz");
             $dias_espanol = array(
@@ -73,47 +73,33 @@ if (isset($_GET['aula'])) {
             global $fecha;
 
             $fechaActual = $fecha;
-
             $dia_ingles = date('l', strtotime($fecha));
-
             $dia_espanol = $dias_espanol[$dia_ingles];
-
             // Mostrar en el PDF
-            $this->Cell(0, 5, utf8_decode("$dia_espanol - $fechaActual"), 0, 1, 'R');
-            $this->Cell(0, 3, utf8_decode("Hora: " . date('H:i:s')), 0, 1, 'R');
+            $this->Cell(0, 5, utf8_decode("$dia_espanol - $fechaActual"), 0, 1, 'L');
+            $this->Cell(0, 3, utf8_decode("Hora: " . date('H:i:s')), 0, 1, 'L');
             // $this->Ln(10);
-
-
-
-            // Si hay una sola aula, muéstrala en el header y no en las filas
-            if ($aula !== "Todas") {
-                $this->Cell(0, 5, utf8_decode("Aula: " . $aula), 0, 1, 'R');
-                $this->mostrarCarreraEnFilas = false;
-                $this->Ln(10);
-            }
+            $this->Cell(0, 5, utf8_decode("Docente: " . $docente['Nombre'] . " " . $docente['Apellido']), 0, 1, 'L');
+            $this->Ln(10);
 
             // Título
             $this->SetFont('Arial', 'B', 15);
-            $this->Cell(0, 10, utf8_decode("Horario por Aula"), 0, 1, 'C');
+            $this->Cell(0, 10, utf8_decode("Horario por Docente"), 0, 1, 'C');
             $this->Ln(3);
             // Encabezado de tabla
             $this->SetFillColor(228, 100, 0);
             $this->SetTextColor(255, 255, 255);
             $this->SetDrawColor(163, 163, 163);
             $this->SetFont('Arial', 'B', 11);
+            $this->Cell(24, 10, utf8_decode('Dia'), 1, 0, 'C', 1);
             $this->Cell(10, 10, utf8_decode('Per.'), 1, 0, 'C', 1);
             $this->Cell(24, 10, utf8_decode('Horario'), 1, 0, 'C', 1);
-            $this->Cell(63, 10, utf8_decode('Docente'), 1, 0, 'C', 1);
+            // $this->Cell(63, 10, utf8_decode('Docente'), 1, 0, 'C', 1);
+            $this->Cell(24, 10, utf8_decode('Aula'), 1, 0, 'C', 1);
             $this->Cell(24, 10, utf8_decode('Materia'), 1, 0, 'C', 1);
             $this->Cell(16, 10, utf8_decode('Nivel'), 1, 0, 'C', 1);
             $this->Cell(55, 10, utf8_decode('Carrera'), 1, 1, 'C', 1);
-
-            // if ($this->mostrarCarreraEnFilas) {
-            // } else {
-            //     $this->Cell(0, 10, '', 0, 1); // Asegurarse de que el diseño esté alineado cuando no se muestra la carrera
-            // }
         }
-
         function Footer()
         {
             $this->SetY(-15);
@@ -131,10 +117,12 @@ if (isset($_GET['aula'])) {
 
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
+            $pdf->Cell(24, 6, utf8_decode($fila['Dia']), 1, 0, "C");
             $pdf->Cell(10, 6, utf8_decode($fila['Periodo']), 1, 0, "C");
             $pdf->Cell(24, 6, utf8_decode($fila['HoraInicio'] . " - " . $fila['HoraFin']), 1, 0, "C");
-            $pdf->Cell(63, 6, utf8_decode($fila['NombreDocente'] . " " . $fila['ApellidoDocente']), 1, 0, "C");
-            $pdf->Cell(24, 6, utf8_decode($fila['CodigoMateria']), 1,0,"C");
+            // $pdf->Cell(63, 6, utf8_decode($fila['NombreDocente'] . " " . $fila['ApellidoDocente']), 1, 0, "C");
+            $pdf->Cell(24, 6, utf8_decode($fila['Aula']), 1, 0, "C");
+            $pdf->Cell(24, 6, utf8_decode($fila['CodigoMateria']), 1, 0, "C");
             $pdf->Cell(16, 6, utf8_decode($fila['NivelMateria']), 1, 0, "C");
             $pdf->Cell(55, 6, utf8_decode($fila['NombreCarrera']), 1, 0, "C");
             $pdf->Ln();
@@ -145,6 +133,3 @@ if (isset($_GET['aula'])) {
 } else {
     echo "Faltan parámetros en la solicitud.";
 }
-
-
-//sistema y contaduria 

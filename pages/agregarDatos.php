@@ -16,7 +16,7 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            background-color: darkcyan;
+            /* background-color: #fff; */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -152,7 +152,7 @@
             </div>
 
             <div class="form-group">
-                <h3>Agregar Nuevo Período Académico</h3>
+                <h2>Agregar Nuevo Período Académico</h2>
                 <div>
                     <label for="gestion">Gestión (Año):</label>
                     <input type="number" id="gestion" name="gestion" min="2024" max="2100">

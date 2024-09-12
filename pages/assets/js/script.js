@@ -421,60 +421,108 @@ function agregarEventos() {
     }
 
 
-    const reporteAula = document.querySelector(".pdfAula");
+    function generarReporte(selectorBoton, urlBase) {
+        const botonReporte = document.querySelector(selectorBoton);
+        if (botonReporte) {
+            botonReporte.addEventListener("click", () => {
+                const aulaSeleccionada = document.querySelector(".filtrarAula").value;
+                const turnoSeleccionado = document.getElementById("filtrar-turno-evento").value;
+                const fechaSeleccionada = document.getElementById("fecha").value;
+                if (aulaSeleccionada) {
+                    const params = new URLSearchParams({
+                        aula: aulaSeleccionada,
+                        fecha: fechaSeleccionada,
+                        turno: turnoSeleccionado
+                    });
+                    const url = `${urlBase}?${params.toString()}`;
+                    window.open(url, '_blank');
+                }
+            });
+        }
+    }
+    
+    // Usar la función para los dos reportes
+    generarReporte(".pdfAula", "../../../includes/Report/report_Aula.php");
+    generarReporte(".pdfAulaSemana", "../../../includes/Report/report_Aula-Semana.php");
+    
 
-    if (reporteAula) {
-        reporteAula.addEventListener("click", () => {
-            const aulaSeleccionada = document.querySelector(".filtrarAula").value;
-            const turnoSeleccionado = document.getElementById("filtrar-turno-evento").value;
-            const fechaSeleccionada = document.getElementById("fecha").value;
 
-            if (aulaSeleccionada) {
 
-                // Crear un objeto URLSearchParams para los parámetros de la URL
-                const params = new URLSearchParams({
-                    aula: aulaSeleccionada,
-                    fecha: fechaSeleccionada,
-                    turno: turnoSeleccionado
-                });
+    function generarReporteDocente(selectorBoton, urlBase) {
+        const botonReporte = document.querySelector(selectorBoton);
+        if (botonReporte) {
+            botonReporte.addEventListener("click", () => {
+                const nombreDocente = document.getElementById("nombre").value;
+                const apellidoDocente = document.getElementById("apellido").value;
+                const fechaSeleccionada = document.getElementById("fecha").value;
+    
+                if (nombreDocente || apellidoDocente || fechaSeleccionada) {
+                    const params = new URLSearchParams({
+                        nombre: nombreDocente,
+                        apellido: apellidoDocente,
+                        fecha: fechaSeleccionada
+                    });
+                    const url = `${urlBase}?${params.toString()}`;
+                    window.open(url, '_blank');
+                }
+            });
+        }
+    }
+    
+    // Usar la función para los dos reportes
+    generarReporteDocente(".pdfDocente", "../../../includes/Report/report_Docente.php");
+    generarReporteDocente(".pdfDocenteSemana", "../../../includes/Report/report_DocenteSemana.php");
+    
 
-                // Redirigir a la página que generará el PDF
-                // window.location.href = `../../../includes/Report/horarios.php?${params.toString()}`;
 
-                const url = `../../../includes/Report/report_Aula.php?${params.toString()}`;
-                window.open(url, '_blank');
+    const tipoReporte = document.getElementById('tipo_reporte');
+    const docenteInput = document.getElementById('agregarNombreCompleto');
+    const carreraInput2 = document.getElementById('carrera');
+    const gestionSelect = document.getElementById('gestion');
+    const semestreSelect = document.getElementById('semestre');
+
+    // Verificar si los elementos existen antes de aplicar la lógica
+    if (tipoReporte && docenteInput && carreraInput2 && gestionSelect && semestreSelect) {
+        // Deshabilitar todos los campos inicialmente
+        resetFields();
+
+        // Habilitar/deshabilitar campos dependiendo del tipo de reporte seleccionado
+        tipoReporte.addEventListener('change', function () {
+            resetFields(); // Reiniciar el estado de los campos
+
+            const selectedValue = tipoReporte.value;
+
+            if (selectedValue === 'docente') {
+                // Habilitar tanto el campo de docente como de gestión
+                docenteInput.disabled = false;
+                gestionSelect.disabled = false;
+                semestreSelect.disabled = false;
+                carreraInput2.disabled = false;
+            } else if (selectedValue === 'carrera') {
+                carreraInput2.disabled = false;
+                gestionSelect.disabled = false;
+                semestreSelect.disabled = false;
+            } else if (selectedValue === 'materia') {
+                carreraInput2.disabled = false;
+                gestionSelect.disabled = false;
+                semestreSelect.disabled = false;
+            } else if (selectedValue === 'gestion_semestre') {
+                gestionSelect.disabled = false;
+                semestreSelect.disabled = false;
+                
             }
         });
+
+        // Función para deshabilitar todos los campos
+        function resetFields() {
+            docenteInput.disabled = true;
+            carreraInput2.disabled = true;
+            gestionSelect.disabled = true;
+            semestreSelect.disabled = true;
+        }
     }
 
-
-    const reporteAulaSemana = document.querySelector(".pdfAulaSemana");
-
-    if (reporteAulaSemana) {
-        reporteAulaSemana.addEventListener("click", () => {
-            const aulaSeleccionada = document.querySelector(".filtrarAula").value;
-            const turnoSeleccionado = document.getElementById("filtrar-turno-evento").value;
-            const fechaSeleccionada = document.getElementById("fecha").value;
-
-            if (aulaSeleccionada) {
-
-                // Crear un objeto URLSearchParams para los parámetros de la URL
-                const params = new URLSearchParams({
-                    aula: aulaSeleccionada,
-                    fecha: fechaSeleccionada,
-                    turno: turnoSeleccionado
-                });
-
-                // Redirigir a la página que generará el PDF
-                // window.location.href = `../../../includes/Report/horarios.php?${params.toString()}`;
-
-                const url = `../../../includes/Report/report_Aula-Semana.php?${params.toString()}`;
-                window.open(url, '_blank');
-            }
-        });
-    }
-
-
+    
 
     let iconoFlecha = document.querySelector(".iconoFlecha");
 
@@ -726,29 +774,31 @@ function agregarEventos() {
     const inputsNombre = document.querySelectorAll('input[list="listaDocentes"]');
 
     // Añadimos el evento 'input' a cada uno de ellos
-    inputsNombre.forEach(input => {
-        input.addEventListener('input', function () {
-            const valorIngresado = this.value;  // Capturamos el valor ingresado en este input
-            const dataList = document.getElementById('listaDocentes');  // Lista de opciones
+    if (inputsNombre) {
+        inputsNombre.forEach(input => {
+            input.addEventListener('input', function () {
+                const valorIngresado = this.value;  // Capturamos el valor ingresado en este input
+                const dataList = document.getElementById('listaDocentes');  // Lista de opciones
 
-            // Buscamos en el datalist la opción que coincida con el valor ingresado
-            const opcionSeleccionada = Array.from(dataList.options).find(option => option.value === valorIngresado);
+                // Buscamos en el datalist la opción que coincida con el valor ingresado
+                const opcionSeleccionada = Array.from(dataList.options).find(option => option.value === valorIngresado);
 
-            if (opcionSeleccionada) {
-                const docenteID = opcionSeleccionada.getAttribute('data-docente-id');  // Obtenemos el ID del docente
+                if (opcionSeleccionada) {
+                    const docenteID = opcionSeleccionada.getAttribute('data-docente-id');  // Obtenemos el ID del docente
 
-                // Buscamos el campo oculto relacionado con este input, basado en el atributo "data-hidden-id"
-                const inputHiddenID = document.getElementById(this.getAttribute('data-hidden-id'));
+                    // Buscamos el campo oculto relacionado con este input, basado en el atributo "data-hidden-id"
+                    const inputHiddenID = document.getElementById(this.getAttribute('data-hidden-id'));
 
-                if (inputHiddenID) {
-                    inputHiddenID.value = docenteID;  // Asignamos el ID del docente al input oculto
-                    console.log("Docente ID asignado:", docenteID, "al input oculto", inputHiddenID.id);
+                    if (inputHiddenID) {
+                        inputHiddenID.value = docenteID;  // Asignamos el ID del docente al input oculto
+                        console.log("Docente ID asignado:", docenteID, "al input oculto", inputHiddenID.id);
+                    }
+                } else {
+                    console.log('No se encontró el DocenteID para el nombre ingresado.');
                 }
-            } else {
-                console.log('No se encontró el DocenteID para el nombre ingresado.');
-            }
+            });
         });
-    });
+    }
     // ! TODO FALTA SOLUCIONAR ESTE PROBLEMA DE ATRIBUTO MATERIA MATERIAHIDDEN
 
     // Función para asignar evento y actualizar hidden inputs
@@ -1089,55 +1139,65 @@ function agregarEventos() {
                 console.log("Prueba: ", data);
                 const materiaDatalist = document.getElementById('editModal__materia');
                 const listaMaterias = document.getElementById("lista-materias")
-                materiaDatalist.innerHTML = '';
+                // materiaDatalist.innerHTML = '';
                 listaMaterias.innerHTML = ''
-
+                let materiaGlobal = document.getElementById("materia");
                 if (data.mensaje) {
-                    materiaInput.disabled = true;
-                    materiaInput.placeholder = data.mensaje;
-                    document.getElementById("materia").disabled = true
-                    document.getElementById("materia").placeholder = data.mensaje;
+                    if (materiaDatalist) {
+                        materiaInput.disabled = true;
+                        materiaInput.placeholder = data.mensaje;
+                    }
+                    if (materiaGlobal) {
+                        console.log("no putaaaaaa");
+                        materiaGlobal.disabled = true
+                        materiaGlobal.placeholder = data.mensaje;
+                    }
                 } else {
                     data.forEach(materia => {
                         // console.log("Materia: ", materia);
-                        const option = document.createElement('option');
-                        option.value = materia.Nombre;
-                        option.setAttribute("data-materia-id", materia.MateriaID)
-                        // option.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
-                        if (materia.Paralelo) {
-                            option.textContent = `(Paralelo: ${materia.Paralelo})`;
-                        } else {
-                            option.textContent = materia.Nombre;
-                        }
+                        if (materiaDatalist) {
+                            const option = document.createElement('option');
+                            option.value = materia.Nombre;
+                            option.setAttribute("data-materia-id", materia.MateriaID)
+                            // option.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
+                            if (materia.Paralelo) {
+                                option.textContent = `(Paralelo: ${materia.Paralelo})`;
+                            } else {
+                                option.textContent = materia.Nombre;
+                            }
 
+                            materiaDatalist.appendChild(option);
+                        }
 
                         if (listaMaterias) {
                             const optionLista = document.createElement('option');
                             optionLista.value = materia.Nombre;
                             optionLista.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
                             optionLista.setAttribute("data-materia-id", materia.MateriaID)
+                            // listaMaterias.appendChild(optionLista);
                             listaMaterias.appendChild(optionLista);
                         }
                         // console.log("OPTION: ", option);
                         // console.log(materiaDatalist);
-                        materiaDatalist.appendChild(option);
                         // document.getElementById("materia").disabled = false;
                     });
 
 
-                    materiaInput.disabled = false;
-                    materiaInput.placeholder = ''; // Quitar el placeholder cuando esté habilitado
-                    inputMateria.disabled = false
-                    inputMateria.placeholder = ''
-                    document.getElementById("materia").disabled = false;
-                    document.getElementById("materia").placeholder = '';
+                    if (materiaDatalist) {
+                        materiaInput.disabled = false;
+                        materiaInput.placeholder = '';
+                        inputMateria.disabled = false
+                        inputMateria.placeholder = ''
+                    }
+                    materiaGlobal.disabled = false;
+                    materiaGlobal.placeholder = '';
 
 
                 }
             })
             .catch(error => {
                 console.error('Error al cargar materias:', error);
-                materiaInput.disabled = true;
+                // materiaInput.disabled = true;
                 materiaInput.placeholder = 'Error al cargar materias';
             });
     }

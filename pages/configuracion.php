@@ -640,9 +640,9 @@
 
         <h2>Gestión de Docentes</h2>
         <form id="docenteForm">
-            <input type="hidden" id="docenteID1" name="docenteID1">
             <div>
                 <label for="agregarNombreCompleto">Nombre Completo del Docente:</label>
+                <input type="hidden" id="docenteID1" name="docenteID1">
                 <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1">
                 <datalist id="listaDocentes" class="datalist">
                     <?php echo $docentes; ?>
