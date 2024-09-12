@@ -124,13 +124,14 @@
     <div class="container container__reportes">
         <h2>Generar Reportes Académicos</h2>
         <form id="form-reportes" action="../includes/Report/modulo_report.php" method="POST">
+        <!-- <form id="form-reportes" > -->
             <!-- Seleccionar tipo de reporte -->
             <div class="form-group">
                 <label for="tipo_reporte">Tipo de Reporte:</label>
                 <select id="tipo_reporte" name="tipo_reporte">
                     <option value="">Seleccione el tipo de reporte</option>
-                    <option value="docente">Reporte por Docente por gestión y semestre</option>
-                    <option value="carrera">Reporte por Docentes por Carrera</option>
+                    <option value="Reporte por Docente por gestion y semestre">Reporte por Docente por gestión y semestre</option>
+                    <option value="Reporte por Docentes por Carrera">Reporte por Docentes por Carrera</option>
                     <option value="materia">Reporte por Materia</option>
                     <option value="gestion_semestre">Reporte por Gestión/Semestre</option>
                 </select>

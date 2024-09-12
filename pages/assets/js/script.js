@@ -440,11 +440,11 @@ function agregarEventos() {
             });
         }
     }
-    
+
     // Usar la función para los dos reportes
     generarReporte(".pdfAula", "../../../includes/Report/report_Aula.php");
     generarReporte(".pdfAulaSemana", "../../../includes/Report/report_Aula-Semana.php");
-    
+
 
 
 
@@ -455,7 +455,7 @@ function agregarEventos() {
                 const nombreDocente = document.getElementById("nombre").value;
                 const apellidoDocente = document.getElementById("apellido").value;
                 const fechaSeleccionada = document.getElementById("fecha").value;
-    
+
                 if (nombreDocente || apellidoDocente || fechaSeleccionada) {
                     const params = new URLSearchParams({
                         nombre: nombreDocente,
@@ -468,11 +468,76 @@ function agregarEventos() {
             });
         }
     }
-    
+
     // Usar la función para los dos reportes
     generarReporteDocente(".pdfDocente", "../../../includes/Report/report_Docente.php");
     generarReporteDocente(".pdfDocenteSemana", "../../../includes/Report/report_DocenteSemana.php");
+
+// * MODULO REPORTES //////////////////////////////////
+const form2 = document.getElementById("form-reportes");
     
+if (form2) {
+    form2.addEventListener("submit", (event) => {
+        event.preventDefault(); // Prevenir el envío del formulario para manejarlo con JavaScript
+        
+        const tipoReporte = document.getElementById("tipo_reporte").value;
+        const docenteID = document.getElementById("docenteID1").value;
+        const nombreDocente = document.querySelector('input[name="nombre1"]').value;
+        const carreraID = document.getElementById("carreraHidden").value;
+        const carrera = document.getElementById("carrera").value;
+        const nivel = document.getElementById("agregarNivel").value;
+        const materiaID = document.getElementById("materiaHidden").value;
+        const materia = document.getElementById("materia").value;
+        const gestion = document.getElementById("gestion").value;
+        const semestre = document.getElementById("semestre").value;
+        
+        let url = "";
+        const params = new URLSearchParams({
+            tipo_reporte: tipoReporte,
+            docenteID1: docenteID,
+            nombre1: nombreDocente,
+            carreraID: carreraID,
+            carrera: carrera,
+            nivel: nivel,
+            materiaID: materiaID,
+            materia: materia,
+            gestion: gestion,
+            semestre: semestre
+        });
+        
+        switch (tipoReporte) {
+            case "Reporte por Docente por gestion y semestre":
+                const param1 = new URLSearchParams({
+                    docenteID1: docenteID,
+                    carreraID: carreraID,
+                    gestion: gestion,
+                    semestre: semestre
+                })
+                url = `../includes/Report/modulo_Docente-gestion.php?${param1.toString()}`;
+                break;
+            case "carrera":
+                url = `../includes/Report/report_Carrera.php?${params.toString()}`;
+                break;
+            case "materia":
+                url = `../includes/Report/report_Materia.php?${params.toString()}`;
+                break;
+            case "gestion_semestre":
+                url = `../includes/Report/report_GestionSemestre.php?${params.toString()}`;
+                break;
+            default:
+                alert("Por favor, seleccione un tipo de reporte válido.");
+                return;
+        }
+        
+        // Abre el reporte en una nueva ventana
+        window.open(url, '_blank');
+    });
+}
+
+
+// * //////////////////////////////////
+
+
 
 
     const tipoReporte = document.getElementById('tipo_reporte');
@@ -492,7 +557,7 @@ function agregarEventos() {
 
             const selectedValue = tipoReporte.value;
 
-            if (selectedValue === 'docente') {
+            if (selectedValue === 'Reporte por Docente por gestion y semestre') {
                 // Habilitar tanto el campo de docente como de gestión
                 docenteInput.disabled = false;
                 gestionSelect.disabled = false;
@@ -509,7 +574,7 @@ function agregarEventos() {
             } else if (selectedValue === 'gestion_semestre') {
                 gestionSelect.disabled = false;
                 semestreSelect.disabled = false;
-                
+
             }
         });
 
@@ -522,7 +587,29 @@ function agregarEventos() {
         }
     }
 
-    
+
+    const formReportes = document.getElementById('form-reportes');
+    if (formReportes) {
+        
+        formReportes.addEventListener('submit', function (event) {
+        event.preventDefault(); // Previene el envío por defecto del formulario
+
+        const formData = new FormData(formReportes);
+
+        // Convierte los datos del formulario a una URL codificada
+        const params = new URLSearchParams();
+        formData.forEach((value, key) => {
+            params.append(key, value);
+        });
+
+        // Construye la URL para enviar los datos
+        const url = `../includes/Report/modulo_report.php?${params.toString()}`;
+
+        // Abre una nueva ventana con la URL del reporte
+        window.open(url);
+    });
+    }
+
 
     let iconoFlecha = document.querySelector(".iconoFlecha");
 
