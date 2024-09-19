@@ -1,4 +1,5 @@
 <?php
+session_name('login');
 session_start();
 
 if (!empty($_POST["btnIngresar"])) {
@@ -21,6 +22,7 @@ if (!empty($_POST["btnIngresar"])) {
             // Usuario existe, ahora verificar la contraseña
             if ($fila = $resultado->fetch_assoc()) {
                 if ($fila['Clave'] == $clave) {  // Considera usar password_verify() en el futuro
+                                        
                     // Contraseña correcta
                     $_SESSION['usuario_id'] = $fila['UsuarioID']; // Asumiendo que hay una columna 'id'
                     $_SESSION['usuario'] = $fila['Usuario'];

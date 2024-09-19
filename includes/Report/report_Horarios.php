@@ -57,7 +57,9 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) && isset($_GET['nivel']) &&
     $consulta .= " AND Aulas.Nombre <> 'Desconocido'";
     
     // $consulta .= " ORDER BY Horarios.Periodo,NombreDocente ASC, NombreMateria ASC, NombreDocente, NivelMateria";
-    $consulta .= " ORDER BY NombreDocente ASC,HoraInicio,NivelMateria,NombreMateria ASC,NombreDocente,NivelMateria"; 
+    // $consulta .= " ORDER BY NombreDocente ASC,HoraInicio,NivelMateria,NombreMateria ASC,NombreDocente"; 
+    // $consulta .= " ORDER BY NivelMateria asc,NombreDocente ASC,HoraInicio,NombreMateria ASC,NombreDocente"; 
+    $consulta .= " ORDER BY NivelMateria,Horarios.HorarioID"; 
 
     $resultado = $conexion->query($consulta);
 

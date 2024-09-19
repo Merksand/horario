@@ -69,7 +69,7 @@ opcionesBarraLateral.forEach((opcion) => {
             }
         });
 
-        opcion.classList.toggle("clicked"); // Alternar la clase "clicked" del botón actual
+        opcion.classList.toggle("clicked"); 
     });
 });
 menu.addEventListener("click", () => {
@@ -174,10 +174,10 @@ function agregarEventos() {
 
     function handleDocenteClick(e) {
         // e.preventDefault();
-        let nombre = document.getElementById("nombre").value;
-        let apellido = document.getElementById("apellido").value;
+        let nombre = document.getElementById("nombre").value.trim();
+        let apellido = document.getElementById("apellido").value.trim();
         let tabla = document.getElementById("tabla-profesores");
-
+        console.log( apellido);
         const params = new URLSearchParams({ nombre, apellido });
         const url = `includes/docentes.php?${params.toString()}`;
 
@@ -199,8 +199,8 @@ function agregarEventos() {
     // Función para manejar la búsqueda con fecha
     function docenteFecha(e) {
         e.preventDefault();
-        let nombre = document.getElementById("nombre").value;
-        let apellido = document.getElementById("apellido").value;
+        let nombre = document.getElementById("nombre").value.trim();
+        let apellido = document.getElementById("apellido").value.trim();
         let fecha = document.getElementById("fecha").value;
         let tabla = document.getElementById("tabla-profesores");
 
@@ -562,7 +562,7 @@ if (form2) {
                 docenteInput.disabled = false;
                 gestionSelect.disabled = false;
                 semestreSelect.disabled = false;
-                carreraInput2.disabled = false;
+                // carreraInput2.disabled = false;
             } else if (selectedValue === 'carrera') {
                 carreraInput2.disabled = false;
                 gestionSelect.disabled = false;
@@ -932,7 +932,7 @@ if (form2) {
                     if (data.includes("correctamente")) {
 
                         showCustomAlert(data, true)
-                        // docenteForm.reset()
+                        docenteForm.reset()
                     } else if (data.includes("rellena") || data.includes("rango") || data.includes("completa todos los campos")) {
                         showCustomAlert(data, false)
                     } else if (data.includes("Error al insertar")) {
@@ -1226,7 +1226,7 @@ if (form2) {
                 console.log("Prueba: ", data);
                 const materiaDatalist = document.getElementById('editModal__materia');
                 const listaMaterias = document.getElementById("lista-materias")
-                // materiaDatalist.innerHTML = '';
+                materiaDatalist.innerHTML = '';
                 listaMaterias.innerHTML = ''
                 let materiaGlobal = document.getElementById("materia");
                 if (data.mensaje) {
@@ -1235,7 +1235,6 @@ if (form2) {
                         materiaInput.placeholder = data.mensaje;
                     }
                     if (materiaGlobal) {
-                        console.log("no putaaaaaa");
                         materiaGlobal.disabled = true
                         materiaGlobal.placeholder = data.mensaje;
                     }
@@ -1323,6 +1322,7 @@ if (form2) {
                 const codigo = codigoInput.value;
                 const nivel = nivelInputNivel.value;
 
+                console.log('nombre: ' + nombre + ' ' + 'codigo: ' + codigo + ' ' + 'nivel: ' + nivel);
                 fetch('includes/CRUD/actualizarMateria.php', {
                     method: 'POST',
                     headers: {
@@ -1332,7 +1332,6 @@ if (form2) {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data.consulta);
                         console.log(data);
                         if (data.status === 'success') {
                             showCustomAlert(data.message, true);
@@ -1521,6 +1520,3 @@ function cargarTotales() {
 
 
 
-
-// * El js demas
-//////////////////////

@@ -1,7 +1,7 @@
 <?php
-if (isset($_GET['materia'])) {
+if (!empty($_GET['materia'])) {
 
-    $materia = $_GET['materia'] ?? Null;
+    $materia = $_GET['materia'] ?? '';
     $fecha = $_GET['fecha'] ?? '';
 
     include 'database.php';
@@ -12,11 +12,12 @@ if (isset($_GET['materia'])) {
                     Materias.Nombre AS NombreMateria,
                     Materias.Paralelo AS ParaleloMateria,
                     Carreras.Nombre AS NombreCarrera,
-                    Horarios.Dia,
+                    Horarios.Dia AS Dia,
                     DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
                     DATE_FORMAT(HoraFin, '%H:%i') AS HoraFin,
                     Aulas.Nombre AS NombreAula,
-                    Materias.Nivel As Nivel
+                    Materias.Nivel As Nivel,
+                    Horarios.Periodo As Periodo
                 FROM
                     DocenteMateria
                     INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
@@ -28,7 +29,7 @@ if (isset($_GET['materia'])) {
                 WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1) AND
                 Materias.Nombre LIKE '%$materia%'";
 
-    if (!empty($_GET['fecha'])) {
+    if (!empty($_GET['fecha']) && !empty($_GET['materia'])) {
         $consulta .= " AND  CASE DAYOFWEEK('$fecha')
         WHEN 1 THEN 'Domingo'
         WHEN 2 THEN 'Lunes'
@@ -48,11 +49,11 @@ if (isset($_GET['materia'])) {
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<div class='fila-profesor'>";
-            echo "<span class='spanDatos'>" . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
+            echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
+            echo "<span class='spanDatos'>" . "P" . $fila['Periodo'] . " : " . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreMateria'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreCarrera'] . "</span>";
-            echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreAula'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['Nivel'] . $fila['ParaleloMateria'] . "</span>";
             echo "</div>";
@@ -66,5 +67,5 @@ if (isset($_GET['materia'])) {
     }
     $conexion->close();
 } else {
-    echo "No se proporcionaron datos necesario.";
+    echo "<div class='datosIncorrectos'> No se proporcionaron datos necesario.</div>";
 }

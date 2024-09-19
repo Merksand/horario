@@ -646,7 +646,6 @@
                 <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1">
                 <datalist id="listaDocentes" class="datalist">
                     <?php echo $docentes; ?>
-
                 </datalist>
             </div>
 

@@ -1,4 +1,5 @@
 <?php
+session_name('login');
 session_start();
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: auth/login.php");
@@ -69,12 +70,12 @@ if (!isset($_SESSION['usuario_id'])) {
                         <span>Carrera</span>
                     </a>
                 </li>
-                <li onclick="cargarContenido('pages/reportes.php')">
+                <!-- <li onclick="cargarContenido('pages/reportes.php')">
                     <a class="inbox" href="#">
                         <ion-icon name="document-text-outline"></ion-icon>
                         <span>Reportes</span>
                     </a>
-                </li>
+                </li> -->
                 <li onclick="cargarContenido('pages/generarReportes.php')">
                     <a class="inbox" href="#">
                         <ion-icon name="document-text-outline"></ion-icon>
@@ -95,7 +96,8 @@ if (!isset($_SESSION['usuario_id'])) {
                 </li>
                 <li onclick="cargarContenido('pages/copiarDatos.php')">
                     <a class="inbox" href="#">
-                        <ion-icon name="add-circle-outline"></ion-icon>
+                        <!-- <ion-icon name="add-circle-outline"></ion-icon> -->
+                        <ion-icon name="copy-outline"></ion-icon>
                         <span>Copiar Datos De Carrera</span>
                     </a>
                 </li>

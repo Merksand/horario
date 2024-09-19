@@ -120,7 +120,7 @@
 
             <!-- Formulario para agregar Materia -->
             <div class="form-group materia">
-                <label for="carrera">Asignar Carrera:</label>
+                <label for="carrera">Agregar Nueva Materia:</label>
                 <select id="carreras" name="carrera_materia">
                     <option value="">Seleccione la Carrera</option>
                     <option value="Sistemas Informáticos">Sistemas Informáticos</option>

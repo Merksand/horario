@@ -16,7 +16,8 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
                     DATE_FORMAT(HoraInicio, '%H:%i') AS HoraInicio,
                     DATE_FORMAT(HoraFin, '%H:%i') AS HoraFin,
                     Aulas.Nombre AS NombreAula,
-                    Materias.Paralelo AS Paralelo
+                    Materias.Paralelo AS Paralelo,
+                    Horarios.Periodo AS Periodo
                 FROM
                     DocenteMateria
                     INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
@@ -47,7 +48,7 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<div class='fila-profesor'>";
             echo "<span class='spanDatos'>" . $fila['Dia'] . "</span>";
-            echo "<span class='spanDatos'>" . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
+            echo "<span class='spanDatos'>"  . "P" . $fila['Periodo'] . " : " . $fila['HoraInicio'] . " - " . $fila['HoraFin'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreDocente'] . " " . $fila['ApellidoDocente'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NombreMateria'] . "</span>";
             echo "<span class='spanDatos'>" . $fila['NivelMateria'] . " " . $fila['Paralelo'] . "</span>";

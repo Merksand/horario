@@ -16,6 +16,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
             Materias.Nombre AS NombreMateria,
             Materias.Paralelo AS ParaleloMateria,
             Carreras.Nombre AS NombreCarrera,
+            Carreras.CarreraID AS CarreraID,
             Materias.Nivel AS NivelMateria,
             Horarios.Dia AS Dia,
             Horarios.Periodo AS periodo,
@@ -54,13 +55,15 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
 
     if ($iconoFlecha === 'Nombre') {
         // $consulta .= " ORDER BY Horarios.Dia ASC,NombreMateria ASC,NombreDocente,NivelMateria"; 
-        $consulta .= " ORDER BY NombreDocente ASC,HoraInicio,NivelMateria,NombreMateria ASC,NombreDocente,NivelMateria";
-
+        // $consulta .= " ORDER BY NombreDocente ASC,HoraInicio,NivelMateria,NombreMateria ASC,NombreDocente,NivelMateria";
+        
+        $consulta .= " ORDER BY CarreraID asc,NivelMateria asc,periodo asc";
         // $consulta .= " ORDER BY Horarios.Dia, Horarios.HoraInicio";
 
     } else {
         // $consulta .= " ORDER BY Horarios.HoraInicio, Horarios.HoraFin"; 
-        $consulta .= " ORDER BY Horarios.HoraInicio ASC, Horarios.HoraFin ASC;";
+        // $consulta .= " ORDER BY Horarios.HoraInicio ASC, Horarios.HoraFin ASC;";
+        $consulta .= " ORDER BY NivelMateria;";
     }
 
     $resultado = $conexion->query($consulta);

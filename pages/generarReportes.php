@@ -141,7 +141,7 @@
 
             <!-- Seleccionar Docente -->
             <div class="form-group">
-                <label for="docente">Docentfe:</label>
+                <label for="docente">Docente:</label>
                 <input type="hidden" id="docenteID1" name="docenteID1">
                 <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1">
                 <datalist id="listaDocentes" class="datalist">

@@ -120,7 +120,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             $this->Cell(10, 10, utf8_decode('Per.'), 1, 0, 'C', 1);
             $this->Cell(24, 10, utf8_decode('Horario'), 1, 0, 'C', 1);
             // $this->Cell(63, 10, utf8_decode('Docente'), 1, 0, 'C', 1);
-            $this->Cell(16, 10, utf8_decode('Aula'), 1, 0, 'C', 1);
+            $this->Cell(45, 10, utf8_decode('Aula'), 1, 0, 'C', 1);
             $this->Cell(24, 10, utf8_decode('Materia'), 1, 0, 'C', 1);
             $this->Cell(16, 10, utf8_decode('Nivel'), 1, 0, 'C', 1);
             $this->Cell(55, 10, utf8_decode('Carrera'), 1, 1, 'C', 1);
@@ -143,7 +143,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             $pdf->Cell(10, 6, utf8_decode($fila['Periodo']), 1, 0, "C");
             $pdf->Cell(24, 6, utf8_decode($fila['HoraInicio'] . " - " . $fila['HoraFin']), 1, 0, "C");
             // $pdf->Cell(63, 6, utf8_decode($fila['NombreDocente'] . " " . $fila['ApellidoDocente']), 1, 0, "C");
-            $pdf->Cell(16, 6, utf8_decode($fila['NombreAula']), 1, 0, "C");
+            $pdf->Cell(45, 6, utf8_decode($fila['NombreAula']), 1, 0, "C");
             $pdf->Cell(24, 6, utf8_decode($fila['CodigoMateria']), 1, 0, "C");
             $pdf->Cell(16, 6, utf8_decode($fila['NivelMateria']), 1, 0, "C");
             $pdf->Cell(55, 6, utf8_decode($fila['NombreCarrera']), 1, 0, "C");
@@ -155,3 +155,13 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
 } else {
     echo "Faltan parámetros en la solicitud.";
 }
+
+// div final
+//Sueldo mayor igual a 600 = sueldo ejecutivo
+//Sueldo menor a 400 = sueldo bajo
+//Sueldo entre 400 y 599 = sueldo medio
+
+//suma * 0.13
+
+// sueldo final reta de los dos anteriores inputs
+//haz esta interfaz,en el input anticipo se pondra se podra ingresar un monto, en afp estara el 13%, y se tendra que sacar el resultado de los primero 3 input y de ese resultado multiplicar por 0.3 para que en el input afp se vea el resultado, en el input suelo liquido ira el resultado de la de los tres primeros inputs menos los la suma de 2 dos inptu que son anticipo y afp, el resultado liquido se calculara cuando se presione el boton de calcular, y al lado del input saldra un mensaje, el mensaje sera si el sueldo es menor de 400 entonces saldra el mensaje "Sueldo bajo", si el sueldo es entre 400 y 599 entonces saldra el mensaje "Sueldo medio", y si el sueldo es mayor o igual de 600 entonces saldra el mensaje "Suelda ejecutivo", se hara con html,css y jquert

@@ -2,7 +2,6 @@
 require_once '../database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // *Sanitización de entradas
     $docenteID1 = filter_input(INPUT_POST, 'docenteID1', FILTER_SANITIZE_NUMBER_INT);
     $periodoInicioID = filter_input(INPUT_POST, 'periodoInicioID', FILTER_SANITIZE_NUMBER_INT);
     $periodoFinID = filter_input(INPUT_POST, 'periodoFinID', FILTER_SANITIZE_NUMBER_INT);
@@ -14,9 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $insercionExitosa = true;
     $mensajeError = '';
 
-    // * Validación de campos obligatorios para la tabla DocenteMateria
     if ($docenteID1 && $periodoInicioID && $periodoFinID && $materiaID && $aulaID) {
-        // * Verificar si el rango de periodos es válido
         if ($periodoInicioID <= $periodoFinID) {
             for ($horarioID = $periodoInicioID; $horarioID <= $periodoFinID; $horarioID++) {
                 $sqlDocenteMateria = "INSERT INTO DocenteMateria (DocenteID, MateriaID, AulaID, HorarioID, GestionSemestreID) 

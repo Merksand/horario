@@ -60,7 +60,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             global $docente;
             $this->Image('../../img/logo-tran.png', 175, 5, 25);
             $this->SetFont('Arial', 'B', 10);
-            date_default_timezone_set("America/La_Paz");
+            date_default_timezone_set("America/New_York");
             $dias_espanol = array(
                 'Sunday' => 'Domingo',
                 'Monday' => 'Lunes',
@@ -73,14 +73,24 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             global $fecha;
 
             $fechaActual = $fecha;
+
             $dia_ingles = date('l', strtotime($fecha));
+
             $dia_espanol = $dias_espanol[$dia_ingles];
+
             // Mostrar en el PDF
             $this->Cell(0, 5, utf8_decode("$dia_espanol - $fechaActual"), 0, 1, 'L');
             $this->Cell(0, 3, utf8_decode("Hora: " . date('H:i:s')), 0, 1, 'L');
             // $this->Ln(10);
-            $this->Cell(0, 5, utf8_decode("Docente: " . $docente['Nombre'] . " " . $docente['Apellido']), 0, 1, 'L');
-            $this->Ln(10);
+
+
+
+            // Si hay una sola aula, muéstrala en el header y no en las filas
+            if ($docente) {
+                $this->Cell(0, 5, utf8_decode("Docente: " . $docente['Nombre'] . " " . $docente['Apellido']), 0, 1, 'L');
+                // $this->mostrarCarreraEnFilas = false;
+                $this->Ln(10);
+            }
 
             // Título
             $this->SetFont('Arial', 'B', 15);
@@ -95,10 +105,10 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             $this->Cell(10, 10, utf8_decode('Per.'), 1, 0, 'C', 1);
             $this->Cell(24, 10, utf8_decode('Horario'), 1, 0, 'C', 1);
             // $this->Cell(63, 10, utf8_decode('Docente'), 1, 0, 'C', 1);
-            $this->Cell(24, 10, utf8_decode('Aula'), 1, 0, 'C', 1);
             $this->Cell(24, 10, utf8_decode('Materia'), 1, 0, 'C', 1);
             $this->Cell(16, 10, utf8_decode('Nivel'), 1, 0, 'C', 1);
-            $this->Cell(55, 10, utf8_decode('Carrera'), 1, 1, 'C', 1);
+            $this->Cell(55, 10, utf8_decode('Carrera'), 1, 0, 'C', 1);
+            $this->Cell(38, 10, utf8_decode('Aula'), 1, 1, 'C', 1);
         }
         function Footer()
         {
@@ -121,10 +131,10 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             $pdf->Cell(10, 6, utf8_decode($fila['Periodo']), 1, 0, "C");
             $pdf->Cell(24, 6, utf8_decode($fila['HoraInicio'] . " - " . $fila['HoraFin']), 1, 0, "C");
             // $pdf->Cell(63, 6, utf8_decode($fila['NombreDocente'] . " " . $fila['ApellidoDocente']), 1, 0, "C");
-            $pdf->Cell(24, 6, utf8_decode($fila['Aula']), 1, 0, "C");
             $pdf->Cell(24, 6, utf8_decode($fila['CodigoMateria']), 1, 0, "C");
             $pdf->Cell(16, 6, utf8_decode($fila['NivelMateria']), 1, 0, "C");
             $pdf->Cell(55, 6, utf8_decode($fila['NombreCarrera']), 1, 0, "C");
+            $pdf->Cell(38, 6, utf8_decode($fila['Aula']), 1, 0, "C");
             $pdf->Ln();
         }
     }
@@ -133,3 +143,6 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
 } else {
     echo "Faltan parámetros en la solicitud.";
 }
+
+
+//sistema y contaduria 
