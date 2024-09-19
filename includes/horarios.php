@@ -51,7 +51,7 @@ if (isset($_GET['carrera']) && isset($_GET['fecha']) || isset($_GET['nivel']) ||
     }
     if ($turno !== "Todas") {
         $consulta .= " AND Horarios.Turno = '$turno'";
-    }
+    } 
 
     if ($iconoFlecha === 'Nombre') {
         // $consulta .= " ORDER BY Horarios.Dia ASC,NombreMateria ASC,NombreDocente,NivelMateria"; 
