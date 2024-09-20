@@ -69,7 +69,7 @@ opcionesBarraLateral.forEach((opcion) => {
             }
         });
 
-        opcion.classList.toggle("clicked"); 
+        opcion.classList.toggle("clicked");
     });
 });
 menu.addEventListener("click", () => {
@@ -177,7 +177,7 @@ function agregarEventos() {
         let nombre = document.getElementById("nombre").value.trim();
         let apellido = document.getElementById("apellido").value.trim();
         let tabla = document.getElementById("tabla-profesores");
-        console.log( apellido);
+        console.log(apellido);
         const params = new URLSearchParams({ nombre, apellido });
         const url = `includes/docentes.php?${params.toString()}`;
 
@@ -344,10 +344,11 @@ function agregarEventos() {
                 });
         }
     }
-
+    let fechaAula = document.querySelector(".fechaAula");
     if (botonFiltrarAula) botonFiltrarAula.addEventListener("change", filtrarAula);
     if (btnAulaSemana) btnAulaSemana.addEventListener("click", filtrarAulaSemana);
     if (filtrarTurno) filtrarTurno.addEventListener("change", filtrarAula);
+    if (fechaAula) fechaAula.addEventListener("change", filtrarAula);
     // -----------------------------------------------------------------------------------------
 
 
@@ -473,69 +474,69 @@ function agregarEventos() {
     generarReporteDocente(".pdfDocente", "../../../includes/Report/report_Docente.php");
     generarReporteDocente(".pdfDocenteSemana", "../../../includes/Report/report_DocenteSemana.php");
 
-// * MODULO REPORTES //////////////////////////////////
-const form2 = document.getElementById("form-reportes");
-    
-if (form2) {
-    form2.addEventListener("submit", (event) => {
-        event.preventDefault(); // Prevenir el envío del formulario para manejarlo con JavaScript
-        
-        const tipoReporte = document.getElementById("tipo_reporte").value;
-        const docenteID = document.getElementById("docenteID1").value;
-        const nombreDocente = document.querySelector('input[name="nombre1"]').value;
-        const carreraID = document.getElementById("carreraHidden").value;
-        const carrera = document.getElementById("carrera").value;
-        const nivel = document.getElementById("agregarNivel").value;
-        const materiaID = document.getElementById("materiaHidden").value;
-        const materia = document.getElementById("materia").value;
-        const gestion = document.getElementById("gestion").value;
-        const semestre = document.getElementById("semestre").value;
-        
-        let url = "";
-        const params = new URLSearchParams({
-            tipo_reporte: tipoReporte,
-            docenteID1: docenteID,
-            nombre1: nombreDocente,
-            carreraID: carreraID,
-            carrera: carrera,
-            nivel: nivel,
-            materiaID: materiaID,
-            materia: materia,
-            gestion: gestion,
-            semestre: semestre
+    // * MODULO REPORTES //////////////////////////////////
+    const form2 = document.getElementById("form-reportes");
+
+    if (form2) {
+        form2.addEventListener("submit", (event) => {
+            event.preventDefault(); // Prevenir el envío del formulario para manejarlo con JavaScript
+
+            const tipoReporte = document.getElementById("tipo_reporte").value;
+            const docenteID = document.getElementById("docenteID1").value;
+            const nombreDocente = document.querySelector('input[name="nombre1"]').value;
+            const carreraID = document.getElementById("carreraHidden").value;
+            const carrera = document.getElementById("carrera").value;
+            const nivel = document.getElementById("agregarNivel").value;
+            const materiaID = document.getElementById("materiaHidden").value;
+            const materia = document.getElementById("materia").value;
+            const gestion = document.getElementById("gestion").value;
+            const semestre = document.getElementById("semestre").value;
+
+            let url = "";
+            const params = new URLSearchParams({
+                tipo_reporte: tipoReporte,
+                docenteID1: docenteID,
+                nombre1: nombreDocente,
+                carreraID: carreraID,
+                carrera: carrera,
+                nivel: nivel,
+                materiaID: materiaID,
+                materia: materia,
+                gestion: gestion,
+                semestre: semestre
+            });
+
+            switch (tipoReporte) {
+                case "Reporte por Docente por gestion y semestre":
+                    const param1 = new URLSearchParams({
+                        docenteID1: docenteID,
+                        carreraID: carreraID,
+                        gestion: gestion,
+                        semestre: semestre
+                    })
+                    url = `../includes/Report/modulo_Docente-gestion.php?${param1.toString()}`;
+                    break;
+                case "carrera":
+                    url = `../includes/Report/report_Carrera.php?${params.toString()}`;
+                    break;
+                case "materia":
+                    url = `../includes/Report/report_Materia.php?${params.toString()}`;
+                    break;
+                case "gestion_semestre":
+                    url = `../includes/Report/report_GestionSemestre.php?${params.toString()}`;
+                    break;
+                default:
+                    alert("Por favor, seleccione un tipo de reporte válido.");
+                    return;
+            }
+
+            // Abre el reporte en una nueva ventana
+            window.open(url, '_blank');
         });
-        
-        switch (tipoReporte) {
-            case "Reporte por Docente por gestion y semestre":
-                const param1 = new URLSearchParams({
-                    docenteID1: docenteID,
-                    carreraID: carreraID,
-                    gestion: gestion,
-                    semestre: semestre
-                })
-                url = `../includes/Report/modulo_Docente-gestion.php?${param1.toString()}`;
-                break;
-            case "carrera":
-                url = `../includes/Report/report_Carrera.php?${params.toString()}`;
-                break;
-            case "materia":
-                url = `../includes/Report/report_Materia.php?${params.toString()}`;
-                break;
-            case "gestion_semestre":
-                url = `../includes/Report/report_GestionSemestre.php?${params.toString()}`;
-                break;
-            default:
-                alert("Por favor, seleccione un tipo de reporte válido.");
-                return;
-        }
-        
-        // Abre el reporte en una nueva ventana
-        window.open(url, '_blank');
-    });
-}
+    }
 
 
-// * //////////////////////////////////
+    // * //////////////////////////////////
 
 
 
@@ -590,24 +591,24 @@ if (form2) {
 
     const formReportes = document.getElementById('form-reportes');
     if (formReportes) {
-        
+
         formReportes.addEventListener('submit', function (event) {
-        event.preventDefault(); // Previene el envío por defecto del formulario
+            event.preventDefault(); // Previene el envío por defecto del formulario
 
-        const formData = new FormData(formReportes);
+            const formData = new FormData(formReportes);
 
-        // Convierte los datos del formulario a una URL codificada
-        const params = new URLSearchParams();
-        formData.forEach((value, key) => {
-            params.append(key, value);
+            // Convierte los datos del formulario a una URL codificada
+            const params = new URLSearchParams();
+            formData.forEach((value, key) => {
+                params.append(key, value);
+            });
+
+            // Construye la URL para enviar los datos
+            const url = `../includes/Report/modulo_report.php?${params.toString()}`;
+
+            // Abre una nueva ventana con la URL del reporte
+            window.open(url);
         });
-
-        // Construye la URL para enviar los datos
-        const url = `../includes/Report/modulo_report.php?${params.toString()}`;
-
-        // Abre una nueva ventana con la URL del reporte
-        window.open(url);
-    });
     }
 
 
@@ -1322,13 +1323,13 @@ if (form2) {
                 const codigo = codigoInput.value;
                 const nivel = nivelInputNivel.value;
 
-                console.log('nombre: ' + nombre + ' ' + 'codigo: ' + codigo + ' ' + 'nivel: ' + nivel);
+                console.log('MateriaID: '+ materiaID +' '+ 'nombre: ' + nombre + ' ' + 'codigo: ' + codigo + ' ' + 'nivel: ' + nivel);
                 fetch('includes/CRUD/actualizarMateria.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ materiaID, nombre, nivel })
+                    body: JSON.stringify({ materiaID, nombre, nivel, codigo })
                 })
                     .then(response => response.json())
                     .then(data => {
@@ -1341,13 +1342,14 @@ if (form2) {
                                 if (nombre !== '') {
                                     row.querySelector('td:nth-child(1)').textContent = nombre;
                                 }
-
-                                // Mantener el código si no se actualizó
+                                
                                 if (codigo !== '') {
                                     if (row.querySelector('td:nth-child(2)')) row.querySelector('td:nth-child(2)').textContent = codigo;
                                 }
+                                if (nivel !== '') {
+                                    if (row.querySelector('td:nth-child(3)')) row.querySelector('td:nth-child(3)').textContent = nivel;
+                                }
 
-                                row.querySelector('td:nth-child(3)').textContent = nivel;
                             }
                             editModalMateriaForm.reset();
                             editModalMateria.close();
@@ -1376,10 +1378,6 @@ if (form2) {
     }
 
 
-
-
-    // TODO 
-    // !
 
     // * BARRA AGREGAR NUEVOS DATOS //////////////////////////////////////////////////
     const form = document.getElementById("form-AgregarDatos");
@@ -1431,6 +1429,7 @@ if (form2) {
                 .catch(error => console.error('Error:', error));
         })
     }
+
     let formCopiar = document.getElementById('form-CopiarDatos');
     if (formCopiar) {
         formCopiar.addEventListener('submit', function (e) {
@@ -1451,7 +1450,6 @@ if (form2) {
             formData.append('carrera_copiar', carrera_copiar);
             formData.append('gestion_copiar', gestion_copiar);
             formData.append('nueva_gestion', nueva_gestion);
-
             // Enviar los datos a través de fetch
             fetch('includes/copiar_datos.php', {
                 method: 'POST',
@@ -1472,10 +1470,11 @@ if (form2) {
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    showCustomAlert("Error", error)
                     showCustomAlert("Error al intentar copiar los datos.", false);
                 });
-        });
-    }
+            });
+        }
 
 
     // * ////////////////////////////////////////////////

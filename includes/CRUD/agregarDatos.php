@@ -91,6 +91,7 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
         $codigo_materia = sanitizar($_POST['codigo_materia']);
         $nivel_materia = sanitizar($_POST['nivel_materia']);
         $carrera_materia = sanitizar($_POST['carrera_materia']);
+        $paralelo_materia = sanitizar($_POST['paralelo_materia'])?? NUll;
 
         if (!empty($nombre_materia) && !empty($codigo_materia) && !empty($nivel_materia) && !empty($carrera_materia)) {
             // Verificar si la materia ya existe
@@ -106,8 +107,8 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
                 $carrera_id = obtenerCarreraID($conexion, $carrera_materia);
                 if ($carrera_id) {
                     // Agregar la materia si no existe
-                    $stmt = $conexion->prepare("INSERT INTO Materias (Nombre, Codigo, Nivel, CarreraID) VALUES (?, ?, ?, ?)");
-                    $stmt->bind_param('ssii', $nombre_materia, $codigo_materia, $nivel_materia, $carrera_id);
+                    $stmt = $conexion->prepare("INSERT INTO Materias (Nombre, Codigo, Nivel, CarreraID, Paralelo) VALUES (?, ?, ?, ?, ?)");
+                    $stmt->bind_param('ssiis', $nombre_materia, $codigo_materia, $nivel_materia, $carrera_id, $paralelo_materia);
 
                     if ($stmt->execute()) {
                         echo "Materia agregada con éxito";

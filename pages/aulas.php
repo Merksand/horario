@@ -33,14 +33,14 @@
             <span class="bloquesFiltro">
                 <label for="filtrar-turno-evento" class="labelEspacio">Turno:</label>
                 <select id="filtrar-turno-evento" name="turno" style="width: 150px;">
+                    <option value="Todas">Todas</option>
                     <option value="Noche">Noche</option>
                     <option value="Mañana">Mañana</option>
-                    <option value="Todas">Todas</option>
                 </select>
             </span>
             <span class="bloquesFiltro">
                 <label for="fecha" class="labelEspacio">Fecha:</label>
-                <input type="date" id="fecha" style="width: 150px;" name="fecha">
+                <input type="date" id="fecha" class="fechaAula" style="width: 150px;" name="fecha">
             </span>
             <input type="submit" value="Semana completa" id="filtrar-aula" name="filtrar-aula">
 

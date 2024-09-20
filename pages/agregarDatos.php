@@ -137,7 +137,7 @@
 
                 <input type="text" id="materiaNombre" name="nombre_materia" placeholder="Nombre de la Materia">
                 <input type="text" id="materiaCodigo" name="codigo_materia" placeholder="Código de la Materia, ejemplo: PRG-102">
-                <!-- <input type="number" id="materiaNivel" name="nivel_materia" placeholder="Nivel de la Materia"> -->
+                <input type="text" id="materiaParalelo" name="paralelo_materia" placeholder="EJEMPLO: A,B,C,D (OPCIONAL)">
 
                 <!-- <label for="filtrar-nivel">Nivel:</label> -->
                 <select id="materiaNivel" name="nivel_materia">

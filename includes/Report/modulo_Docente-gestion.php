@@ -32,7 +32,7 @@ if (!empty($_GET['docenteID1']) && !empty($_GET['gestion']) && !empty($_GET['sem
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
                     INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
-                WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1) ";
+                WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre WHERE Gestion = $gestion AND Semestre = $semestre) ";
 
     $consulta .= " AND DocenteMateria.DocenteID = $docenteID";
 
