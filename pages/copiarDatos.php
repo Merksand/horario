@@ -88,7 +88,7 @@
         include '../includes/database.php';
 
 
-        $queryGestionSemetre = "SELECT GestionSemestreID, Gestion,Semestre FROM gestionSemestre";
+        $queryGestionSemetre = "SELECT GestionSemestreID, Gestion,Semestre FROM GestionSemestre";
         $resultGestionSemetre = $conexion->query( $queryGestionSemetre);
 
         $gestionSemetre = "";
@@ -97,7 +97,7 @@
         }
 
 
-        $queryCarreras = "SELECT CarreraID, Nombre FROM carreras";
+        $queryCarreras = "SELECT CarreraID, Nombre FROM Carreras";
         $resultCarreras = $conexion->query($queryCarreras);
 
         $carreras = "";

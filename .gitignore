@@ -1,0 +1,10 @@
+node_modules
+dist
+extraResources
+*.json
+main.js
+menu.js
+centra2.php
+tablas.php
+borrar.js
+borrar.html

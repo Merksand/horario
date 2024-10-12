@@ -23,7 +23,18 @@
 
 
 
+Para ignorar todos los archivos con extensión .json:
 
+*.json
+
+Para ignorar todos los archivos que comienzan con json y tienen cualquier extensión:
+
+json*
+
+Si quieres combinar ambos patrones en una sola línea:
+
+*.json
+json*
 
 
 

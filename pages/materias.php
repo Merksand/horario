@@ -10,7 +10,7 @@
 <body>
     <?php
     include "../includes/database.php";
-    $query = "SELECT Nombre,Nivel,Paralelo FROM materias";
+    $query = "SELECT Nombre,Nivel,Paralelo FROM Materias";
     $result = $conexion->query($query);
     $materias = [];
     while ($row = $result->fetch_assoc()) {

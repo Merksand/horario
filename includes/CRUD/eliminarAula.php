@@ -12,10 +12,8 @@ try {
         if (isset($input['id'])) {
             $id = $input['id'];
 
-            // Incluye la base de datos con la ruta correcta
             include '../database.php';
 
-            // Elimina el registro en Aulas
             $sql = "DELETE FROM Aulas WHERE AulaID = ?";
             $stmt = $conexion->prepare($sql);
             if ($stmt) {
@@ -25,10 +23,8 @@ try {
                     $stmt->execute();
 
                     if ($stmt->affected_rows > 0) {
-                        // Se eliminó correctamente
                         echo json_encode(['status' => 'success', 'message' => 'Aula eliminada correctamente']);
                     } else {
-                        // No se eliminó ninguna fila, posiblemente debido a una restricción de clave foránea
                         echo json_encode(['status' => 'error', 'message' => 'No se puede eliminar esta aula porque está vinculada a otras tablas']);
                     }
                 } catch (Exception $ex) {
@@ -40,7 +36,6 @@ try {
                 throw new Exception("Error al preparar la consulta para eliminar el aula");
             }
 
-            // Cierra la conexión
             $conexion->close();
         } else {
             echo json_encode(['status' => 'error', 'message' => 'ID de aula no proporcionado']);

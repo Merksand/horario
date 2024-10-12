@@ -125,6 +125,8 @@ function cargarContenido(pagina) {
             agregarEventos();
             cargarTotales();
             localStorage.setItem("pagina", pagina);
+
+
         })
         .catch((error) => {
             console.error("Error generado:", error);
@@ -1323,7 +1325,7 @@ function agregarEventos() {
                 const codigo = codigoInput.value;
                 const nivel = nivelInputNivel.value;
 
-                console.log('MateriaID: '+ materiaID +' '+ 'nombre: ' + nombre + ' ' + 'codigo: ' + codigo + ' ' + 'nivel: ' + nivel);
+                console.log('MateriaID: ' + materiaID + ' ' + 'nombre: ' + nombre + ' ' + 'codigo: ' + codigo + ' ' + 'nivel: ' + nivel);
                 fetch('includes/CRUD/actualizarMateria.php', {
                     method: 'POST',
                     headers: {
@@ -1342,7 +1344,7 @@ function agregarEventos() {
                                 if (nombre !== '') {
                                     row.querySelector('td:nth-child(1)').textContent = nombre;
                                 }
-                                
+
                                 if (codigo !== '') {
                                     if (row.querySelector('td:nth-child(2)')) row.querySelector('td:nth-child(2)').textContent = codigo;
                                 }
@@ -1473,13 +1475,74 @@ function agregarEventos() {
                     showCustomAlert("Error", error)
                     showCustomAlert("Error al intentar copiar los datos.", false);
                 });
-            });
-        }
+        });
+    }
 
 
     // * ////////////////////////////////////////////////
-}
 
+
+
+    let centra = document.querySelector("#tabla-centralizador")
+
+    if (centra) {
+        console.log(24234);
+        console.log("siuuu");
+        if ($("#tabla-centralizador")) {
+            $(function () {
+                $("#tabla-centralizador").DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [{
+                        extend: 'pdfHtml5',
+                        text: 'Exportar a PDF',
+                        customize: function (doc) {
+                            var fecha = new Date();
+                            var fechaTexto = fecha.toLocaleDateString() + ' ' + fecha.toLocaleTimeString();
+
+                            doc.content.splice(0, 0, {
+                                text: 'Fecha: ' + fechaTexto,
+                                alignment: 'left',
+                                margin: [20, 10]
+                            });
+                        }
+                    },
+                        'csv', 'excel', 'print'
+                    ],
+                    "pageLength": 15,
+                    "language": {
+                        "emptyTable": "No hay información",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Categorías",
+                        "infoEmpty": "Mostrando 0 a 0 de 0 Categorías",
+                        "infoFiltered": "(Filtrado de _MAX_ total Categorías)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Categorías",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscador:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    },
+                    "responsive": true,
+                    "lengthChange": true,
+                    "autoWidth": false,
+
+                }).buttons().container().appendTo('#tabla-centralizador_wrapper .col-md-6:eq(0)');
+            });
+        }
+
+        // centra.addEventListener("click", () => {
+        //     console.log(11111111111111111);
+        // })
+    }
+
+
+}
 
 
 

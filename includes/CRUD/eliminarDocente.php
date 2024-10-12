@@ -12,10 +12,8 @@ try {
         if (isset($input['id'])) {
             $id = $input['id'];
 
-            // Incluye la base de datos con la ruta correcta
             include('../database.php');
 
-            // Elimina el registro en DocenteMateria
             $sql = "DELETE FROM DocenteMateria WHERE DocenteMateriaID = ?";
             $stmt = $conexion->prepare($sql);
             if ($stmt) {

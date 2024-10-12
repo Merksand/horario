@@ -16,7 +16,30 @@ if (!isset($_SESSION['usuario_id'])) {
     <title>EduTime</title>
     <link rel="stylesheet" type="text/css" href="pages/assets/css/style.css">
     <link rel="icon" href="img/logo-tran.png" type="image/png">
+    <!-- Font Awesome -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- jQuery -->
+    <script src="pages/assets/libs/jquery/jquery.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="pages/assets/libs/datatables/jquery.dataTables.min.css">
+
+    <!-- DataTables JS -->
+    <script src="pages/assets/libs/datatables/jquery.dataTables.min.js"></script>
+
+    <!-- DataTables Buttons extension CSS -->
+    <link rel="stylesheet" href="pages/assets/libs/datatables/buttons.dataTables.min.css">
+
+    <!-- DataTables Buttons extension JS -->
+    <script src="pages/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="pages/assets/libs/jszip/jszip.min.js"></script>
+    <script src="pages/assets/libs/pdfmake/pdfmake.min.js"></script>
+    <script src="pages/assets/libs/pdfmake/vfs_fonts.js"></script>
+    <script src="pages/assets/libs/datatables/buttons.html5.min.js"></script>
+    <script src="pages/assets/libs/datatables/buttons.print.min.js"></script>
+
 </head>
 
 <body>
@@ -101,8 +124,14 @@ if (!isset($_SESSION['usuario_id'])) {
                         <span>Copiar Datos De Carrera</span>
                     </a>
                 </li>
+                <li onclick="cargarContenido('pages/centralizador.php')">
+                    <a class="inbox" href="#">
+                        <ion-icon name="server-outline"></ion-icon>
+                        <span>Centralizador</span>
+                    </a>
+                </li>
                 <li>
-                    <a class="inbox" href="../includes/logout.php">
+                    <a class="inbox" href="logout.php">
                         <ion-icon name="trash-outline"></ion-icon>
                         <span>Cerrrar Sesión</span>
                     </a>
@@ -149,9 +178,11 @@ if (!isset($_SESSION['usuario_id'])) {
         </div>
     </main>
     </script>
+    <script src="pages/assets/js/script.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="pages/assets/js/script.js"></script>
+
+
     <!-- <script src="pages/assets/js/docentes.js"></script> -->
 </body>
 

@@ -87,7 +87,7 @@
     <?php
     include '../includes/database.php';
 
-    $queryCarreras = "SELECT CarreraID, Nombre FROM carreras";
+    $queryCarreras = "SELECT CarreraID, Nombre FROM Carreras";
     $resultCarreras = $conexion->query($queryCarreras);
 
     $carreras = "";
@@ -96,7 +96,7 @@
         $carreras .= "<option data-carrera-id = '{$row['CarreraID']}' value='{$row['Nombre']}'></option>";
     }
 
-    $queryDocentes = "SELECT DocenteID, Nombre,Apellido FROM docentes";
+    $queryDocentes = "SELECT DocenteID, Nombre,Apellido FROM Docentes";
     $resultDocentes = $conexion->query($queryDocentes);
 
     $docentes = "";
@@ -104,7 +104,7 @@
         $docentes .= "<option value='" . $row['Nombre'] . " " . $row['Apellido'] . "' data-docente-id='" . $row['DocenteID'] . "'>";
     }
 
-    $queryMaterias = "SELECT MateriaID, Nombre FROM materias";
+    $queryMaterias = "SELECT MateriaID, Nombre FROM Materias";
     $resultMaterias = $conexion->query($queryMaterias);
 
     $materias = "";
