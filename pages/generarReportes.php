@@ -112,13 +112,15 @@
         $materias .= "<option value='" . $row['Nombre'] . "' data-materia-id='" . $row['MateriaID'] . "'>";
     }
 
-    $queryGestiones = "SELECT Gestion FROM GestionSemestre";
+    $queryGestiones = "SELECT distinct Gestion FROM GestionSemestre";
     $resultGestiones = $conexion->query($queryGestiones);
 
     $gestiones = "";
     while ($row = $resultGestiones->fetch_assoc()) {
         $gestiones .= "<option value='" . $row['Gestion'] . "'>" . $row['Gestion'] . "</option>";
     }
+
+    
     ?>
 
     <div class="container container__reportes">
@@ -150,36 +152,6 @@
 
                 </datalist>
             </div>
-
-            <!-- <div class="form-group">
-                <label for="carrera">Carrera:</label>
-                <input type="hidden" name="carreraID" id="carreraHidden">
-                <input list="lista-carrera" id="carrera" name="carrera" type="text">
-                <datalist id="lista-carrera" class="datalist">
-                    <?php echo $carreras; ?>
-                </datalist>
-            </div>
-
-            <div class="form-group">
-                <label for="nivel">Nivel:</label>
-                <input list="periodo-nivel" id="agregarNivel" class="gestionNivel" name="nivel" type="text" placeholder="Seleccione una carrera" disabled>
-                <datalist id="periodo-nivel" class="datalist">
-                    <option value="100">
-                    <option value="200">
-                    <option value="300">
-                    <option value="400">
-                    <option value="500">
-                    <option value="600">
-                </datalist>
-            </div>
-
-            <div class="form-group">
-                <label for="materia">Materia:</label>
-                <input type="hidden" name="materiaID" id="materiaHidden">
-                <input list="lista-materias" type="text" id="materia" name="materia" disabled placeholder="Seleccione un nivel">
-                <datalist id="lista-materias">
-                </datalist>
-            </div> -->
 
             <!-- Seleccionar Gestión -->
             <div class="form-group">
