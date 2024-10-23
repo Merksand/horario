@@ -61,7 +61,8 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                         DATE_FORMAT(HoraFin, '%H:%i') AS horaFin,
                         Horarios.Dia AS dia,
                         Horarios.HorarioID AS horarioID,
-                        Materias.Paralelo AS paralelo
+                        Materias.Paralelo AS paralelo,
+                        Horarios.Periodo AS periodo
                     FROM
                         DocenteMateria
                         INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
@@ -109,8 +110,8 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                 while ($fila = $resultado->fetch_assoc()) {
                     $tablaHTML .= '<tr data-docente-materia-id="' . $fila['DocenteMateriaID'] . '">
                                         <td class="dia">' . $fila['dia'] . '</td>
-                                        <td class="horaInicio">' . $fila['horaInicio'] . ' - ' . $fila['horaFin'] . '</td>
-                                        <td class="nombreCompleto">' . $fila['nombre'] . ' ' . $fila['apellido'] . '</td>
+                                        <td class="horaInicio">'. "P". $fila['periodo'].": " . $fila['horaInicio'] . ' - ' . $fila['horaFin'] . '</td>
+                                        <td class="nombreCompleto">' .$fila['nombre']  . ' ' . $fila['apellido'] . '</td>
                                         <td class="nombreCarrera">' . $fila['nombreCarrera'] . '</td>
                                         <td class="materia">' . $fila['materia'] . '</td>
                                         <td class="nivel">' . $fila['nivel'] . ' ' . $fila['paralelo'] . '</td>

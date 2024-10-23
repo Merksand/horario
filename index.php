@@ -132,8 +132,8 @@ if (!isset($_SESSION['usuario_id'])) {
                         <span>Centralizador</span>
                     </a>
                 </li>
-                <li>
-                    <a class="inbox" href="logout.php">
+                <li id="cerrar-sesion">
+                    <a class="inbox">
                         <ion-icon name="trash-outline"></ion-icon>
                         <span>Cerrrar Sesión</span>
                     </a>

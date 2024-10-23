@@ -1428,6 +1428,7 @@ function agregarEventos() {
     }
 
     let formCopiar = document.getElementById('form-CopiarDatos');
+    let btnCopiar = document.getElementById('btn-copiar');
     if (formCopiar) {
         formCopiar.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -1436,38 +1437,49 @@ function agregarEventos() {
             const gestion_copiar = document.getElementById('gestion_copiar').value;
             const nueva_gestion = document.getElementById('nueva_gestion').value;
 
-            // Verificar que todos los campos estén completos antes de enviar el formulario
             if (carrera_copiar === "" || gestion_copiar === "" || nueva_gestion === "") {
                 showCustomAlert("Por favor, complete todos los campos antes de continuar.", false);
                 return;
             }
 
-            // Crear el cuerpo de la petición
             const formData = new FormData();
             formData.append('carrera_copiar', carrera_copiar);
             formData.append('gestion_copiar', gestion_copiar);
             formData.append('nueva_gestion', nueva_gestion);
-            // Enviar los datos a través de fetch
+            btnCopiar.disabled = true;
+            showCustomAlert("Espere un momento...", true);
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
             fetch('includes/copiar_datos.php', {
                 method: 'POST',
-                body: formData
+                body: formData,
+                signal: controller.signal
             })
                 .then(response => response.text())
                 .then(data => {
+                    clearTimeout(timeoutId); // Limpiar el timeout si la solicitud se completa
                     console.log("Respuesta del servidor: " + data);
-                    if (data.includes("correctamente")) {
+                    console.log("---------------------------------");
+                    if (data.includes("copiados correctamente")) {
                         showCustomAlert("Datos copiados correctamente.", true);
+                        formCopiar.reset();
                     } else if (data.includes("mismo que la gestión")) {
                         showCustomAlert("La nueva gestión no puede ser la misma que la gestión a copiar.", false);
-                    } else if (data.includes("Error")) {
+                    } else if (data.includes("Error") || data.includes("Error al copiar los datos")) {
                         showCustomAlert("Hubo un error al copiar los datos.", false);
-                    } else {
+                    } else if (data.includes("encontraron datos")) {
+                        showCustomAlert("No se encontraron datos para copiar", false)
+                    }
+                    else {
                         showCustomAlert("Por favor, complete todos los campos.", false);
                     }
+                    btnCopiar.disabled = false;
+
                 })
                 .catch(error => {
+                    btnCopiar.disabled = false;
                     console.error('Error:', error);
-                    showCustomAlert("Error", error)
                     showCustomAlert("Error al intentar copiar los datos.", false);
                 });
         });
@@ -1481,8 +1493,6 @@ function agregarEventos() {
     let centra = document.querySelector("#tabla-centralizador")
 
     if (centra) {
-        console.log(24234);
-        console.log("siuuu");
         if ($("#tabla-centralizador")) {
             $(function () {
                 $("#tabla-centralizador").DataTable({
@@ -1530,10 +1540,25 @@ function agregarEventos() {
                 }).buttons().container().appendTo('#tabla-centralizador_wrapper .col-md-6:eq(0)');
             });
         }
+    }
 
-        // centra.addEventListener("click", () => {
-        //     console.log(11111111111111111);
-        // })
+    let btnBd = document.querySelector("#btn-bd");
+
+    if (btnBd) {
+        document.getElementById('btn-bd').addEventListener('click', function () {
+            window.location.href = 'includes/copia-bd.php';
+        });
+    }
+
+    let cerrarSesion = document.querySelector("#cerrar-sesion");
+
+    if (cerrarSesion) {
+        document.getElementById('cerrar-sesion').addEventListener('click', function () {
+            localStorage.removeItem('pagina');
+            localStorage.removeItem('opcionClick');
+            console.log("nouuu");
+            window.location.href = 'logout.php';
+        });
     }
 
 

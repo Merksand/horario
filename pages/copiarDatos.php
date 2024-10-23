@@ -105,8 +105,9 @@
         $carreras .= "<option value='" . $row['CarreraID'] . "'>" . $row['Nombre'] . "</option>";
     }
     ?>
+    <button id="btn-bd">Crear Copia de Base de Datos</button>
     <form id="form-CopiarDatos">
-        <h2>Copiar Datos Académicos a una nueva Gestion o Semestre</h2>
+        <h2>Copiar Datos Académicos a una nueva Gestion y Semestre</h2>
 
         <div class="form-group">
             <label for="carrera_copiar">Seleccionar Carrera a Copiar:</label>
@@ -117,7 +118,7 @@
         </div>
 
         <div class="form-group">
-            <label for="gestion_copiar">Seleccionar Gestión a Copiar:</label>
+            <label for="gestion_copiar">Seleccionar Gestión y Semestre a Copiar:</label>
             <select id="gestion_copiar" name="gestion_copiar">
                 <option value="">Seleccione una Gestión</option>
                 <?php echo $gestionSemetre; ?>
@@ -126,14 +127,14 @@
 
         <!-- Selección del nuevo período académico -->
         <div class="form-group">
-            <label for="nueva_gestion">Nueva Gestión:</label>
+            <label for="nueva_gestion">Nueva Gestión y Semestre:</label>
             <select name="nueva_gestion" id="nueva_gestion">
                 <option value="">Seleccione una Gestión</option>
                 <?php echo $gestionSemetre; ?>
             </select>
         </div>
 
-        <button type="submit">Copiar Datos</button>
+        <button type="submit" id="btn-copiar">Copiar Datos</button>
     </form>
 
 </body>
