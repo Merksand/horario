@@ -28,6 +28,7 @@ if (!empty($_POST["btnIngresar"])) {
                     $_SESSION['usuario'] = $fila['Usuario'];
                     $_SESSION['nombre'] = $fila['Nombre'];
                     $_SESSION['apellido'] = $fila['Apellido'];
+                    $_SESSION["rol"] = $fila["RolID"];
                     header("Location: ../index.php");
                     exit();
                 } else {

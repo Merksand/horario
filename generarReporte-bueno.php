@@ -146,7 +146,6 @@
                 <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1">
                 <datalist id="listaDocentes" class="datalist">
                     <?php echo $docentes; ?>
-
                 </datalist>
             </div>
 
@@ -159,6 +158,7 @@
                 </datalist>
             </div>
 
+            <!-- Seleccionar Nivel -->
             <div class="form-group">
                 <label for="nivel">Nivel:</label>
                 <input list="periodo-nivel" id="agregarNivel" class="gestionNivel" name="nivel" type="text" placeholder="Seleccione una carrera" disabled>
@@ -172,6 +172,7 @@
                 </datalist>
             </div>
 
+            <!-- Seleccionar Materia -->
             <div class="form-group">
                 <label for="materia">Materia:</label>
                 <input type="hidden" name="materiaID" id="materiaHidden">

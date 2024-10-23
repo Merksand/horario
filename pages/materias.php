@@ -27,20 +27,16 @@
                 <datalist id="lista-materias">
                     <?php
                     foreach ($materias as $materia) {
-                        // echo "<option value='" . $materia['Nombre'] . "'>";
-
-                        // echo "<option value='{$materia['Nombre']}'>{$materia['Nombre']}</option>";
-
-                        // echo '<option value="' . $materia['Nombre'] . '">';
-
-
-
                         echo "<option value='$materia[Nombre]'>$materia[Nivel] $materia[Paralelo]</option>";
                     }
                     ?>
+                    
                 </datalist>
+                <!-- <input list="lista-materias"  placeholder="Nombre de la materia" style="width: 250px;"> -->
+               
 
-                <!-- <input type="text" id="materia" placeholder="Nombre de la materia" style="width: 150px;" name="materia"> -->
+                
+                <!-- <input type="text" placeholder="Nombre de la materia" style="width: 150px;" name="materia"> -->
                 <label for="fecha">Fecha:</label>
                 <input type="date" id="fecha" class="fechaDocente" style="width: 150px;" name="fecha">
                 <input type="submit" value="Filtrar" id="btn-materia" name="btn-filtrar" class="btna">

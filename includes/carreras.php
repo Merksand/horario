@@ -25,24 +25,22 @@ if (isset($_GET['carrera']) && isset($_GET["nivel"])) {
                     INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
-                    INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID";
-    /* WHERE Carreras.Nombre = '$carrera'"; */
+               INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
+                WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
 
-
-    if ($carrera !== "Todas" && $nivel !== "Todas") {
-        $consulta .= " WHERE Carreras.Nombre = '$carrera' AND Materias.Nivel = $nivel AND GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
-    } else if ($carrera !== "Todas" && $nivel == "Todas") {
-        $consulta .= " WHERE Carreras.Nombre = '$carrera' AND GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
-    } elseif ($carrera == "Todas" && $nivel !== "Todas") {
-        $consulta .= " WHERE Materias.Nivel = '$nivel' AND GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
-    } else if (empty($carrera)) {
-        echo "No seleccionó ninguna carrera";
+    // Condiciones basadas en 'carrera' y 'nivel'
+    if ($carrera !== 'Todas' && $nivel !== 'Todas') {
+        $consulta .= " AND Carreras.Nombre = '$carrera' AND Materias.Nivel = $nivel";
+    } else if ($carrera !== 'Todas') {
+        $consulta .= " AND Carreras.Nombre = '$carrera'";
+    } else if ($nivel !== 'Todas') {
+        $consulta .= " AND Materias.Nivel = $nivel";
     }
 
 
 
 
-    $consulta .= " ORDER BY Horarios.HorarioID, Horarios.HoraInicio ";    
+    $consulta .= " ORDER BY Horarios.HorarioID, Horarios.HoraInicio ";
     $resultado = $conexion->query($consulta);
     if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {

@@ -1506,7 +1506,7 @@ function agregarEventos() {
                             });
                         }
                     },
-                        'csv', 'excel', 'print'
+                        'excel', 'print'
                     ],
                     "pageLength": 15,
                     "language": {

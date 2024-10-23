@@ -93,37 +93,39 @@ if (!isset($_SESSION['usuario_id'])) {
                         <span>Carrera</span>
                     </a>
                 </li>
-                <!-- <li onclick="cargarContenido('pages/reportes.php')">
-                    <a class="inbox" href="#">
-                        <ion-icon name="document-text-outline"></ion-icon>
-                        <span>Reportes</span>
-                    </a>
-                </li> -->
+
                 <li onclick="cargarContenido('pages/generarReportes.php')">
                     <a class="inbox" href="#">
                         <ion-icon name="document-text-outline"></ion-icon>
                         <span>Generar Reportes</span>
                     </a>
                 </li>
-                <li onclick="cargarContenido('pages/configuracion.php')">
-                    <a class="inbox" href="#">
-                        <ion-icon name="settings-outline"></ion-icon>
-                        <span>Configuración</span>
-                    </a>
-                </li>
-                <li onclick="cargarContenido('pages/agregarDatos.php')">
-                    <a class="inbox" href="#">
-                        <ion-icon name="add-circle-outline"></ion-icon>
-                        <span>Agregar nuevos datos</span>
-                    </a>
-                </li>
-                <li onclick="cargarContenido('pages/copiarDatos.php')">
-                    <a class="inbox" href="#">
-                        <!-- <ion-icon name="add-circle-outline"></ion-icon> -->
-                        <ion-icon name="copy-outline"></ion-icon>
-                        <span>Copiar Datos De Carrera</span>
-                    </a>
-                </li>
+
+                <?php if ($_SESSION['rol'] == 1) : ?>
+
+                    <li onclick="cargarContenido('pages/configuracion.php')">
+                        <a class="inbox" href="#">
+                            <ion-icon name="settings-outline"></ion-icon>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                    <li onclick="cargarContenido('pages/agregarDatos.php')">
+                        <a class="inbox" href="#">
+                            <ion-icon name="add-circle-outline"></ion-icon>
+                            <span>Agregar nuevos datos</span>
+                        </a>
+                    </li>
+                    <li onclick="cargarContenido('pages/copiarDatos.php')">
+                        <a class="inbox" href="#">
+                            <!-- <ion-icon name="add-circle-outline"></ion-icon> -->
+                            <ion-icon name="copy-outline"></ion-icon>
+                            <span>Copiar Datos De Carrera</span>
+                        </a>
+                    </li>
+
+                <?php endif ?>
+
+
                 <li onclick="cargarContenido('pages/centralizador.php')">
                     <a class="inbox" href="#">
                         <ion-icon name="server-outline"></ion-icon>

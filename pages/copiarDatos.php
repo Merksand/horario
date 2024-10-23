@@ -84,26 +84,26 @@
             }
         }
     </style>
-    <?php 
-        include '../includes/database.php';
+    <?php
+    include '../includes/database.php';
 
 
-        $queryGestionSemetre = "SELECT GestionSemestreID, Gestion,Semestre FROM GestionSemestre";
-        $resultGestionSemetre = $conexion->query( $queryGestionSemetre);
+    $queryGestionSemetre = "SELECT GestionSemestreID, Gestion,Semestre FROM GestionSemestre";
+    $resultGestionSemetre = $conexion->query($queryGestionSemetre);
 
-        $gestionSemetre = "";
-        while ($row = $resultGestionSemetre->fetch_assoc()) {
-            $gestionSemetre  .= "<option value='" . $row['GestionSemestreID'] . "'>".$row['Gestion'] ." - ". $row['Semestre'] . "</option>";
-        }
+    $gestionSemetre = "";
+    while ($row = $resultGestionSemetre->fetch_assoc()) {
+        $gestionSemetre  .= "<option value='" . $row['GestionSemestreID'] . "'>" . $row['Gestion'] . " - " . $row['Semestre'] . "</option>";
+    }
 
 
-        $queryCarreras = "SELECT CarreraID, Nombre FROM Carreras";
-        $resultCarreras = $conexion->query($queryCarreras);
+    $queryCarreras = "SELECT CarreraID, Nombre FROM Carreras";
+    $resultCarreras = $conexion->query($queryCarreras);
 
-        $carreras = "";
-        while ($row = $resultCarreras->fetch_assoc()) {
-            $carreras .= "<option value='" . $row['CarreraID'] . "'>" . $row['Nombre'] . "</option>";
-        }
+    $carreras = "";
+    while ($row = $resultCarreras->fetch_assoc()) {
+        $carreras .= "<option value='" . $row['CarreraID'] . "'>" . $row['Nombre'] . "</option>";
+    }
     ?>
     <form id="form-CopiarDatos">
         <h2>Copiar Datos Académicos a una nueva Gestion o Semestre</h2>
@@ -111,7 +111,7 @@
         <div class="form-group">
             <label for="carrera_copiar">Seleccionar Carrera a Copiar:</label>
             <select id="carrera_copiar" name="carrera_copiar">
-                 <option value="">Seleccione una carrera</option>
+                <option value="">Seleccione una carrera</option>
                 <?php echo $carreras; ?>
             </select>
         </div>
@@ -120,7 +120,7 @@
             <label for="gestion_copiar">Seleccionar Gestión a Copiar:</label>
             <select id="gestion_copiar" name="gestion_copiar">
                 <option value="">Seleccione una Gestión</option>
-                <?php echo $gestionSemetre;?>     
+                <?php echo $gestionSemetre; ?>
             </select>
         </div>
 
@@ -129,7 +129,7 @@
             <label for="nueva_gestion">Nueva Gestión:</label>
             <select name="nueva_gestion" id="nueva_gestion">
                 <option value="">Seleccione una Gestión</option>
-                <?php echo $gestionSemetre;?>        
+                <?php echo $gestionSemetre; ?>
             </select>
         </div>
 
