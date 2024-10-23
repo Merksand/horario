@@ -2,6 +2,9 @@
 include 'database.php';
 
 
+date_default_timezone_set('America/La_Paz');
+
+
 $backup_file = $dbname . "_" . date("Y-m-d_H-i-s") . ".sql";
 
 $temp_file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $backup_file;
@@ -27,4 +30,3 @@ if (file_exists($temp_file)) {
 } else {
     echo "Error al crear la copia de seguridad.";
 }
-?>

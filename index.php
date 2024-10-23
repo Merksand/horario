@@ -117,9 +117,15 @@ if (!isset($_SESSION['usuario_id'])) {
                     </li>
                     <li onclick="cargarContenido('pages/copiarDatos.php')">
                         <a class="inbox" href="#">
-                            <!-- <ion-icon name="add-circle-outline"></ion-icon> -->
                             <ion-icon name="copy-outline"></ion-icon>
                             <span>Copiar Datos De Carrera</span>
+                        </a>
+                    </li>
+                    <li onclick="cargarContenido('pages/usuarios.php')">
+                        <a class="inbox" href="#">
+                            <!-- <ion-icon name="copy-outline"></ion-icon> -->
+                            <ion-icon name="person-add-outline"></ion-icon>
+                            <span>Agregar/Cambiar Clave</span>
                         </a>
                     </li>
 

@@ -477,7 +477,7 @@ function agregarEventos() {
     generarReporteDocente(".pdfDocenteSemana", "../../../includes/Report/report_DocenteSemana.php");
 
     // * MODULO REPORTES //////////////////////////////////
-    // const form2 = document.getElementById("form-reportes");
+    // const form2 = document.getElementById("formData);-reportes");
 
     // if (form2) {
     //     form2.addEventListener("submit", (event) => {
@@ -1561,7 +1561,54 @@ function agregarEventos() {
         });
     }
 
+    let cambiarContrasena = document.querySelector("#cambiarContrasenaForm");
 
+    if (cambiarContrasena) {
+        cambiarContrasena.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(cambiarContrasena);
+            console.log(formData);
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
+            fetch('includes/cambiar_clave.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    showCustomAlert(data.message, true)
+                    cambiarContrasena.reset();
+                })
+              
+        });
+    }
+
+    let agregarUsuarioForm = document.getElementById('agregarUsuarioForm');
+
+    if (agregarUsuarioForm) {
+
+        agregarUsuarioForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(agregarUsuarioForm);
+
+
+            console.log(formData);
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
+            fetch('includes/CRUD/agregarUsuario.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    showCustomAlert(data.message, true)
+                    // alert(data.message);
+                    agregarUsuarioForm.reset();
+                });
+        });
+    }
 }
 
 
@@ -1599,6 +1646,7 @@ function cargarTotales() {
     xhr.open("GET", "includes/totales.php", true);
     xhr.send();
 }
+
 
 
 
