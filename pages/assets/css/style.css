@@ -369,7 +369,7 @@ main.min-main {
   border: 1px solid #ccc;
 }
 
-.filtro input[type="submit"], #btn-bd {
+.filtro input[type="submit"]{
   padding: 6px 15px;
   margin-left: 15px;
   /* background-color: #007bff !important; */
@@ -750,11 +750,6 @@ ion-icon[name='receipt']{
   margin-left: 15px;
 }
 
-#btn-bd{
-  margin: 0;
-  border-radius: 5px;
-  padding: 12px;
-}
 
 
 /*------------------> Responsive*/

@@ -73,6 +73,16 @@
             background-color: #0056b3;
         }
 
+        #btn-bd {
+            margin: 0;
+            border-radius: 5px;
+            padding: 12px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
         /* Estilos responsivos para pantallas más pequeñas */
         @media (max-width: 768px) {
             #form-CopiarDatos {
@@ -105,7 +115,7 @@
         $carreras .= "<option value='" . $row['CarreraID'] . "'>" . $row['Nombre'] . "</option>";
     }
     ?>
-    <button id="btn-bd">Crear Copia de Base de Datos</button>
+    <button id="btn-bd">Crear Copia de la Base de Datos</button>
     <form id="form-CopiarDatos">
         <h2>Copiar Datos Académicos a una nueva Gestion y Semestre</h2>
 
