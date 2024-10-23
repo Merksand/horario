@@ -122,18 +122,19 @@
     ?>
 
     <div class="container container__reportes">
-        <h2>Generar Reportes Académicos</h2>
-        <form id="form-reportes" action="../includes/Report/modulo_report.php" method="POST">
+        <h2>Generar Reportes de Docente</h2>
+        <!-- <form id="form-reportes" action="../includes/Report/modulo_report.php" method="POST"> -->
+        <form id="form-reportes" action="../includes/Report/modulo_Docente-gestion.php" method="POST">
         <!-- <form id="form-reportes" > -->
             <!-- Seleccionar tipo de reporte -->
             <div class="form-group">
                 <label for="tipo_reporte">Tipo de Reporte:</label>
                 <select id="tipo_reporte" name="tipo_reporte">
-                    <option value="">Seleccione el tipo de reporte</option>
-                    <option value="Reporte por Docente por gestion y semestre">Reporte por Docente por gestión y semestre</option>
-                    <option value="Reporte por Docentes por Carrera">Reporte por Docentes por Carrera</option>
-                    <option value="materia">Reporte por Materia</option>
-                    <option value="gestion_semestre">Reporte por Gestión/Semestre</option>
+                    <!-- <option value="">Seleccione el tipo de reporte</option> -->
+                    <option value="Reporte por Docente por gestion y semestre">Reporte de Docente por gestión y semestre</option>
+                    <!-- <option value="Reporte por Docentes por Carrera">Reporte por Docentes por Carrera</option> -->
+                    <!-- <option value="materia">Reporte por Materia</option> -->
+                    <!-- <option value="gestion_semestre">Reporte por Gestión/Semestre</option> -->
                 </select>
             </div>
 
@@ -150,7 +151,7 @@
                 </datalist>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="carrera">Carrera:</label>
                 <input type="hidden" name="carreraID" id="carreraHidden">
                 <input list="lista-carrera" id="carrera" name="carrera" type="text">
@@ -178,7 +179,7 @@
                 <input list="lista-materias" type="text" id="materia" name="materia" disabled placeholder="Seleccione un nivel">
                 <datalist id="lista-materias">
                 </datalist>
-            </div>
+            </div> -->
 
             <!-- Seleccionar Gestión -->
             <div class="form-group">

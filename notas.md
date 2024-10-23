@@ -20,6 +20,7 @@
 
 ## arreglar buscar y modificar la parte de actualizar codigo 
 
+### modulo_report.php posiblemente borrar porque es inutilizable
 
 
 

@@ -6,7 +6,7 @@ if (!empty($_GET['docenteID1']) && !empty($_GET['gestion']) && !empty($_GET['sem
     $docenteID = $_GET['docenteID1'];
     $gestion = $_GET['gestion'];
     $semestre = $_GET['semestre'];
-    $carreraID = isset($_GET['carreraID']) ? $_GET['carreraID'] : null;
+    // $carreraID = isset($_GET['carreraID']) ? $_GET['carreraID'] : null;
 
     include '../database.php';
 

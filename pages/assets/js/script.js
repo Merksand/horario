@@ -477,65 +477,65 @@ function agregarEventos() {
     generarReporteDocente(".pdfDocenteSemana", "../../../includes/Report/report_DocenteSemana.php");
 
     // * MODULO REPORTES //////////////////////////////////
-    const form2 = document.getElementById("form-reportes");
+    // const form2 = document.getElementById("form-reportes");
 
-    if (form2) {
-        form2.addEventListener("submit", (event) => {
-            event.preventDefault(); // Prevenir el envío del formulario para manejarlo con JavaScript
+    // if (form2) {
+    //     form2.addEventListener("submit", (event) => {
+    //         event.preventDefault(); 
 
-            const tipoReporte = document.getElementById("tipo_reporte").value;
-            const docenteID = document.getElementById("docenteID1").value;
-            const nombreDocente = document.querySelector('input[name="nombre1"]').value;
-            const carreraID = document.getElementById("carreraHidden").value;
-            const carrera = document.getElementById("carrera").value;
-            const nivel = document.getElementById("agregarNivel").value;
-            const materiaID = document.getElementById("materiaHidden").value;
-            const materia = document.getElementById("materia").value;
-            const gestion = document.getElementById("gestion").value;
-            const semestre = document.getElementById("semestre").value;
+    //         const tipoReporte = document.getElementById("tipo_reporte").value;
+    //         const docenteID = document.getElementById("docenteID1").value;
+    //         const nombreDocente = document.querySelector('input[name="nombre1"]').value;
+    //         const carreraID = document.getElementById("carreraHidden").value;
+    //         const carrera = document.getElementById("carrera").value;
+    //         const nivel = document.getElementById("agregarNivel").value;
+    //         const materiaID = document.getElementById("materiaHidden").value;
+    //         const materia = document.getElementById("materia").value;
+    //         const gestion = document.getElementById("gestion").value;
+    //         const semestre = document.getElementById("semestre").value;
 
-            let url = "";
-            const params = new URLSearchParams({
-                tipo_reporte: tipoReporte,
-                docenteID1: docenteID,
-                nombre1: nombreDocente,
-                carreraID: carreraID,
-                carrera: carrera,
-                nivel: nivel,
-                materiaID: materiaID,
-                materia: materia,
-                gestion: gestion,
-                semestre: semestre
-            });
+    //         let url = "";
+    //         const params = new URLSearchParams({
+    //             tipo_reporte: tipoReporte,
+    //             docenteID1: docenteID,
+    //             nombre1: nombreDocente,
+    //             carreraID: carreraID,
+    //             carrera: carrera,
+    //             nivel: nivel,
+    //             materiaID: materiaID,
+    //             materia: materia,
+    //             gestion: gestion,
+    //             semestre: semestre
+    //         });
 
-            switch (tipoReporte) {
-                case "Reporte por Docente por gestion y semestre":
-                    const param1 = new URLSearchParams({
-                        docenteID1: docenteID,
-                        carreraID: carreraID,
-                        gestion: gestion,
-                        semestre: semestre
-                    })
-                    url = `../includes/Report/modulo_Docente-gestion.php?${param1.toString()}`;
-                    break;
-                case "carrera":
-                    url = `../includes/Report/report_Carrera.php?${params.toString()}`;
-                    break;
-                case "materia":
-                    url = `../includes/Report/report_Materia.php?${params.toString()}`;
-                    break;
-                case "gestion_semestre":
-                    url = `../includes/Report/report_GestionSemestre.php?${params.toString()}`;
-                    break;
-                default:
-                    alert("Por favor, seleccione un tipo de reporte válido.");
-                    return;
-            }
+    //         switch (tipoReporte) {
+    //             case "Reporte por Docente por gestion y semestre":
+    //                 const param1 = new URLSearchParams({
+    //                     docenteID1: docenteID,
+    //                     carreraID: carreraID,
+    //                     gestion: gestion,
+    //                     semestre: semestre
+    //                 })
+    //                 url = `../includes/Report/modulo_Docente-gestion.php?${param1.toString()}`;
+    //                 break;
+    //             case "carrera":
+    //                 url = `../includes/Report/report_Carrera.php?${params.toString()}`;
+    //                 break;
+    //             case "materia":
+    //                 url = `../includes/Report/report_Materia.php?${params.toString()}`;
+    //                 break;
+    //             case "gestion_semestre":
+    //                 url = `../includes/Report/report_GestionSemestre.php?${params.toString()}`;
+    //                 break;
+    //             default:
+    //                 alert("Por favor, seleccione un tipo de reporte válido.");
+    //                 return;
+    //         }
 
-            // Abre el reporte en una nueva ventana
-            window.open(url, '_blank');
-        });
-    }
+    //         // Abre el reporte en una nueva ventana
+    //         window.open(url, '_blank');
+    //     });
+    // }
 
 
     // * //////////////////////////////////
@@ -543,52 +543,46 @@ function agregarEventos() {
 
 
 
-    const tipoReporte = document.getElementById('tipo_reporte');
-    const docenteInput = document.getElementById('agregarNombreCompleto');
-    const carreraInput2 = document.getElementById('carrera');
-    const gestionSelect = document.getElementById('gestion');
-    const semestreSelect = document.getElementById('semestre');
+    // const tipoReporte = document.getElementById('tipo_reporte');
+    // const docenteInput = document.getElementById('agregarNombreCompleto');
+    // const carreraInput2 = document.getElementById('carrera');
+    // const gestionSelect = document.getElementById('gestion');
+    // const semestreSelect = document.getElementById('semestre');
 
-    // Verificar si los elementos existen antes de aplicar la lógica
-    if (tipoReporte && docenteInput && carreraInput2 && gestionSelect && semestreSelect) {
-        // Deshabilitar todos los campos inicialmente
-        resetFields();
+    // if (tipoReporte && docenteInput && carreraInput2 && gestionSelect && semestreSelect) {
+    //     resetFields();
 
-        // Habilitar/deshabilitar campos dependiendo del tipo de reporte seleccionado
-        tipoReporte.addEventListener('change', function () {
-            resetFields(); // Reiniciar el estado de los campos
+    //     tipoReporte.addEventListener('change', function () {
+    //         resetFields();  
 
-            const selectedValue = tipoReporte.value;
+    //         const selectedValue = tipoReporte.value;
 
-            if (selectedValue === 'Reporte por Docente por gestion y semestre') {
-                // Habilitar tanto el campo de docente como de gestión
-                docenteInput.disabled = false;
-                gestionSelect.disabled = false;
-                semestreSelect.disabled = false;
-                // carreraInput2.disabled = false;
-            } else if (selectedValue === 'carrera') {
-                carreraInput2.disabled = false;
-                gestionSelect.disabled = false;
-                semestreSelect.disabled = false;
-            } else if (selectedValue === 'materia') {
-                carreraInput2.disabled = false;
-                gestionSelect.disabled = false;
-                semestreSelect.disabled = false;
-            } else if (selectedValue === 'gestion_semestre') {
-                gestionSelect.disabled = false;
-                semestreSelect.disabled = false;
+    //         if (selectedValue === 'Reporte por Docente por gestion y semestre') {
+    //             docenteInput.disabled = false;
+    //             gestionSelect.disabled = false;
+    //             semestreSelect.disabled = false;
+    //         } else if (selectedValue === 'carrera') {
+    //             carreraInput2.disabled = false;
+    //             gestionSelect.disabled = false;
+    //             semestreSelect.disabled = false;
+    //         } else if (selectedValue === 'materia') {
+    //             carreraInput2.disabled = false;
+    //             gestionSelect.disabled = false;
+    //             semestreSelect.disabled = false;
+    //         } else if (selectedValue === 'gestion_semestre') {
+    //             gestionSelect.disabled = false;
+    //             semestreSelect.disabled = false;
 
-            }
-        });
+    //         }
+    //     });
 
-        // Función para deshabilitar todos los campos
-        function resetFields() {
-            docenteInput.disabled = true;
-            carreraInput2.disabled = true;
-            gestionSelect.disabled = true;
-            semestreSelect.disabled = true;
-        }
-    }
+    //     function resetFields() {
+    //         docenteInput.disabled = true;
+    //         carreraInput2.disabled = true;
+    //         gestionSelect.disabled = true;
+    //         semestreSelect.disabled = true;
+    //     }
+    // }
 
 
     const formReportes = document.getElementById('form-reportes');
@@ -606,10 +600,11 @@ function agregarEventos() {
             });
 
             // Construye la URL para enviar los datos
-            const url = `../includes/Report/modulo_report.php?${params.toString()}`;
+            const url = `../includes/Report/modulo_Docente-gestion.php?${params.toString()}`;
 
             // Abre una nueva ventana con la URL del reporte
-            window.open(url);
+            // window.open(url);
+            window.open(url, '_blank');
         });
     }
 
