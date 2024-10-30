@@ -1,12 +1,19 @@
 <?php
+session_name('login');
+session_start(); 
+
+if (isset($_SESSION['usuario_id'])) {
+    $usuarioID = $_SESSION['usuario_id'];
+}
+
+
+
 include '../database.php';
 
-// Asegúrate de que la conexión esté establecida
 if (!$conexion) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-// Obtener los datos del formulario
 $docenteMateriaID = $_POST['docenteMateriaID'];
 $nombre = !empty($_POST['nombre']) ? mysqli_real_escape_string($conexion, $_POST['nombre']) : null;
 $apellido = !empty($_POST['apellido']) ? mysqli_real_escape_string($conexion, $_POST['apellido']) : null;
@@ -17,11 +24,10 @@ $carrera = !empty($_POST['carrera']) ? mysqli_real_escape_string($conexion, $_PO
 $nivel = !empty($_POST['nivel']) ? mysqli_real_escape_string($conexion, $_POST['nivel']) : null;
 $aula = !empty($_POST['aula']) ? mysqli_real_escape_string($conexion, $_POST['aula']) : null;
 
-// Obtener el ID del aula a partir del nombre
 if ($aula) {
     $aulaQuery = "SELECT AulaID FROM Aulas WHERE Nombre = '$aula'";
     $aulaResult = $conexion->query($aulaQuery);
-    
+
     if ($aulaResult->num_rows > 0) {
         $aulaRow = $aulaResult->fetch_assoc();
         $aulaID = $aulaRow['AulaID'];
@@ -37,7 +43,7 @@ if ($aula) {
 if ($nivel) {
     $materiasQuery = "SELECT MateriaID FROM Materias WHERE Nivel = '$nivel'";
     $materiasResult = $conexion->query($materiasQuery);
-    
+
     if ($materiasResult->num_rows > 0) {
         $materias = [];
         while ($materiaRow = $materiasResult->fetch_assoc()) {
@@ -49,38 +55,33 @@ if ($nivel) {
         exit;
     }
 }
-
-if($carrera){
+if ($carrera) {
     $carreraQuery = "SELECT CarreraID FROM Carreras WHERE Nombre = '$carrera'";
     $carreraResult = $conexion->query($carreraQuery);
-    
+
     if ($carreraResult->num_rows > 0) {
         $carreraRow = $carreraResult->fetch_assoc();
         $carreraID = $carreraRow['CarreraID'];
     } else {
-        // Manejar el caso en que la carrera no se encuentra
         echo "La carrera especificada no existe.";
         $conexion->close();
         exit;
     }
 }
-
-if($materia){
+if ($materia) {
     $materiaQuery = "SELECT MateriaID FROM Materias WHERE Nombre = '$materia' AND CarreraID = '$carreraID' AND Nivel = '$nivel'";
     $materiaResult = $conexion->query($materiaQuery);
-    
+
     if ($materiaResult->num_rows > 0) {
         $materiaRow = $materiaResult->fetch_assoc();
         $materiaID = $materiaRow['MateriaID'];
     } else {
-        // Manejar el caso en que la materia no se encuentra
         echo "La materia especificada no existe.";
         $conexion->close();
         exit;
     }
 }
 
-// Construir la consulta SQL
 $sql = "UPDATE DocenteMateria dm
         JOIN Docentes d ON dm.DocenteID = d.DocenteID
         JOIN Materias m ON dm.MateriaID = m.MateriaID
@@ -89,27 +90,45 @@ $sql = "UPDATE DocenteMateria dm
         JOIN Horarios h ON dm.HorarioID = h.HorarioID
         SET ";
 
-$setClauses = []; // Para almacenar las cláusulas SET
+$setClauses = [];
 
 if ($nombre !== null) $setClauses[] = "d.Nombre = '$nombre'";
 if ($apellido !== null) $setClauses[] = "d.Apellido = '$apellido'";
-// if ($dia !== null) $setClauses[] = "dm.Dia = '$dia'";
 if ($periodoInicio !== null) $setClauses[] = "h.Periodo = '$periodoInicio'";
 if ($materia !== null) $setClauses[] = "dm.MateriaID = '$materiaID'";
-// if ($carrera !== null) $setClauses[] = "dm.CarreraID = '$carreraID'";
-// if ($nivel !== null) $setClauses[] = "dm.Nivel = '$nivel'";
 if ($aulaID !== null) $setClauses[] = "dm.AulaID = '$aulaID'";
 
-// Verificar si hay cláusulas SET para evitar una consulta inválida
 if (count($setClauses) > 0) {
     $sql .= implode(', ', $setClauses);
     $sql .= " WHERE dm.DocenteMateriaID = $docenteMateriaID";
-    
-    // Ejecutar la consulta
+
+
     $resultado = $conexion->query($sql);
-    
+
     if ($resultado) {
-        echo "Datos actualizados correctamente ".$sql;
+
+        $nombreDocente = "SELECT d.Nombre, d.Apellido FROM DocenteMateria dm
+        JOIN Docentes d ON dm.DocenteID = d.DocenteID
+        JOIN Materias m ON dm.MateriaID = m.MateriaID
+        JOIN Carreras c ON m.CarreraID = c.CarreraID
+        JOIN Aulas a ON dm.AulaID = a.AulaID
+        JOIN Horarios h ON dm.HorarioID = h.HorarioID
+        WHERE dm.DocenteMateriaID = $docenteMateriaID";
+
+        $docenteResult = $conexion->query($nombreDocente);
+        $docenteRow = $docenteResult->fetch_assoc();
+        $nombreDocente = $docenteRow['Nombre'] . " " . $docenteRow['Apellido'];
+
+
+        $accion = "Datos actualizados del docente: $nombreDocente desde el módulo de Configuración";
+        $detalles = "Datos actualizados: " . json_encode($_POST); // Guarda los datos enviados
+
+        // Consulta para insertar en la tabla logs
+        $logSql = "INSERT INTO logs (UsuarioID, Accion, Detalles) VALUES ('$usuarioID', '$accion', '$detalles')";
+        $logResultado = $conexion->query($logSql);
+
+        // echo "Datos actualizados correctamente " . $logSql;
+        echo "Datos actualizados correctamente ";
     } else {
         echo "Error al actualizar los datos: " . $conexion->error;
     }
@@ -119,4 +138,3 @@ if (count($setClauses) > 0) {
 
 // Cerrar la conexión
 $conexion->close();
-

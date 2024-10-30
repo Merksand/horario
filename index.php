@@ -233,7 +233,7 @@ function resetInactivityTimer() {
     // Calcula el tiempo transcurrido desde la última actividad
     const currentTime = Date.now();
     const elapsedTime = Math.floor((currentTime - lastActivityTime) / 1000); // en segundos
-    console.log(`Tiempo transcurrido desde la última actividad: ${elapsedTime} segundos`);
+    // console.log(`Tiempo transcurrido desde la última actividad: ${elapsedTime} segundos`);
 
     // Actualiza el tiempo de la última actividad
     lastActivityTime = currentTime;

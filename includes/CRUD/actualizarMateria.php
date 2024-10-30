@@ -1,15 +1,18 @@
 <?php
+session_name('login');
+session_start();
+
+if (isset($_SESSION['usuario_id'])) {
+    $usuarioID = $_SESSION['usuario_id'];
+}
 include '../database.php';
 
-// Asegúrate de que la conexión esté establecida
 if (!$conexion) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-// Obtener los datos del formulario
 $data = json_decode(file_get_contents('php://input'), true);
 
-// Verificar si $data es null o no se ha enviado correctamente
 if ($data === null) {
     echo json_encode(['status' => 'error', 'message' => 'No se han recibido datos. Verifique la solicitud JSON.']);
     exit();
@@ -20,29 +23,46 @@ $nombre = !empty($data['nombre']) ? mysqli_real_escape_string($conexion, $data['
 $codigo = isset($data['codigo']) && $data['codigo'] !== '' ? mysqli_real_escape_string($conexion, $data['codigo']) : null;
 $nivel = isset($data['nivel']) && $data['nivel'] !== '' ? mysqli_real_escape_string($conexion, $data['nivel']) : null;
 
-// Verificar que el MateriaID esté presente
 if ($materiaID === null) {
     echo json_encode(['status' => 'error', 'message' => 'No se ha proporcionado MateriaID.']);
     exit();
 }
 
-// Construir la consulta SQL
 $sql = "UPDATE Materias SET ";
 $setClauses = [];
+$detalles = "";
 
-if ($nombre !== null) $setClauses[] = "Nombre = '$nombre'";
-if ($codigo !== null) $setClauses[] = "Codigo = '$codigo'";
-// Si 'nivel' se puede actualizar incluso si está vacío, pero no es NULL
-if ($nivel !== null) $setClauses[] = "Nivel = '$nivel'";
+if ($nombre !== null) {
+    $setClauses[] = "Nombre = '$nombre'";
+    $detalles .= "Nombre cambiado a '$nombre'. ";
+}
+if ($codigo !== null) {
+    $setClauses[] = "Codigo = '$codigo'";
+    $detalles .= "Código cambiado a '$codigo'. ";
+}
+if ($nivel !== null) {
+    $setClauses[] = "Nivel = '$nivel'";
+    $detalles .= "Nivel cambiado a '$nivel'. ";
+}
 
-// Verificar si hay cláusulas SET para evitar una consulta inválida
 if (count($setClauses) > 0) {
     $sql .= implode(', ', $setClauses);
     $sql .= " WHERE MateriaID = $materiaID";
 
-    // Ejecutar la consulta
+    $sqlNombre = "SELECT Nombre FROM Materias WHERE MateriaID = $materiaID";
+    $result = $conexion->query($sqlNombre);
+    $materia = $result->fetch_assoc();
+    $nombreMateria = $materia['Nombre'];
+
     if ($conexion->query($sql)) {
-        echo json_encode(['status' => 'success', 'message' => 'Materia actualizada correctamente.', 'consulta' => $sql]);
+        $logMessage = mysqli_real_escape_string($conexion, "Materia que se actualizó: $nombreMateria");
+        $detallesLog = mysqli_real_escape_string($conexion, $detalles);
+
+        // Registro en la tabla logs
+        $sqlLog = "INSERT INTO logs (UsuarioID, Accion, Detalles) VALUES ($usuarioID, '$logMessage', '$detallesLog')";
+        $conexion->query($sqlLog);
+
+        echo json_encode(['status' => 'success', 'message' => 'Materia actualizada correctamente.', 'consulta' => $sqlLog]);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Error al actualizar la materia: ' . $conexion->error]);
     }
@@ -50,6 +70,4 @@ if (count($setClauses) > 0) {
     echo json_encode(['status' => 'error', 'message' => 'No se han proporcionado datos para actualizar.']);
 }
 
-// Cerrar la conexión
 $conexion->close();
-?>
