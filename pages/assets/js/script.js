@@ -989,9 +989,7 @@ function agregarEventos() {
 
 
     //* ELIMINAR DOCENTE
-    // window.eliminarDocenteMateria = function(docenteMateriaID) {
     function eliminarRegistroFuncion(id, url, tipoRegistro) {
-        console.log(id);
         fetch(url, {
             method: 'POST',
             headers: {
@@ -1001,9 +999,8 @@ function agregarEventos() {
         })
             .then(response => response.json())
             .then(data => {
-                // console.log('Respuesta del servidor:', data);
                 if (data.status === 'success') {
-                    // alert(data.message);
+                    console.log(data.message);
                     showCustomAlert(data.message, true);
                     const row = document.querySelector(`tr[data-${tipoRegistro}-id="${id}"]`);
                     if (row) {

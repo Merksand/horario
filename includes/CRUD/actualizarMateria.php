@@ -58,7 +58,6 @@ if (count($setClauses) > 0) {
         $logMessage = mysqli_real_escape_string($conexion, "Materia que se actualizó: $nombreMateria");
         $detallesLog = mysqli_real_escape_string($conexion, $detalles);
 
-        // Registro en la tabla logs
         $sqlLog = "INSERT INTO logs (UsuarioID, Accion, Detalles) VALUES ($usuarioID, '$logMessage', '$detallesLog')";
         $conexion->query($sqlLog);
 

@@ -121,13 +121,11 @@ if (count($setClauses) > 0) {
 
 
         $accion = "Datos actualizados del docente: $nombreDocente desde el módulo de Configuración";
-        $detalles = "Datos actualizados: " . json_encode($_POST); // Guarda los datos enviados
+        $detalles = "Datos actualizados: " . json_encode($_POST);
 
-        // Consulta para insertar en la tabla logs
         $logSql = "INSERT INTO logs (UsuarioID, Accion, Detalles) VALUES ('$usuarioID', '$accion', '$detalles')";
         $logResultado = $conexion->query($logSql);
 
-        // echo "Datos actualizados correctamente " . $logSql;
         echo "Datos actualizados correctamente ";
     } else {
         echo "Error al actualizar los datos: " . $conexion->error;
@@ -136,5 +134,4 @@ if (count($setClauses) > 0) {
     echo "No se han proporcionado datos para actualizar.";
 }
 
-// Cerrar la conexión
 $conexion->close();

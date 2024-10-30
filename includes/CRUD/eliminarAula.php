@@ -5,6 +5,9 @@ error_reporting(E_ALL);
 
 header('Content-Type: application/json');
 
+session_name('login');
+session_start();
+
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $input = json_decode(file_get_contents('php://input'), true);
@@ -13,6 +16,17 @@ try {
             $id = $input['id'];
 
             include '../database.php';
+
+            if (!isset($_SESSION['usuario_id'])) {
+                echo json_encode(['status' => 'error', 'message' => 'Usuario no autenticado']);
+                exit();
+            }
+            $usuarioID = $_SESSION['usuario_id'];
+
+            $sqlNombre = "SELECT * FROM Aulas WHERE AulaID = $id";
+            $result = $conexion->query($sqlNombre);
+            $aula = $result->fetch_assoc();
+            $aulaNombre = $aula['Nombre'];
 
             $sql = "DELETE FROM Aulas WHERE AulaID = ?";
             $stmt = $conexion->prepare($sql);
@@ -24,6 +38,15 @@ try {
 
                     if ($stmt->affected_rows > 0) {
                         echo json_encode(['status' => 'success', 'message' => 'Aula eliminada correctamente']);
+
+                        $accion = "Eliminación de aula";
+                        $detalles = "AulaID $id con el nombre  de '$aulaNombre' eliminada";
+                        $accionEscapada = mysqli_real_escape_string($conexion, $accion);
+                        $detallesEscapados = mysqli_real_escape_string($conexion, $detalles);
+
+                        $sqlLog = "INSERT INTO logs (UsuarioID, Accion, Detalles) VALUES ('$usuarioID', '$accionEscapada', '$detallesEscapados')";
+                        $conexion->query($sqlLog);
+
                     } else {
                         echo json_encode(['status' => 'error', 'message' => 'No se puede eliminar esta aula porque está vinculada a otras tablas']);
                     }
