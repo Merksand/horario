@@ -168,4 +168,3 @@ if (!empty($errores)) {
     }
 }
 $conexion->close();
-// ! AGREGAR DATOS ACADEMICO

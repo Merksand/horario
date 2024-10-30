@@ -1,11 +1,33 @@
 <?php
 session_name('login');
 session_start();
+
+// Verifica si el usuario no ha iniciado sesión
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: auth/login.php");
     exit();
 }
+
+// Tiempo máximo de inactividad en segundos (5 segundos para prueba)
+$tiempo_inactividad = 1800;
+
+// Verifica si existe el tiempo de última actividad
+if (isset($_SESSION['ultima_actividad'])) {
+    $inactividad = time() - $_SESSION['ultima_actividad'];
+
+    // Si el tiempo de inactividad es mayor al límite, cierra la sesión y redirige
+    if ($inactividad > $tiempo_inactividad) {
+        session_unset();     // Limpia todas las variables de sesión
+        session_destroy();   // Destruye la sesión
+        header("Location: auth/login.php"); // Redirige al login
+        exit();
+    }
+}
+
+// Actualiza el tiempo de última actividad
+$_SESSION['ultima_actividad'] = time();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -189,6 +211,45 @@ if (!isset($_SESSION['usuario_id'])) {
     <script src="pages/assets/js/script.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script>
+// Tiempo máximo de inactividad en milisegundos (5000 ms = 5 segundos para prueba)
+const maxInactivityTime = 1800000;
+
+// Tiempo de la última actividad
+let lastActivityTime = Date.now();
+
+// Función que recarga la página
+function reloadPage() {
+    console.log("Tiempo de inactividad máximo alcanzado. Recargando la página...");
+    window.location.reload();
+}
+
+// Temporizador de inactividad
+let inactivityTimer = setTimeout(reloadPage, maxInactivityTime);
+
+// Resetear el temporizador en caso de actividad del usuario
+function resetInactivityTimer() {
+    // Calcula el tiempo transcurrido desde la última actividad
+    const currentTime = Date.now();
+    const elapsedTime = Math.floor((currentTime - lastActivityTime) / 1000); // en segundos
+    console.log(`Tiempo transcurrido desde la última actividad: ${elapsedTime} segundos`);
+
+    // Actualiza el tiempo de la última actividad
+    lastActivityTime = currentTime;
+
+    // Reinicia el temporizador
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(reloadPage, maxInactivityTime);
+}
+
+// Detectar eventos de actividad del usuario
+window.onload = resetInactivityTimer;
+document.onmousemove = resetInactivityTimer;
+document.onkeypress = resetInactivityTimer;
+</script>
+
+
 
 
     <!-- <script src="pages/assets/js/docentes.js"></script> -->

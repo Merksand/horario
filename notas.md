@@ -1,3 +1,18 @@
+## Crear usuario intermedio
+## Restringir configuracion por usuario intermedio
+## Comprobar logs en todos los archivos
+## Configurar vista usuario para intermedio
+
+
+
+
+
+
+
+
+
+
+
 -- Problemas con los datos
 
 
@@ -52,22 +67,3 @@ json*
 
 
 
-
-
-
-
-## TARE REDES
-INSTALAR PACKET TRACER
-
-Configurar una red local con 4 switch para un edificio de 4 pisos , la cantidad de pc seran 50
-
-
-
-
-
-
--- LISTADO DE DOCENTES POR GESTION, 
--- LISTADO DOCENTE MATERIA POR NOMBRE, 
--- HISTORICO DE NOTAS (ALUMNO DE UN DETERMINADO ALUMNO), 
--- LISTADO DE CENTRALIZADOR DE NOTAS (Todos los alumnos escogiendo el curso, nota de las materias alumnos)
--- LISTADO DE ALUMNOS REPROBADOS POR CURSO
