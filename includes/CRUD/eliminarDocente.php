@@ -45,7 +45,7 @@ try {
                 $stmt->execute();
 
                 if ($stmt->affected_rows > 0) {
-                    $accion = "Eliminación de Registro del módulo Configuración";
+                    $accion = "Eliminación de Registro en el módulo Configuración";
                     $detalles = "Registro de horario del Docente  $nombreCompleto eliminado";
                     $accionEscapada = mysqli_real_escape_string($conexion, $accion);
                     $detallesEscapados = mysqli_real_escape_string($conexion, $detalles);

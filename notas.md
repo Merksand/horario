@@ -1,6 +1,6 @@
 ## Crear usuario intermedio
 ## Restringir configuracion por usuario intermedio
-## Comprobar logs en todos los archivos ...
+## Comprobar logs en todos los archivos ... Hecho hasta agregarDatos.php
 ## Configurar vista usuario para intermedio
 
 

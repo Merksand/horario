@@ -1,8 +1,17 @@
 <?php
-
+session_name('login');
+session_start();
+$usuarioID = $_SESSION['usuario_id'] ?? null;
 include "../database.php";
 
-// Sanitizar y validar datos
+function registrarLog($conexion, $usuarioID, $accion, $detalles)
+{
+    $accionEscapada = $conexion->real_escape_string($accion);
+    $detallesEscapados = $conexion->real_escape_string($detalles);
+    $sqlLog = "INSERT INTO logs (UsuarioID, Accion, Detalles) VALUES ('$usuarioID', '$accionEscapada', '$detallesEscapados')";
+    return $conexion->query($sqlLog);
+}
+
 function sanitizar($dato)
 {
     return htmlspecialchars(trim($dato));
@@ -10,12 +19,10 @@ function sanitizar($dato)
 if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !empty($_POST['nombre_aula']) || !empty($_POST['nombre_materia']) || !empty($_POST['codigo_materia']) || !empty($_POST["fecha_inicio"]) || !empty($_POST["gestion"])) {
     $errores = [];
 
-    // Validar y agregar Aula
     if (isset($_POST['nombre_aula'])) {
         $nombre_aula = sanitizar($_POST['nombre_aula']);
 
         if (!empty($nombre_aula)) {
-            // Verificar si el aula ya existe
             $stmt = $conexion->prepare("SELECT AulaID FROM Aulas WHERE Nombre = ?");
             $stmt->bind_param('s', $nombre_aula);
             $stmt->execute();
@@ -24,12 +31,12 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
             if ($stmt->num_rows > 0) {
                 $errores['aula'] = "El aula ya existe.";
             } else {
-                // Agregar el aula si no existe
                 $stmt = $conexion->prepare("INSERT INTO Aulas (Nombre) VALUES (?)");
                 $stmt->bind_param('s', $nombre_aula);
 
                 if ($stmt->execute()) {
                     echo "Aula agregada con éxito";
+                    registrarLog($conexion, $usuarioID, "Inserción de un dato nuevo", "Se agregó el aula con nombre: $nombre_aula");
                 } else {
                     $errores['aula'] = "Error al agregar aula: " . $stmt->error;
                 }
@@ -38,7 +45,6 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
         }
     }
 
-    // Validar y agregar Docente
     if (isset($_POST['nombre_docente']) && isset($_POST['apellido_docente'])) {
         $nombre_docente = sanitizar($_POST['nombre_docente']);
         $apellido_docente = sanitizar($_POST['apellido_docente']);
@@ -59,6 +65,7 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
 
                 if ($stmt->execute()) {
                     echo "Docente agregado con éxito";
+                    registrarLog($conexion, $usuarioID, "Inserción de un dato nuevo", "Se agregó el docente con nombre: $nombre_docente $apellido_docente");
                 } else {
                     $errores['docente'] = "Error al agregar docente: " . $stmt->error;
                 }
@@ -68,7 +75,6 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
             echo "Falta rellenar la siguiente casilla";
         }
     }
-    // Función para obtener CarreraID basado en el nombre de la carrera
     function obtenerCarreraID($conexion, $carrera_nombre)
     {
         $carrera_id = null;
@@ -81,17 +87,15 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
         $stmt->bind_result($carrera_id);
         $stmt->fetch();
         $stmt->close();
-        // use of unassigned variable $carrera_id
         return $carrera_id ? $carrera_id : false;
     }
 
-    // Validar y agregar Materia
     if (isset($_POST['nombre_materia']) && isset($_POST['codigo_materia']) && isset($_POST['nivel_materia']) && isset($_POST['carrera_materia']) && !empty($_POST['nombre_materia']) || !empty($_POST['codigo_materia']) || !empty($_POST['nivel_materia'])) {
         $nombre_materia = sanitizar($_POST['nombre_materia']);
         $codigo_materia = sanitizar($_POST['codigo_materia']);
         $nivel_materia = sanitizar($_POST['nivel_materia']);
         $carrera_materia = sanitizar($_POST['carrera_materia']);
-        $paralelo_materia = sanitizar($_POST['paralelo_materia'])?? NUll;
+        $paralelo_materia = sanitizar($_POST['paralelo_materia']) ?? NUll;
 
         if (!empty($nombre_materia) && !empty($codigo_materia) && !empty($nivel_materia) && !empty($carrera_materia)) {
             // Verificar si la materia ya existe
@@ -103,7 +107,6 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
             if ($stmt->num_rows > 0) {
                 echo "ya existe";
             } else {
-                // Obtener el CarreraID
                 $carrera_id = obtenerCarreraID($conexion, $carrera_materia);
                 if ($carrera_id) {
                     // Agregar la materia si no existe
@@ -112,6 +115,7 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
 
                     if ($stmt->execute()) {
                         echo "Materia agregada con éxito";
+                        registrarLog($conexion, $usuarioID, "Inserción de un dato nuevo", "Se agregó la materia: $nombre_materia con código: $codigo_materia");
                     } else {
                         echo "Error al agregar materia: " . $stmt->error;
                     }
@@ -126,26 +130,23 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
     }
 
     if (isset($_POST["gestion"]) && isset($_POST["semestre"])) {
-        // Validar que los campos requeridos no estén vacíos
         if (!empty($_POST["gestion"]) && !empty($_POST["semestre"]) && !empty($_POST["fecha_inicio"]) && !empty($_POST["fecha_fin"])) {
             $gestion = sanitizar($_POST["gestion"]);
             $semestre = sanitizar($_POST["semestre"]);
             $fecha_inicio = sanitizar($_POST["fecha_inicio"]);
             $fecha_fin = sanitizar($_POST["fecha_fin"]);
-    
-            // Extraer los años de las fechas
+
             $year_gestion = (int)$gestion;
             $year_inicio = (int)date('Y', strtotime($fecha_inicio));
             $year_fin = (int)date('Y', strtotime($fecha_fin));
-    
-            // Validar que los años coincidan
+
             if ($year_gestion === $year_inicio && $year_gestion === $year_fin) {
-                // Preparar y ejecutar la consulta SQL
                 $stmt = $conexion->prepare("INSERT INTO GestionSemestre (Gestion, Semestre, FechaInicio, FechaFin) VALUES (?, ?, ?, ?)");
                 $stmt->bind_param('ssss', $gestion, $semestre, $fecha_inicio, $fecha_fin);
-    
+
                 if ($stmt->execute()) {
                     echo "Gestión agregada correctamente";
+                    registrarLog($conexion, $usuarioID, "Inserción de un dato nuevo", "Se agregó la gestión: $gestion, semestre: $semestre");
                 } else {
                     echo "Error al agregar Gestión: " . $stmt->error;
                 }
@@ -155,10 +156,6 @@ if (!empty($_POST['nombre_docente']) || !empty($_POST['apellido_docente']) || !e
             }
         }
     }
-    
-
-
-    // Manejo de errores
 } else {
     echo "Faltan datos por rellenar";
 }
