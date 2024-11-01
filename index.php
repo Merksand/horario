@@ -123,7 +123,7 @@ $_SESSION['ultima_actividad'] = time();
                     </a>
                 </li>
 
-                <?php if ($_SESSION['rol'] == 1) : ?>
+                <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) : ?>
 
                     <li onclick="cargarContenido('pages/configuracion.php')">
                         <a class="inbox" href="#">
@@ -131,25 +131,28 @@ $_SESSION['ultima_actividad'] = time();
                             <span>Configuración</span>
                         </a>
                     </li>
-                    <li onclick="cargarContenido('pages/agregarDatos.php')">
-                        <a class="inbox" href="#">
-                            <ion-icon name="add-circle-outline"></ion-icon>
-                            <span>Agregar nuevos datos</span>
-                        </a>
-                    </li>
+                    <?php if ($_SESSION['rol'] == 1) : ?>
+                        <li onclick="cargarContenido('pages/agregarDatos.php')">
+                            <a class="inbox" href="#">
+                                <ion-icon name="add-circle-outline"></ion-icon>
+                                <span>Agregar nuevos datos</span>
+                            </a>
+                        </li>
+                    <?php endif ?>
                     <li onclick="cargarContenido('pages/copiarDatos.php')">
                         <a class="inbox" href="#">
                             <ion-icon name="copy-outline"></ion-icon>
                             <span>Copiar Datos De Carrera</span>
                         </a>
                     </li>
-                    <li onclick="cargarContenido('pages/usuarios.php')">
-                        <a class="inbox" href="#">
-                            <!-- <ion-icon name="copy-outline"></ion-icon> -->
-                            <ion-icon name="person-add-outline"></ion-icon>
-                            <span>Agregar/Cambiar Clave</span>
-                        </a>
-                    </li>
+                    <?php if ($_SESSION['rol'] == 1) : ?>
+                        <li onclick="cargarContenido('pages/usuarios.php')">
+                            <a class="inbox" href="#">
+                                <ion-icon name="person-add-outline"></ion-icon>
+                                <span>Agregar/Cambiar Clave</span>
+                            </a>
+                        </li>
+                    <?php endif ?>
 
                 <?php endif ?>
 
@@ -213,41 +216,41 @@ $_SESSION['ultima_actividad'] = time();
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script>
-// Tiempo máximo de inactividad en milisegundos (5000 ms = 5 segundos para prueba)
-const maxInactivityTime = 1800000;
+        // Tiempo máximo de inactividad en milisegundos (5000 ms = 5 segundos para prueba)
+        const maxInactivityTime = 1800000;
 
-// Tiempo de la última actividad
-let lastActivityTime = Date.now();
+        // Tiempo de la última actividad
+        let lastActivityTime = Date.now();
 
-// Función que recarga la página
-function reloadPage() {
-    console.log("Tiempo de inactividad máximo alcanzado. Recargando la página...");
-    window.location.reload();
-}
+        // Función que recarga la página
+        function reloadPage() {
+            console.log("Tiempo de inactividad máximo alcanzado. Recargando la página...");
+            window.location.reload();
+        }
 
-// Temporizador de inactividad
-let inactivityTimer = setTimeout(reloadPage, maxInactivityTime);
+        // Temporizador de inactividad
+        let inactivityTimer = setTimeout(reloadPage, maxInactivityTime);
 
-// Resetear el temporizador en caso de actividad del usuario
-function resetInactivityTimer() {
-    // Calcula el tiempo transcurrido desde la última actividad
-    const currentTime = Date.now();
-    const elapsedTime = Math.floor((currentTime - lastActivityTime) / 1000); // en segundos
-    // console.log(`Tiempo transcurrido desde la última actividad: ${elapsedTime} segundos`);
+        // Resetear el temporizador en caso de actividad del usuario
+        function resetInactivityTimer() {
+            // Calcula el tiempo transcurrido desde la última actividad
+            const currentTime = Date.now();
+            const elapsedTime = Math.floor((currentTime - lastActivityTime) / 1000); // en segundos
+            // console.log(`Tiempo transcurrido desde la última actividad: ${elapsedTime} segundos`);
 
-    // Actualiza el tiempo de la última actividad
-    lastActivityTime = currentTime;
+            // Actualiza el tiempo de la última actividad
+            lastActivityTime = currentTime;
 
-    // Reinicia el temporizador
-    clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(reloadPage, maxInactivityTime);
-}
+            // Reinicia el temporizador
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(reloadPage, maxInactivityTime);
+        }
 
-// Detectar eventos de actividad del usuario
-window.onload = resetInactivityTimer;
-document.onmousemove = resetInactivityTimer;
-document.onkeypress = resetInactivityTimer;
-</script>
+        // Detectar eventos de actividad del usuario
+        window.onload = resetInactivityTimer;
+        document.onmousemove = resetInactivityTimer;
+        document.onkeypress = resetInactivityTimer;
+    </script>
 
 
 

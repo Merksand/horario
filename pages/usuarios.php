@@ -103,7 +103,7 @@
             color: green;
         }
 
-        #apellido{
+        #apellido {
             margin: 0;
         }
     </style>
@@ -115,6 +115,11 @@
 
     $sqlUsuarios = "SELECT UsuarioID, Usuario FROM Usuarios";
     $resultUsuarios = $conexion->query($sqlUsuarios);
+
+    $sqlCarreras = "SELECT CarreraID, Nombre FROM Carreras";
+    $resultCarreras = $conexion->query($sqlCarreras);
+
+    // $sqlNiveles = "SELECT NivelID, Nivel FROM Niveles";
     ?>
     <h2>Gestión de Usuarios</h2>
 
@@ -135,10 +140,8 @@
 
         <label for="rol">Rol:</label>
         <select id="rol" name="rol" required>
-            <!-- Los roles se llenarán desde la base de datos -->
             <option value="">Seleccione un rol</option>
             <?php
-            // Llenar el select con los roles obtenidos de la base de datos
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<option value='" . $row['RolID'] . "'>" . $row['NombreRol'] . "</option>";
@@ -148,6 +151,14 @@
             }
             ?>
         </select><br>
+        <div id="carrerasContainer" style="display: none;">
+            <label>Selecciona las carreras que estara a cargo:</label>
+            <?php
+            while ($res = $resultCarreras->fetch_assoc()) {
+                echo "<input type='checkbox' name='carreraID[]' value='$res[CarreraID]'> $res[Nombre]<br>";
+            }
+            ?>
+        </div>
 
         <button type="submit">Agregar Usuario</button>
     </form>
@@ -156,8 +167,8 @@
     <form id="cambiarContrasenaForm">
         <h3>Cambiar Contraseña</h3>
         <label for="usuarioExistente">Seleccionar Usuario:</label>
-        <select id="usuarioExistente" name="usuarioExistente" >
-        <option value="">Seleccione un usuario</option>
+        <select id="usuarioExistente" name="usuarioExistente">
+            <option value="">Seleccione un usuario</option>
             <!-- Los usuarios se llenarán desde la base de datos -->
             <?php
             if ($resultUsuarios->num_rows > 0) {
@@ -170,9 +181,9 @@
         </select><br>
 
         <label for="nuevaClave">Nueva Contraseña:</label>
-        <input type="password" id="nuevaClave" name="nuevaClave" ><br>
+        <input type="password" id="nuevaClave" name="nuevaClave"><br>
 
-        <button type="submit" >Cambiar Contraseña</button>
+        <button type="submit">Cambiar Contraseña</button>
     </form>
 
     <script src="script.js"></script>

@@ -1,123 +1,195 @@
 <?php
-include "../database.php";
+session_name('login');
+session_start(); // Inicia la sesión para acceder a las variables de sesión
 
-function sanitizar($dato) {
-    return htmlspecialchars(trim($dato));
-}
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+include '../database.php';
 
-function agregarError(&$errores, $clave, $mensaje) {
-    $errores[$clave] = $mensaje;
-}
+// Asumiendo que has almacenado el UsuarioID del jefe de carrera en la sesión
+$jefeCarreraID = $_SESSION['usuario_id'];
 
-// Variables de errores
-$errores = [];
+if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materia']) || !empty($_GET['aula'])) {
+    $nombre = $_GET["nombre"] ?? '';
+    $apellido = $_GET["apellido"] ?? '';
+    $materia = $_GET["materia"] ?? '';
+    $aula = $_GET["aula"] ?? '';
 
-// Verificar y sanitizar datos
-$nombre_aula = isset($_POST['nombre_aula']) ? sanitizar($_POST['nombre_aula']) : null;
-$nombre_docente = isset($_POST['nombre_docente']) ? sanitizar($_POST['nombre_docente']) : null;
-$apellido_docente = isset($_POST['apellido_docente']) ? sanitizar($_POST['apellido_docente']) : null;
-$nombre_materia = isset($_POST['nombre_materia']) ? sanitizar($_POST['nombre_materia']) : null;
-$codigo_materia = isset($_POST['codigo_materia']) ? sanitizar($_POST['codigo_materia']) : null;
-$nivel_materia = isset($_POST['nivel_materia']) ? sanitizar($_POST['nivel_materia']) : null;
-$carrera_materia = isset($_POST['carrera_materia']) ? sanitizar($_POST['carrera_materia']) : null;
-$paralelo_materia = isset($_POST['paralelo_materia']) ? sanitizar($_POST['paralelo_materia']) : null;
-$gestion = isset($_POST["gestion"]) ? sanitizar($_POST["gestion"]) : null;
-$semestre = isset($_POST["semestre"]) ? sanitizar($_POST["semestre"]) : null;
-$fecha_inicio = isset($_POST["fecha_inicio"]) ? sanitizar($_POST["fecha_inicio"]) : null;
-$fecha_fin = isset($_POST["fecha_fin"]) ? sanitizar($_POST["fecha_fin"]) : null;
+    // Consulta para Aulas (sin cambios)
+    if (!empty($aula)) {
+        $consultaAulas = 'SELECT * FROM Aulas WHERE Nombre LIKE "%' . $conexion->real_escape_string($aula) . '%"';
+        $resultadoAulas = $conexion->query($consultaAulas);
 
-// Verificar si el aula existe y agregar si no existe
-if (!empty($nombre_aula)) {
-    $query = "SELECT AulaID FROM Aulas WHERE Nombre = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param('s', $nombre_aula);
-    $stmt->execute();
-    $stmt->store_result();
+        // Generar tabla HTML para Aulas (sin cambios)
+        if ($resultadoAulas) {
+            if ($resultadoAulas->num_rows > 0) {
+                $tablaHTML = '<thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
 
-    if ($stmt->num_rows > 0) {
-        agregarError($errores, 'aula', 'El aula ya existe.');
-    } else {
-        $query = "INSERT INTO Aulas (Nombre) VALUES (?)";
-        $stmt = $conexion->prepare($query);
-        $stmt->bind_param('s', $nombre_aula);
-        $stmt->execute() ? $errores[] = 'Aula agregada con éxito' : agregarError($errores, 'aula', "Error al agregar aula: {$stmt->error}");
-    }
-    $stmt->close();
-}
+                while ($fila = $resultadoAulas->fetch_assoc()) {
+                    $tablaHTML .= '<tr data-aula-id = "' . $fila['AulaID'] . '">
+                                    <td>' . $fila['Nombre'] . '</td>
+                                    <td>
+                                        <button class="editar" onclick="editarAula(' . $fila['AulaID'] . ')">✏️</button>
+                                        <button class="eliminar" onclick="eliminarAula(' . $fila['AulaID'] . ')">🗑️</button>
+                                    </td>
+                                </tr>';
+                }
 
-// Verificar y agregar docente
-if (!empty($nombre_docente) && !empty($apellido_docente)) {
-    $query = "SELECT DocenteID FROM Docentes WHERE Nombre = ? AND Apellido = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param('ss', $nombre_docente, $apellido_docente);
-    $stmt->execute();
-    $stmt->store_result();
+                $tablaHTML .= '</tbody>';
 
-    if ($stmt->num_rows > 0) {
-        agregarError($errores, 'docente', 'El docente ya existe.');
-    } else {
-        $query = "INSERT INTO Docentes (Nombre, Apellido) VALUES (?, ?)";
-        $stmt = $conexion->prepare($query);
-        $stmt->bind_param('ss', $nombre_docente, $apellido_docente);
-        $stmt->execute() ? $errores[] = 'Docente agregado con éxito' : agregarError($errores, 'docente', "Error al agregar docente: {$stmt->error}");
-    }
-    $stmt->close();
-}
-
-// Obtener carrera ID
-function obtenerCarreraID($conexion, $carrera_nombre) {
-    $stmt = $conexion->prepare("SELECT CarreraID FROM Carreras WHERE Nombre = ?");
-    $stmt->bind_param('s', $carrera_nombre);
-    $stmt->execute();
-    $stmt->bind_result($carrera_id);
-    $stmt->fetch();
-    $stmt->close();
-    return $carrera_id ?: false;
-}
-
-// Verificar y agregar materia
-if (!empty($nombre_materia) && !empty($codigo_materia) && !empty($nivel_materia) && !empty($carrera_materia)) {
-    $query = "SELECT MateriaID FROM Materias WHERE Nombre = ? AND Codigo = ?";
-    $stmt = $conexion->prepare($query);
-    $stmt->bind_param('ss', $nombre_materia, $codigo_materia);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        agregarError($errores, 'materia', 'La materia ya existe.');
-    } else {
-        $carrera_id = obtenerCarreraID($conexion, $carrera_materia);
-        if ($carrera_id) {
-            $query = "INSERT INTO Materias (Nombre, Codigo, Nivel, CarreraID, Paralelo) VALUES (?, ?, ?, ?, ?)";
-            $stmt = $conexion->prepare($query);
-            $stmt->bind_param('ssiis', $nombre_materia, $codigo_materia, $nivel_materia, $carrera_id, $paralelo_materia);
-            $stmt->execute() ? $errores[] = 'Materia agregada con éxito' : agregarError($errores, 'materia', "Error al agregar materia: {$stmt->error}");
+                echo $tablaHTML;
+            } else {
+                echo 'No se encontraron aulas.';
+            }
         } else {
-            agregarError($errores, 'carrera', 'Error: Carrera no encontrada');
+            echo "Error en la consulta: $conexion->error";
         }
     }
-    $stmt->close();
-}
+    // Consulta para Docentes
+    else if (!empty($nombre) || !empty($apellido)) {
+        // Consulta inicial
+        $consulta = "SELECT
+                        GestionSemestre.GestionSemestreID AS GestionSemestreID,
+                        DocenteMateria.DocenteMateriaID as DocenteMateriaID,    
+                        Docentes.DocenteID AS id,
+                        Docentes.Nombre AS nombre,
+                        Docentes.Apellido AS apellido,
+                        Materias.Nombre AS materia,
+                        Materias.Nivel AS nivel,
+                        Aulas.Nombre AS aula,
+                        Carreras.Nombre AS nombreCarrera,
+                        DATE_FORMAT(HoraInicio, '%H:%i') AS horaInicio,
+                        DATE_FORMAT(HoraFin, '%H:%i') AS horaFin,
+                        Horarios.Dia AS dia,
+                        Horarios.HorarioID AS horarioID,
+                        Materias.Paralelo AS paralelo,
+                        Horarios.Periodo AS periodo
+                    FROM
+                        DocenteMateria
+                        INNER JOIN Docentes ON DocenteMateria.DocenteID = Docentes.DocenteID
+                        INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
+                        INNER JOIN Carreras ON Materias.CarreraID = Carreras.CarreraID
+                        INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
+                        INNER JOIN Horarios ON Horarios.HorarioID = DocenteMateria.HorarioID
+                        INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
+                    WHERE
+                        Carreras.CarreraID IN (SELECT CarreraID FROM jefecarrera WHERE JefeCarreraID = ?)
+                    ";
 
-// Verificar y agregar gestión y semestre
-if (!empty($gestion) && !empty($semestre) && !empty($fecha_inicio) && !empty($fecha_fin)) {
-    $year_gestion = (int)$gestion;
-    $year_inicio = (int)date('Y', strtotime($fecha_inicio));
-    $year_fin = (int)date('Y', strtotime($fecha_fin));
+        // Aplicación de filtros
+        $filtros = [];
+        if (!empty($nombre)) {
+            $filtros[] = "Docentes.Nombre LIKE '%" . $conexion->real_escape_string($nombre) . "%'";
+        }
+        if (!empty($apellido)) {
+            $filtros[] = "Docentes.Apellido LIKE '%" . $conexion->real_escape_string($apellido) . "%'";
+        }
 
-    if ($year_gestion === $year_inicio && $year_gestion === $year_fin) {
-        $query = "INSERT INTO GestionSemestre (Gestion, Semestre, FechaInicio, FechaFin) VALUES (?, ?, ?, ?)";
-        $stmt = $conexion->prepare($query);
-        $stmt->bind_param('ssss', $gestion, $semestre, $fecha_inicio, $fecha_fin);
-        $stmt->execute() ? $errores[] = 'Gestión agregada correctamente' : agregarError($errores, 'gestion', "Error al agregar Gestión: {$stmt->error}");
-    } else {
-        agregarError($errores, 'gestion_fecha', 'El año de gestión debe coincidir con las fechas de inicio y fin.');
+        if (!empty($filtros)) {
+            $consulta .= ' AND ' . implode(' AND ', $filtros);
+        }
+
+        $consulta .= ' AND GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)';
+        $consulta .= ' ORDER BY Horarios.HorarioID, horaInicio';
+
+        // Preparar y ejecutar la consulta
+        $stmt = $conexion->prepare($consulta);
+        $stmt->bind_param("i", $jefeCarreraID); // Vincula el JefeCarreraID a la consulta
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        // Generar tabla HTML para Docentes
+        if ($resultado) {
+            if ($resultado->num_rows > 0) {
+                $tablaHTML = '<thead>
+                                    <tr>
+                                        <th>Dia</th>
+                                        <th>Horas</th>
+                                        <th>Nombre Completo</th>
+                                        <th>Carrera</th>
+                                        <th>Materia</th>
+                                        <th>Nivel</th>
+                                        <th>Aula</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
+
+                while ($fila = $resultado->fetch_assoc()) {
+                    $tablaHTML .= '<tr data-docente-materia-id="' . $fila['DocenteMateriaID'] . '">
+                                        <td class="dia">' . $fila['dia'] . '</td>
+                                        <td class="horaInicio">' . "P" . $fila['periodo'] . ": " . $fila['horaInicio'] . ' - ' . $fila['horaFin'] . '</td>
+                                        <td class="nombreCompleto">' . $fila['nombre']  . ' ' . $fila['apellido'] . '</td>
+                                        <td class="nombreCarrera">' . $fila['nombreCarrera'] . '</td>
+                                        <td class="materia">' . $fila['materia'] . '</td>
+                                        <td class="nivel">' . $fila['nivel'] . ' ' . $fila['paralelo'] . '</td>
+                                        <td class="aula">' . $fila['aula'] . '</td>
+                                        <td>
+                                            <button class="editar" onclick="editarDocente(' . $fila['DocenteMateriaID'] . ')">✏️</button>
+                                            <button class="eliminar" onclick="eliminarDocenteMateria(' . $fila['DocenteMateriaID'] . ')">🗑️</button>
+                                        </td>
+                                    </tr>';
+                }
+                $tablaHTML .= '</tbody>';
+
+                echo $tablaHTML;
+            } else {
+                echo 'No se encontraron resultados.';
+            }
+        } else {
+            echo "Error en la consulta: $conexion->error";
+        }
     }
-    $stmt->close();
-}
+    // Consulta para Materias (sin cambios)
+    else if (!empty($materia)) {
+        $consultaMaterias = "SELECT Materias.Paralelo as para, Materias.MateriaID as MateriaID,Materias.Codigo as Codigo, Materias.Nombre as NombreMateria,Materias.Nivel as Nivel, Carreras.Nombre as NombreCarrera FROM Materias 
+                            inner join Carreras on Carreras.CarreraID = Materias.CarreraID  
+                            WHERE Materias.Nombre LIKE '%" . $conexion->real_escape_string($materia) . "%'" . " ORDER BY Carreras.Nombre, Materias.Nivel";
+        $resultadoMaterias = $conexion->query($consultaMaterias);
 
-// Enviar la respuesta como JSON
-header('Content-Type: application/json');
-echo json_encode(['status' => empty($errores) ? 'success' : 'error', 'messages' => $errores]);
+        if ($resultadoMaterias) {
+            if ($resultadoMaterias->num_rows > 0) {
+                $tablaHTML = '<table id="tabla-materias">
+                            <thead>
+                                <tr>
+                                    <th>Materia</th>
+                                    <th>Codigo</th>
+                                    <th>Nivel</th>
+                                    <th>Carrera</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+                while ($fila = $resultadoMaterias->fetch_assoc()) {
+                    $tablaHTML .= '<tr data-materia-id="' . $fila['MateriaID'] . '">
+                                <td>' . $fila['NombreMateria'] . '</td>
+                                <td>' . $fila['Codigo'] . '</td>
+                                <td>' . $fila['Nivel'] . '</td>
+                                <td>' . $fila['NombreCarrera'] . '</td>
+                                <td>
+                                    <button class="editar" onclick="editarMateria(' . $fila['MateriaID'] . ')">✏️</button>
+                                    <button class="eliminar" onclick="eliminarMateria(' . $fila['MateriaID'] . ')">🗑️</button>
+                                </td>
+                            </tr>';
+                }
+                $tablaHTML .= '</tbody>';
+                echo $tablaHTML;
+            } else {
+                echo 'No se encontraron materias.';
+            }
+        } else {
+            echo "Error en la consulta: $conexion->error";
+        }
+    }
+} else {
+    echo 'Por favor, introduce al menos un criterio de búsqueda.';
+}
 
 $conexion->close();

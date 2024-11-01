@@ -2,6 +2,10 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+session_name('login');
+session_start();
+
 include '../database.php';
 
 if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materia']) || !empty($_GET['aula'])) {
@@ -81,6 +85,14 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
             $filtros[] = "Docentes.Apellido LIKE '%" . $conexion->real_escape_string($apellido) . "%'";
         }
 
+        $rol = $_SESSION['rol'];
+
+        if ($rol != 1 && $rol != 3) {
+            // $filtros[] = "Carreras.CarreraID IN (SELECT CarreraID FROM jefecarrera WHERE JefeCarreraID = $rol)";
+            $filtros[] = "Carreras.CarreraID IN (SELECT CarreraID FROM jefecarrera WHERE JefeCarreraID = " . intval($_SESSION['usuario_id']) . ")";
+        }
+
+
         if (!empty($filtros)) {
             $consulta .= ' WHERE ' . implode(' AND ', $filtros);
         }
@@ -110,8 +122,8 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                 while ($fila = $resultado->fetch_assoc()) {
                     $tablaHTML .= '<tr data-docente-materia-id="' . $fila['DocenteMateriaID'] . '">
                                         <td class="dia">' . $fila['dia'] . '</td>
-                                        <td class="horaInicio">'. "P". $fila['periodo'].": " . $fila['horaInicio'] . ' - ' . $fila['horaFin'] . '</td>
-                                        <td class="nombreCompleto">' .$fila['nombre']  . ' ' . $fila['apellido'] . '</td>
+                                        <td class="horaInicio">' . "P" . $fila['periodo'] . ": " . $fila['horaInicio'] . ' - ' . $fila['horaFin'] . '</td>
+                                        <td class="nombreCompleto">' . $fila['nombre']  . ' ' . $fila['apellido'] . '</td>
                                         <td class="nombreCarrera">' . $fila['nombreCarrera'] . '</td>
                                         <td class="materia">' . $fila['materia'] . '</td>
                                         <td class="nivel">' . $fila['nivel'] . ' ' . $fila['paralelo'] . '</td>
@@ -122,9 +134,6 @@ if (!empty($_GET['nombre']) || !empty($_GET['apellido']) || !empty($_GET['materi
                                         </td>
                                     </tr>';
                 }
-
-
-
                 $tablaHTML .= '</tbody>';
 
                 echo $tablaHTML;

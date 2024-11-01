@@ -24,7 +24,7 @@ if (!empty($_POST["btnIngresar"])) {
                 if ($fila['Clave'] == $clave) {  // Considera usar password_verify() en el futuro
                                         
                     // Contraseña correcta
-                    $_SESSION['usuario_id'] = $fila['UsuarioID']; // Asumiendo que hay una columna 'id'
+                    $_SESSION['usuario_id'] = $fila['UsuarioID'];
                     $_SESSION['usuario'] = $fila['Usuario'];
                     $_SESSION['nombre'] = $fila['Nombre'];
                     $_SESSION['apellido'] = $fila['Apellido'];

@@ -97,6 +97,9 @@
     <?php
     include '../includes/database.php';
 
+    session_name('login');
+    session_start();
+
 
     $queryGestionSemetre = "SELECT GestionSemestreID, Gestion,Semestre FROM GestionSemestre";
     $resultGestionSemetre = $conexion->query($queryGestionSemetre);
@@ -115,7 +118,17 @@
         $carreras .= "<option value='" . $row['CarreraID'] . "'>" . $row['Nombre'] . "</option>";
     }
     ?>
-    <button id="btn-bd">Crear Copia de la Base de Datos</button>
+    <?php if ($_SESSION['rol'] == 1): ?>
+        <button id="btn-bd">Crear Copia de la Base de Datos</button>
+    <?php endif; ?>
+
+
+
+
+
+
+
+
     <form id="form-CopiarDatos">
         <h2>Copiar Datos Académicos a una nueva Gestion y Semestre</h2>
 

@@ -1598,12 +1598,27 @@ function agregarEventos() {
                 method: 'POST',
                 body: formData
             })
-                .then(response => response.json())
+                .then(response => response.text())
                 .then(data => {
-                    showCustomAlert(data.message, true)
+                    console.log(data);
                     // alert(data.message);
+                    document.getElementById("carrerasContainer").style.display = "none";
                     agregarUsuarioForm.reset();
                 });
+        });
+    }
+
+    let rol = document.getElementById('rol');
+
+    if (rol) {
+        rol.addEventListener('change', (e) => {
+            console.log(e.target.value);
+            if(e.target.value == 2){
+                document.getElementById("carrerasContainer").style.display = "block";
+            }
+            else{
+                document.getElementById("carrerasContainer").style.display = "none";
+            }
         });
     }
 }
