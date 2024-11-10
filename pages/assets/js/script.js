@@ -1577,12 +1577,13 @@ function agregarEventos() {
                     showCustomAlert(data.message, true)
                     cambiarContrasena.reset();
                 })
-              
+
         });
     }
 
-    let agregarUsuarioForm = document.getElementById('agregarUsuarioForm');
 
+    // * MODULO AGREGAR USUARIO
+    let agregarUsuarioForm = document.getElementById('agregarUsuarioForm');
     if (agregarUsuarioForm) {
 
         agregarUsuarioForm.addEventListener('submit', (e) => {
@@ -1600,10 +1601,16 @@ function agregarEventos() {
             })
                 .then(response => response.text())
                 .then(data => {
-                    console.log(data);
-                    // alert(data.message);
-                    document.getElementById("carrerasContainer").style.display = "none";
-                    agregarUsuarioForm.reset();
+                    // console.log(data);
+                    if (data.includes("Usuario agregado")) {
+                        showCustomAlert(data, true);
+                        document.getElementById("carrerasContainer").style.display = "none";
+                        agregarUsuarioForm.reset();
+                    }
+                })
+                .catch(error => {
+                    showCustomAlert(data, false)
+                    console.error('Error:', error);
                 });
         });
     }
@@ -1613,14 +1620,68 @@ function agregarEventos() {
     if (rol) {
         rol.addEventListener('change', (e) => {
             console.log(e.target.value);
-            if(e.target.value == 2){
+            if (e.target.value == 2) {
                 document.getElementById("carrerasContainer").style.display = "block";
             }
-            else{
+            else {
                 document.getElementById("carrerasContainer").style.display = "none";
             }
         });
     }
+
+    const eliminarUsuarioForm = document.getElementById("eliminarUsuarioForm");
+
+    if (eliminarUsuarioForm) {
+        eliminarUsuarioForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(eliminarUsuarioForm);
+            fetch("includes/CRUD/eliminarUsuario.php", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    console.log(data);
+                    showCustomAlert(data, true);
+
+                    actualizarListaUsuarios();
+
+                    eliminarUsuarioForm.reset();
+                })
+                .catch((error) => {
+                    showCustomAlert("Error al eliminar el usuario", false);
+                    console.error("Error:", error);
+                });
+        });
+    }
+
+    // Función para actualizar la lista de usuarios en el <select>
+    function actualizarListaUsuarios() {
+        const selectUsuario = document.getElementById("usuarioEliminar");
+        fetch("includes/CRUD/obtenerUsuarios.php")
+            .then((response) => response.json())
+            .then((usuarios) => {
+                // Limpiar las opciones actuales
+                selectUsuario.innerHTML = "<option value=''>Seleccione un usuario</option>";
+
+                // Añadir nuevas opciones al <select>
+                usuarios.forEach((usuario) => {
+                    const option = document.createElement("option");
+                    option.value = usuario.UsuarioID;
+                    option.textContent = usuario.NombreCompleto; // Usando NombreCompleto en lugar de Usuario
+                    selectUsuario.appendChild(option);
+                });
+            })
+            .catch((error) => {
+                console.error("Error al cargar la lista de usuarios:", error);
+            });
+    }
+
+
+
+
+
 }
 
 
