@@ -1558,28 +1558,7 @@ function agregarEventos() {
         });
     }
 
-    let cambiarContrasena = document.querySelector("#cambiarContrasenaForm");
 
-    if (cambiarContrasena) {
-        cambiarContrasena.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(cambiarContrasena);
-            console.log(formData);
-            for (let [key, value] of formData.entries()) {
-                console.log(key + ': ' + value);
-            }
-            fetch('includes/cambiar_clave.php', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    showCustomAlert(data.message, true)
-                    cambiarContrasena.reset();
-                })
-
-        });
-    }
 
 
     // * MODULO AGREGAR USUARIO
@@ -1604,6 +1583,8 @@ function agregarEventos() {
                     // console.log(data);
                     if (data.includes("Usuario agregado")) {
                         showCustomAlert(data, true);
+                        actualizarListaUsuarios("usuarioEliminar");
+                        actualizarListaUsuarios("usuarioExistente")
                         document.getElementById("carrerasContainer").style.display = "none";
                         agregarUsuarioForm.reset();
                     }
@@ -1629,6 +1610,33 @@ function agregarEventos() {
         });
     }
 
+
+
+
+    let cambiarContrasena = document.querySelector("#cambiarContrasenaForm");
+
+    if (cambiarContrasena) {
+        cambiarContrasena.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(cambiarContrasena);
+            console.log(formData);
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
+            fetch('includes/cambiar_clave.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                    showCustomAlert(data.message, true)
+                    cambiarContrasena.reset();
+                })
+
+        });
+    }
+
     const eliminarUsuarioForm = document.getElementById("eliminarUsuarioForm");
 
     if (eliminarUsuarioForm) {
@@ -1645,7 +1653,8 @@ function agregarEventos() {
                     console.log(data);
                     showCustomAlert(data, true);
 
-                    actualizarListaUsuarios();
+                    actualizarListaUsuarios("usuarioEliminar");
+                    actualizarListaUsuarios("usuarioExistente")
 
                     eliminarUsuarioForm.reset();
                 })
@@ -1657,8 +1666,8 @@ function agregarEventos() {
     }
 
     // Función para actualizar la lista de usuarios en el <select>
-    function actualizarListaUsuarios() {
-        const selectUsuario = document.getElementById("usuarioEliminar");
+    function actualizarListaUsuarios(id) {
+        const selectUsuario = document.getElementById(id);
         fetch("includes/CRUD/obtenerUsuarios.php")
             .then((response) => response.json())
             .then((usuarios) => {

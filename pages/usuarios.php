@@ -142,7 +142,38 @@
         <h3>Agregar Usuario</h3>
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br>
-        <!-- Resto de campos omitidos para brevedad -->
+
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" required><br>
+
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" required><br>
+
+        <label for="clave">Clave:</label>
+        <input type="password" id="clave" name="clave" required><br>
+
+        <label for="rol">Rol:</label>
+        <select id="rol" name="rol" required>
+            <option value="">Seleccione un rol</option>
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value='" . $row['RolID'] . "'>" . $row['NombreRol'] . "</option>";
+                }
+            } else {
+                echo "<option value=''>No hay roles disponibles</option>";
+            }
+            ?>
+        </select><br>
+        <div id="carrerasContainer" style="display: none;">
+            <label>Selecciona las carreras que estara a cargo:</label>
+            <?php
+            while ($res = $resultCarreras->fetch_assoc()) {
+                echo "<input type='checkbox' name='carreraID[]' value='$res[CarreraID]'> $res[Nombre]<br>";
+            }
+            ?>
+        </div>
+
         <button type="submit">Agregar Usuario</button>
     </form>
 
