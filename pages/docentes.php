@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <title>Document</title>
 </head>
 
 <body>
+    <style>
+
+    </style>
     <div class="sidebar-filters">
         <h3>Buscar Docente</h3>
 
@@ -15,6 +20,7 @@
             <form>
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" placeholder="Nombre del docente" style="width: 150px;" name="nombre">
+                <label for="apellido">Apellido:</label>
                 <input type="text" id="apellido" placeholder="Apellido del docente" style="width: 150px;" name="apellido">
 
                 <label for="fecha">Fecha:</label>

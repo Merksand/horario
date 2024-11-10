@@ -148,19 +148,3 @@ label {
     opacity: 0;
     transition: .5s ease;
 }
-
-
-
-
-
-
-@media (max-width: 600px) {
-    .background,form{
-        width: 100%;
-    }
-    form{
-        width: 80%;
-        background: #d92a2a;
-    }
-
-}  
