@@ -704,11 +704,14 @@ ion-icon[name='receipt']{
   font-size: 1.4rem;
 }
 .data-item,
-.stat-card,.busqueda-seccion,.lista-materias,.container__reportes,#form-CopiarDatos,.container {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+.stat-card,.busqueda-seccion,.lista-materias,.container__reportes,#form-CopiarDatos,.container,#form-log-filter,.modo {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
 }
+.blanco{
+  color: var(--text-color) !important;
 
+}
 
 .textCenter{
   /* text-align: center; */

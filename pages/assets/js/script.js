@@ -696,7 +696,7 @@ function agregarEventos() {
             setTimeout(() => {
                 alertDiv.remove();
             }, 300);
-        }, 4500);
+        }, 7000);
     }
 
 
@@ -855,27 +855,25 @@ function agregarEventos() {
 
 
 
-    // Seleccionamos todos los inputs que tienen que ver con nombres de docentes
     const inputsNombre = document.querySelectorAll('input[list="listaDocentes"]');
 
-    // Añadimos el evento 'input' a cada uno de ellos
     if (inputsNombre) {
         inputsNombre.forEach(input => {
             input.addEventListener('input', function () {
-                const valorIngresado = this.value;  // Capturamos el valor ingresado en este input
-                const dataList = document.getElementById('listaDocentes');  // Lista de opciones
+                const valorIngresado = this.value;
+                const dataList = document.getElementById('listaDocentes');
 
-                // Buscamos en el datalist la opción que coincida con el valor ingresado
+
                 const opcionSeleccionada = Array.from(dataList.options).find(option => option.value === valorIngresado);
 
                 if (opcionSeleccionada) {
-                    const docenteID = opcionSeleccionada.getAttribute('data-docente-id');  // Obtenemos el ID del docente
+                    const docenteID = opcionSeleccionada.getAttribute('data-docente-id');
 
-                    // Buscamos el campo oculto relacionado con este input, basado en el atributo "data-hidden-id"
+
                     const inputHiddenID = document.getElementById(this.getAttribute('data-hidden-id'));
 
                     if (inputHiddenID) {
-                        inputHiddenID.value = docenteID;  // Asignamos el ID del docente al input oculto
+                        inputHiddenID.value = docenteID;
                         console.log("Docente ID asignado:", docenteID, "al input oculto", inputHiddenID.id);
                     }
                 } else {
@@ -1685,6 +1683,40 @@ function agregarEventos() {
             .catch((error) => {
                 console.error("Error al cargar la lista de usuarios:", error);
             });
+    }
+
+    let formLogs = document.getElementById('form-log-filter');
+    if (formLogs) {
+        formLogs.addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Obtener los valores de los filtros
+            document.getElementById('logsResults').innerHTML = '';
+            const usuarioID = document.getElementById('usuario').value;
+            const fechaDesde = document.getElementById('fecha_desde').value;
+            const fechaHasta = document.getElementById('fecha_hasta').value;
+
+            // Crear el objeto con los datos del formulario
+            const data = new FormData();
+            data.append('usuario', usuarioID);
+            data.append('fecha_desde', fechaDesde);
+            data.append('fecha_hasta', fechaHasta);
+
+            console.log("usuario " + usuarioID + " desde " + fechaDesde + " hasta " + fechaHasta);
+
+            fetch('includes/logs.php', {
+                method: 'POST',
+                body: data
+            })
+                .then(response => response.text())  // Procesar la respuesta como texto
+                .then(data => {
+                    console.log(data);
+                    // Insertar los resultados en la tabla
+                    document.getElementById('logsResults').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los logs:', error);
+                });
+        });
     }
 
 

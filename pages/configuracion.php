@@ -410,13 +410,7 @@ session_start();
 
 
 
-    $sql = "SELECT CarreraID,Nombre FROM Carreras";
-    $result = $conexion->query($sql);
 
-    $options = "";
-    while ($row = $result->fetch_assoc()) {
-        $options .= "<option data-carrera-id = '{$row['CarreraID']}' value='{$row['Nombre']}'></option>";
-    }
 
 
     $sql2 = "SELECT Nombre,Nivel,Paralelo FROM materias";
@@ -461,12 +455,11 @@ session_start();
     $rol = $_SESSION['rol'];
     $usuarioID = $_SESSION['usuario_id'];
 
+    if ($rol == 2) { // Jefe de carrera
 
-    if ($rol == 2) {
-
+        // Obtener las carreras asignadas al jefe de carrera
         $carrerasQuery = "SELECT CarreraID FROM JefeCarrera WHERE JefeCarreraID = $usuarioID";
         $carrerasResult = $conexion->query($carrerasQuery);
-
 
         $carreras = [];
         while ($row = $carrerasResult->fetch_assoc()) {
@@ -474,22 +467,32 @@ session_start();
         }
 
         if (count($carreras) > 0) {
-
             $carrerasList = implode(',', $carreras);
+
+            // Consulta para los docentes asociados a las carreras del jefe de carrera
             $docente = "
-            SELECT Docentes.DocenteID, Docentes.Nombre, Docentes.Apellido 
-            FROM Docentes
-            INNER JOIN DocenteMateria ON Docentes.DocenteID = DocenteMateria.DocenteID
-            INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
-            WHERE Materias.CarreraID IN ($carrerasList)
-            GROUP BY Docentes.DocenteID, Docentes.Nombre, Docentes.Apellido
+                SELECT Docentes.DocenteID, Docentes.Nombre, Docentes.Apellido 
+                FROM Docentes
+                INNER JOIN DocenteMateria ON Docentes.DocenteID = DocenteMateria.DocenteID
+                INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
+                WHERE Materias.CarreraID IN ($carrerasList)
+                GROUP BY Docentes.DocenteID, Docentes.Nombre, Docentes.Apellido
             ";
+
+            // Consulta para las carreras asignadas al jefe de carrera
+            $carrera = "SELECT CarreraID, Nombre FROM Carreras WHERE CarreraID IN ($carrerasList)";
         } else {
+            // No se muestran docentes ni carreras si no tiene asignación de carrera
             $docente = "SELECT DocenteID, Nombre, Apellido FROM Docentes WHERE 1=0";
+            $carrera = "SELECT CarreraID, Nombre FROM Carreras WHERE 1=0";
         }
     } else {
+        // Consultas para otros roles (como administrador)
         $docente = "SELECT DocenteID, Nombre, Apellido FROM Docentes";
+        $carrera = "SELECT CarreraID, Nombre FROM Carreras";
     }
+
+    // Ejecutar las consultas y construir las opciones de docentes y carreras
     $docenteQuery = $conexion->query($docente);
     if (!$docenteQuery) {
         die("Error en la consulta de docentes: " . $conexion->error);
@@ -500,9 +503,19 @@ session_start();
         $docentes .= "<option data-docente-id = '{$row['DocenteID']}' value='{$row['Nombre']} {$row['Apellido']}'></option>";
     }
 
-    $conexion->close();
+    $carreraQuery = $conexion->query($carrera);
+    if (!$carreraQuery) {
+        die("Error en la consulta de carreras: " . $conexion->error);
+    }
 
+    $options = "";
+    while ($row = $carreraQuery->fetch_assoc()) {
+        $options .= "<option data-carrera-id = '{$row['CarreraID']}' value='{$row['Nombre']}'></option>";
+    }
+
+    $conexion->close();
     ?>
+
 
 
     <div id="docentesCRUD spanOscuro">
@@ -681,7 +694,7 @@ session_start();
             <div>
                 <label for="agregarNombreCompleto">Nombre Completo del Docente:</label>
                 <input type="hidden" id="docenteID1" name="docenteID1">
-                <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1">
+                <input list="listaDocentes" type="text" id="agregarNombreCompleto" data-datalist="docentes" data-hidden-id="docenteID1" name="nombre1" required>
                 <datalist id="listaDocentes" class="datalist">
                     <?php echo $docentes; ?>
                 </datalist>
@@ -715,7 +728,7 @@ session_start();
 
             <label for="carrera">Carrera:</label>
             <input type="hidden" name="carreraID" id="carreraHidden">
-            <input list="lista-carrera" id="carrera" name="carrera" type="text">
+            <input list="lista-carrera" id="carrera" name="carrera" type="text" required>
             <datalist id="lista-carrera" class="datalist">
                 <?php echo $options; ?>
             </datalist>

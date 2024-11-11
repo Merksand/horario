@@ -83,7 +83,6 @@
             cursor: pointer;
         }
 
-        /* Estilos responsivos para pantallas más pequeñas */
         @media (max-width: 768px) {
             #form-CopiarDatos {
                 padding: 15px;
@@ -100,17 +99,33 @@
     session_name('login');
     session_start();
 
+    $usuarioID = $_SESSION['usuario_id'];
+    $rol = $_SESSION['rol'];
 
-    $queryGestionSemetre = "SELECT GestionSemestreID, Gestion,Semestre FROM GestionSemestre";
+    // Consulta de Gestion y Semestre (sin cambios)
+    $queryGestionSemetre = "SELECT GestionSemestreID, Gestion, Semestre FROM GestionSemestre";
     $resultGestionSemetre = $conexion->query($queryGestionSemetre);
 
     $gestionSemetre = "";
     while ($row = $resultGestionSemetre->fetch_assoc()) {
-        $gestionSemetre  .= "<option value='" . $row['GestionSemestreID'] . "'>" . $row['Gestion'] . " - " . $row['Semestre'] . "</option>";
+        $gestionSemetre .= "<option value='" . $row['GestionSemestreID'] . "'>" . $row['Gestion'] . " - " . $row['Semestre'] . "</option>";
     }
 
+    if ($rol == 2) {
+        $queryCarreras = "
+        SELECT CarreraID, Nombre 
+        FROM Carreras 
+        WHERE CarreraID IN (
+            SELECT CarreraID 
+            FROM JefeCarrera 
+            WHERE JefeCarreraID = $usuarioID
+        )
+    ";
+    } else {
+        // Consulta para otros roles (administrador, etc.)
+        $queryCarreras = "SELECT CarreraID, Nombre FROM Carreras";
+    }
 
-    $queryCarreras = "SELECT CarreraID, Nombre FROM Carreras";
     $resultCarreras = $conexion->query($queryCarreras);
 
     $carreras = "";
@@ -118,16 +133,10 @@
         $carreras .= "<option value='" . $row['CarreraID'] . "'>" . $row['Nombre'] . "</option>";
     }
     ?>
+
     <?php if ($_SESSION['rol'] == 1): ?>
         <button id="btn-bd">Crear Copia de la Base de Datos</button>
     <?php endif; ?>
-
-
-
-
-
-
-
 
     <form id="form-CopiarDatos">
         <h2>Copiar Datos Académicos a una nueva Gestion y Semestre</h2>

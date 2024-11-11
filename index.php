@@ -152,6 +152,13 @@ $_SESSION['ultima_actividad'] = time();
                                 <span>Agregar/Cambiar Clave</span>
                             </a>
                         </li>
+
+                        <li onclick="cargarContenido('pages/logs.php')">
+                            <a class="inbox" href="#">
+                                <ion-icon name="person-add-outline"></ion-icon>
+                                <span>Registros</span>
+                            </a>
+                        </li>
                     <?php endif ?>
 
                 <?php endif ?>
