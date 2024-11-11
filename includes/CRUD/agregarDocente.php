@@ -56,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtObservacion->bind_param("iii", $docenteID1, $observacionID, $carreraID);
 
             if ($stmtObservacion->execute()) {
-                echo "Datos insertados correctamente en DocenteCarreraObservacion.";
+                echo "Datos insertados correctamente.";
+                $stmtObservacion->close();
             } else {
                 echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
             }

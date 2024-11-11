@@ -1,3 +1,8 @@
+<?php
+session_name('login');
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -404,6 +409,7 @@
     include '../includes/database.php';
 
 
+
     $sql = "SELECT CarreraID,Nombre FROM Carreras";
     $result = $conexion->query($sql);
 
@@ -427,12 +433,6 @@
         $aulas[] = $row;
     }
 
-    $docente = "SELECT DocenteID, Nombre, Apellido FROM Docentes";
-    $docenteQuery = $conexion->query($docente);
-    $docentes = "";
-    while ($row = $docenteQuery->fetch_assoc()) {
-        $docentes .= "<option data-docente-id = '{$row['DocenteID']}' value='{$row['Nombre']} {$row['Apellido']}'></option>";
-    }
 
 
 
@@ -457,8 +457,54 @@
         $observaciones .= "<option data-observacion-id = '{$row['ObservacionID']}' value='{$row['Descripcion']}'>";
     }
 
+
+    $rol = $_SESSION['rol'];
+    $usuarioID = $_SESSION['usuario_id'];
+
+
+    if ($rol == 2) {
+
+        $carrerasQuery = "SELECT CarreraID FROM JefeCarrera WHERE JefeCarreraID = $usuarioID";
+        $carrerasResult = $conexion->query($carrerasQuery);
+
+
+        $carreras = [];
+        while ($row = $carrerasResult->fetch_assoc()) {
+            $carreras[] = $row['CarreraID'];
+        }
+
+        if (count($carreras) > 0) {
+
+            $carrerasList = implode(',', $carreras);
+            $docente = "
+            SELECT Docentes.DocenteID, Docentes.Nombre, Docentes.Apellido 
+            FROM Docentes
+            INNER JOIN DocenteMateria ON Docentes.DocenteID = DocenteMateria.DocenteID
+            INNER JOIN Materias ON DocenteMateria.MateriaID = Materias.MateriaID
+            WHERE Materias.CarreraID IN ($carrerasList)
+            GROUP BY Docentes.DocenteID, Docentes.Nombre, Docentes.Apellido
+            ";
+        } else {
+            $docente = "SELECT DocenteID, Nombre, Apellido FROM Docentes WHERE 1=0";
+        }
+    } else {
+        $docente = "SELECT DocenteID, Nombre, Apellido FROM Docentes";
+    }
+    $docenteQuery = $conexion->query($docente);
+    if (!$docenteQuery) {
+        die("Error en la consulta de docentes: " . $conexion->error);
+    }
+
+    $docentes = "";
+    while ($row = $docenteQuery->fetch_assoc()) {
+        $docentes .= "<option data-docente-id = '{$row['DocenteID']}' value='{$row['Nombre']} {$row['Apellido']}'></option>";
+    }
+
     $conexion->close();
+
     ?>
+
+
     <div id="docentesCRUD spanOscuro">
         <dialog id="dialogBorrar">
             <span id="close">&times;</span>
@@ -606,7 +652,7 @@
                 <input type="hidden" id="editModalMateria__materiaID" name="materiaID">
 
                 <label for="editModalMateria__nombre" class="modal__label">Nombre:</label>
-                <input type="text" id="editModalMateria__nombre" name="nombre" class="modal__input" >
+                <input type="text" id="editModalMateria__nombre" name="nombre" class="modal__input">
 
                 <label for="editModalMateria__codigo" class="modal__label">Código:</label>
                 <input type="text" id="editModalMateria__codigo" name="codigo" class="modal__input">
