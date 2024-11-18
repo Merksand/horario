@@ -1,5 +1,4 @@
 <?php
-
 session_name('login');
 session_start();
 require_once '../database.php';
@@ -20,7 +19,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($periodoInicioID <= $periodoFinID) {
             for ($horarioID = $periodoInicioID; $horarioID <= $periodoFinID; $horarioID++) {
 
-                // Consultas para obtener valores en lugar de IDs
+                // Verificación de conflicto de horario
+                $sqlConflicto = "SELECT * FROM DocenteMateria WHERE DocenteID = ? AND HorarioID = ? OR AulaID = ? AND HorarioID = ?";
+                $stmtConflicto = $conexion->prepare($sqlConflicto);
+                $stmtConflicto->bind_param("iiii", $docenteID1, $horarioID, $aulaID, $horarioID);
+                $stmtConflicto->execute();
+                $resultadoConflicto = $stmtConflicto->get_result();
+
+                if ($resultadoConflicto->num_rows > 0) {
+                    // Si se encuentra un conflicto, muestra un mensaje y termina el proceso
+                    echo "El horario que está intentando asignar ya está ocupado por otro docente o aula";
+                    exit;
+                }
+
+                // Consulta para obtener valores en lugar de IDs
                 $docenteNombre = $conexion->query("SELECT CONCAT(Nombre, ' ', Apellido) AS NombreCompleto FROM Docentes WHERE DocenteID = $docenteID1")->fetch_assoc()['NombreCompleto'];
                 $materiaNombre = $conexion->query("SELECT Nombre FROM Materias WHERE MateriaID = $materiaID")->fetch_assoc()['Nombre'];
                 $aulaNombre = $conexion->query("SELECT Nombre FROM Aulas WHERE AulaID = $aulaID")->fetch_assoc()['Nombre'];
@@ -53,30 +65,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "El rango de periodos es inválido.";
         }
-    } else {
-        echo "Por favor, completa todos los campos obligatorios.";
     }
 
+    // Verificación de observación de carrera para el docente seleccionado
     if ($docenteID1 && $observacionID && $carreraID) {
-        // Obtén el nombre de la carrera y la observación
+        // Obtén el nombre del docente si existe
+        $resultadoDocente = $conexion->query("SELECT CONCAT(Nombre, ' ', Apellido) AS NombreCompleto FROM Docentes WHERE DocenteID = $docenteID1");
+        $docenteNombre = ($resultadoDocente->num_rows > 0) ? $resultadoDocente->fetch_assoc()['NombreCompleto'] : null;
+
+        // Obtén el nombre de la carrera y la observación si existen
         $carreraNombre = $conexion->query("SELECT Nombre FROM Carreras WHERE CarreraID = $carreraID")->fetch_assoc()['Nombre'];
         $observacionNombre = $conexion->query("SELECT Descripcion FROM ObservacionesDocente WHERE ObservacionID = $observacionID")->fetch_assoc()['Descripcion'];
 
+        // Verifica si ya existe la observación para el docente y la carrera
         $sqlVerificar = "SELECT * FROM DocenteCarreraObservacion WHERE DocenteID = $docenteID1 AND ObservacionID = $observacionID AND CarreraID = $carreraID";
         $resultadoVerificar = $conexion->query($sqlVerificar);
 
         if ($resultadoVerificar->num_rows > 0) {
             echo "Ya existe una observación para este docente.";
         } else {
+            // Inserta el registro en la tabla DocenteCarreraObservacion
             $sqlObservacion = "INSERT INTO DocenteCarreraObservacion (DocenteID, ObservacionID, CarreraID) VALUES ($docenteID1, $observacionID, $carreraID)";
             if ($conexion->query($sqlObservacion)) {
-                echo "Datos insertados correctamente en DocenteCarreraObservacion.";
+                echo "Datos insertados correctamente.";
 
-                // Inserción en logs con valores obtenidos
-                $detalle = "Insertado en Observacion: Docente=$docenteNombre, Observacion=$observacionNombre, Carrera=$carreraNombre";
-                $sqlLog = "INSERT INTO logs (UsuarioID, Accion, Detalles) VALUES ('{$_SESSION['usuario_id']}', 'Insertar nueva observación', '$detalle')";
-                if (!$conexion->query($sqlLog)) {
-                    $mensajeError .= "Error al insertar en logs para DocenteCarreraObservacion. " . $conexion->error . "\n";
+                // Inserción en logs solo si $docenteNombre no es null
+                if ($docenteNombre) {
+                    $detalle = "Insertado en Observacion: Docente=$docenteNombre, Observacion=$observacionNombre, Carrera=$carreraNombre";
+                    $sqlLog = "INSERT INTO logs (UsuarioID, Accion, Detalles) VALUES ('{$_SESSION['usuario_id']}', 'Insertar nueva observación', '$detalle')";
+                    if (!$conexion->query($sqlLog)) {
+                        $mensajeError .= "Error al insertar en logs para DocenteCarreraObservacion. " . $conexion->error . "\n";
+                    }
+                } else {
+                    echo "Error: No se encontró el nombre del docente para el log.";
                 }
             } else {
                 echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;

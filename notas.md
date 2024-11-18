@@ -1,35 +1,3 @@
-## Crear usuario intermedio
-## Restringir configuracion por usuario intermedio
-## Comprobar logs en todos los archivos ... Hecho hasta agregarDatos.php
-## Configurar vista usuario para intermedio
-
-
-
-
-
-
-
-
-
-
-
--- Problemas con los datos
-
-
-### MECANICA INDUSTRIAL
-# Aula desconocida
-
-
-### ELECTRICIDAD INDUSTRIAL
-# Nivel 300 Sabado de materia programada
-# Nivel 400 Sabado de materia programada y jueves noche no tiene que haber nada
-
-### ELECTRONICA
-# Nivel 300 Miercoles y Jueves sin docente
-
-
-
-
 
 
 

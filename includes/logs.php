@@ -24,7 +24,11 @@ if (!empty($fechaHasta)) {
 }
 
 $queryLogs .= " ORDER BY logs.fyh_creacion DESC";
+
 $resultLogs = $conexion->query($queryLogs);
+if (!$resultLogs) {
+    die("Error en la consulta: " . $conexion->error);
+}
 
 // Mostrar resultados
 if ($resultLogs->num_rows > 0) {
@@ -41,7 +45,8 @@ if ($resultLogs->num_rows > 0) {
     }
     echo "</table>";
 } else {
-    echo "No se encontraron registros para los filtros seleccionados.";
+    // echo "";
+    echo "<div class='datosIncorrectos'>No se encontraron registros para los filtros seleccionados.</div>";
 }
 
 // $conexion->close();

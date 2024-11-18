@@ -926,8 +926,10 @@ function agregarEventos() {
                 .then(data => {
                     console.log(data);
                     if (data.includes("correctamente")) {
-
                         showCustomAlert(data, true)
+                        docenteForm.reset()
+                    }else if(data.includes("El horario que está intentando asignar ya está ocupado por otro docente o aula")){
+                        showCustomAlert(data, false)
                         docenteForm.reset()
                     } else if (data.includes("rellena") || data.includes("rango") || data.includes("completa todos los campos")) {
                         showCustomAlert(data, false)
@@ -1385,19 +1387,14 @@ function agregarEventos() {
                 .then(data => {
                     console.log("Dato arrojado: " + data);
 
-                    // Verifica si hay errores o mensajes relevantes
                     if (data.includes("Error") || data.includes("ya existe") || data.includes("Falta") || data.includes("gestión")) {
                         if (data.includes("Faltan datos") || data.includes("Error de validación")) {
-                            // Caso: Campos incompletos o validación fallida
                             showCustomAlert("Por favor, complete todos los campos requeridos.", false);
                         } else if (data.includes("ya existe")) {
-                            // Caso: El dato ya existe
                             showCustomAlert("Ya existe el dato ingresado.", false);
                         } else if (data.includes("Error al agregar Gestión")) {
-                            // Caso: Error específico al agregar la gestión
                             showCustomAlert("Error al agregar la Gestión Académica.", false);
                         } else if (data.includes("gestión")) {
-                            // Caso: Exito o fallo en la gestión académica
                             if (data.includes("correctamente")) {
                                 showCustomAlert("Gestión académica agregada correctamente.", true);
                             } else if (data.includes("coincidir")) {
@@ -1407,15 +1404,13 @@ function agregarEventos() {
                                 showCustomAlert("Error en la gestión académica: " + data, false);
                             }
                         } else {
-                            // Otros errores genéricos
                             showCustomAlert("Error al agregar dato: " + data, false);
                         }
                     } else {
-                        // Si no hay errores, los datos se agregaron correctamente
                         console.log("form Docente agregar: ", data);
                         showCustomAlert("Datos agregados con éxito.", true);
                         console.log(data);
-                        form.reset();  // Reiniciar el formulario
+                        form.reset();
                     }
                 })
                 .catch(error => console.error('Error:', error));
