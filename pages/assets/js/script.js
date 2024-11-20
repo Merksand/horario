@@ -173,14 +173,13 @@ function agregarEventos() {
     // *  FILTRAR DOCENTE POR NOMBRE O APELLIDO
     const boton = document.getElementById("btn-filtrar");
     const botonFecha = document.getElementById("filtrar-semana");
-
     function handleDocenteClick(e) {
-        // e.preventDefault();
+        e.preventDefault();
         let nombre = document.getElementById("nombre").value.trim();
         let apellido = document.getElementById("apellido").value.trim();
         let tabla = document.getElementById("tabla-profesores");
-        console.log(apellido);
-        const params = new URLSearchParams({ nombre, apellido });
+        let turno = document.getElementById("filtrar-turno").value;
+        const params = new URLSearchParams({ nombre, apellido, turno });
         const url = `includes/docentes.php?${params.toString()}`;
 
         fetch(url)
@@ -205,9 +204,11 @@ function agregarEventos() {
         let apellido = document.getElementById("apellido").value.trim();
         let fecha = document.getElementById("fecha").value;
         let tabla = document.getElementById("tabla-profesores");
+        let turno = document.getElementById("filtrar-turno").value;
+        console.log(turno);
 
         // Crear un objeto URLSearchParams con fecha
-        const params = new URLSearchParams({ nombre, apellido, fecha });
+        const params = new URLSearchParams({ nombre, apellido, fecha, turno });
         const url = `includes/docentes.php?${params.toString()}`;
 
         fetch(url)
@@ -882,7 +883,7 @@ function agregarEventos() {
             });
         });
     }
-    // ! TODO FALTA SOLUCIONAR ESTE PROBLEMA DE ATRIBUTO MATERIA MATERIAHIDDEN
+    
 
     // Función para asignar evento y actualizar hidden inputs
     function asignarEventoInput(inputId, datalistId, hiddenId, datasetAttribute) {
@@ -928,7 +929,7 @@ function agregarEventos() {
                     if (data.includes("correctamente")) {
                         showCustomAlert(data, true)
                         docenteForm.reset()
-                    }else if(data.includes("El horario que está intentando asignar ya está ocupado por otro docente o aula")){
+                    } else if (data.includes("El horario que está intentando asignar ya está ocupado por otro docente o aula")) {
                         showCustomAlert(data, false)
                         docenteForm.reset()
                     } else if (data.includes("rellena") || data.includes("rango") || data.includes("completa todos los campos")) {
@@ -1069,13 +1070,16 @@ function agregarEventos() {
                 const nivel = formData.get('nivel');
                 const aula = formData.get('aula');
 
+                // for (let [key, value] of formData.entries()) {
+                //     console.log(key + ': ' + value);
+                // }
+
                 fetch("includes/CRUD/actualizarDocente.php", {
                     method: "POST",
                     body: formData
                 })
                     .then(response => response.text())
                     .then(data => {
-                        console.log(data);
                         if (data.includes("Datos actualizados correctamente")) {
                             showCustomAlert("Docente editado con éxito", true);
                             const row = document.querySelector(`tr[data-docente-materia-id="${docenteMateriaID}"]`);
@@ -1091,8 +1095,6 @@ function agregarEventos() {
                             editModalDocente.close();
                         } else {
                             showCustomAlert("Error al editar docente: " + data.message, false);
-                            console.log(data.message);
-                            console.log(data);
                         }
                     })
                     .catch(error => {
@@ -1240,7 +1242,7 @@ function agregarEventos() {
                             const option = document.createElement('option');
                             option.value = materia.Nombre;
                             option.setAttribute("data-materia-id", materia.MateriaID)
-                            // option.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
+                            option.textContent = materia.Paralelo ? `(Paralelo: ${materia.Paralelo})` : materia.Nombre;
                             if (materia.Paralelo) {
                                 option.textContent = `(Paralelo: ${materia.Paralelo})`;
                             } else {

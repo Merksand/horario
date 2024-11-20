@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo "Error: No se encontró el nombre del docente para el log.";
                 }
             } else {
-                echo "Error al insertar en DocenteCarreraObservacion: " . $conexion->error;
+                echo "La observacion ya existe";
             }
         }
     }

@@ -3,6 +3,7 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
     $nombre = $_GET['nombre'] ?? '';
     $apellido = $_GET['apellido'] ?? '';
     $fecha = $_GET['fecha'] ?? '';
+    $turno = $_GET['turno'];
     // $fecha = isset($_GET['fecha']) ?? '';
     include 'database.php';
     // if ($conexion->connect_error) {
@@ -27,7 +28,11 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
                     INNER JOIN Horarios ON DocenteMateria.HorarioID = Horarios.HorarioID
                     INNER JOIN Aulas ON DocenteMateria.AulaID = Aulas.AulaID
                     INNER JOIN GestionSemestre ON DocenteMateria.GestionSemestreID = GestionSemestre.GestionSemestreID
-                WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1) ";
+                WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)";
+
+    if ($turno !== "Todas") {
+        $consulta .= " AND Horarios.Turno = '$turno'";
+    }
 
     if (!empty($nombre) && !empty($apellido)) {
         $consulta .= " AND Docentes.Nombre LIKE '%$nombre%' AND Docentes.Apellido LIKE '%$apellido%'";
@@ -91,11 +96,10 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
             echo "<span class='spanDatos'>" . $fila['Nivel'] . "</span>";
             echo "</div>";
         }
-    } else if($resultado2->num_rows > 0){
+    } else if ($resultado2->num_rows > 0) {
         echo "<div class='datosIncorrectos'>El docente no trabaja hoy</div>";
         exit();
-    }
-     else {
+    } else {
         // echo "No se encontraron docentes con ese nombre y/o apellido.";
         echo "<div class='datosIncorrectos'>No se encontró al Docente</div>";
     }
@@ -103,5 +107,5 @@ if (isset($_GET['nombre']) || isset($_GET['apellido']) || isset($_GET['fecha']))
 } else {
     // echo "No se proporcionaron nombre y/o apellido.";
     // echo "<div class='datosIncorrectos'>No se encontró al Docente</div>";
-    
+
 }

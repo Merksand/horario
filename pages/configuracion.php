@@ -542,27 +542,6 @@ session_start();
                 <label for="editModal__apellido" class="modal__label">Apellido:</label>
                 <input type="text" id="editModal__apellido" name="apellido" class="modal__input">
 
-                <!-- <label for="editModal__dia" class="modal__label">Día:</label>
-                <input list="editModal__periodo-dia" id="editModal__dia" name="dia" type="text" class="modal__input">
-                <datalist id="editModal__periodo-dia" class="modal__datalist">
-                    <option value="Lunes">1</option>
-                    <option value="Martes">2</option>
-                    <option value="Miercoles">3</option>
-                    <option value="Jueves">4</option>
-                    <option value="Viernes">5</option>
-                    <option value="Sabado">6</option>
-                </datalist> -->
-
-                <!-- <label for="editModal__periodoInicio" class="modal__label">Periodo:</label>
-                <input list="editModal__inicio-periodo" id="editModal__periodoInicio" name="periodoInicio" type="text" class="modal__input">
-                <datalist id="editModal__inicio-periodo" class="modal__datalist">
-                    <option value="1">
-                    <option value="2">
-                    <option value="3">
-                    <option value="4">
-                    <option value="5">
-                    <option value="6">
-                </datalist> -->
 
 
                 <label for="editModal__carrera" class="modal__label">Carrera:</label>
@@ -590,21 +569,6 @@ session_start();
 
 
 
-
-                <!-- <label for="editModal__materia-input" class="modal__label">Materia:</label>
-                <input list="editModal__materia" id="editModal__materia-input" name="materia" type="text" class="modal__input" disabled>
-                <datalist id="editModal__materia" class="modal__datalist">
-                </datalist> -->
-
-
-
-                <!-- <label for="editModal__materia-input" class="modal__label">Materia:</label> -->
-
-                <!-- <input  list="editModal__materia" id="editModal__materia-input" name="materia" type="hidden" class="modal__input" disabled> -->
-                <!-- <datalist id="editModal__materia" class="modal__datalist"> -->
-                <!--  -->
-                <!-- </datalist> -->
-
                 <label for="editModal__aula" class="modal__label">Aula:</label>
                 <input list="lista-aulass" type="text" id="editModal__aula" name="aula" class="modal__input">
                 <datalist id="lista-aulass">
@@ -613,6 +577,13 @@ session_start();
                         echo "<option value='$aula[Nombre]'>$aula[Nombre]</option>";
                     }
                     ?>
+                </datalist>
+
+                <label for="observacionID">Observación</label>
+                <input type="hidden" name="observacionID" id="observacionHidden">
+                <input list="lista-observaciones" type="text" id="observacion" name="observacion" placeholder="Ejemplo: Un sábado por mes">
+                <datalist id="lista-observaciones">
+                    <?php echo $observaciones; ?>
                 </datalist>
 
 
@@ -760,7 +731,7 @@ session_start();
                     <?php echo $filtrar_aulas; ?>
                 </datalist>
             </div>
-            <label for="observacionID">Observaciónn (OPCIONAL)</label>
+            <label for="observacionID">Observación (OPCIONAL)</label>
             <input type="hidden" name="observacionID" id="observacionHidden">
             <input list="lista-observaciones" type="text" id="observacion" name="observacion" placeholder="Ejemplo: Un sábado por mes">
             <datalist id="lista-observaciones">

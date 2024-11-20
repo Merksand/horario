@@ -1,28 +1,28 @@
 <style>
-            table {
-                border-collapse: collapse;
-                width: 100%;
-            }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-            th,
-            td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
 
-            th {
-                background-color: #f0f0f0;
-            }
+    th {
+        background-color: #f0f0f0;
+    }
 
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 
-            tr:hover {
-                background-color: #f1f1f1;
-            }
-        </style>
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
 <?php
 require_once "../includes/database.php";
 
@@ -252,8 +252,9 @@ $query = "
         DocenteCarreraObservacion dco ON d.DocenteID = dco.DocenteID AND c.CarreraID = dco.CarreraID
     LEFT JOIN 
         ObservacionesDocente od ON dco.ObservacionID = od.ObservacionID
-    -- WHERE c.Nombre = 'Electricidad Industrial'
-        -- Filtrar según sea necesario, por ejemplo, por un día específico o por turno
+    
+    INNER JOIN GestionSemestre ON dm.GestionSemestreID = GestionSemestre.GestionSemestreID
+    WHERE GestionSemestre.GestionSemestreID = (SELECT GestionSemestreID FROM GestionSemestre ORDER BY GestionSemestreID DESC LIMIT 1)
     GROUP BY 
         d.DocenteID, c.CarreraID, od.Descripcion ;
     ";

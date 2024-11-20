@@ -114,12 +114,14 @@ $_SESSION['ultima_actividad'] = time();
                     </a>
                 </li>
 
+                <?php if($_SESSION['rol'] == 1):?>
                 <li onclick="cargarContenido('pages/generarReportes.php')">
                     <a class="inbox" href="#">
                         <ion-icon name="document-text-outline"></ion-icon>
                         <span>Generar Reportes</span>
                     </a>
                 </li>
+                <?php endif ?>
 
                 <?php if ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2) : ?>
 
@@ -130,21 +132,21 @@ $_SESSION['ultima_actividad'] = time();
                         </a>
                     </li>
                     <?php if ($_SESSION['rol'] == 1) : ?>
-                        <li onclick="cargarContenido('pages/agregarDatos.php')">
+                        <li onclick="cargarContenido('pages/agregarDatos.php')" title="Agregar datos nuevos">
                             <a class="inbox" href="#">
                                 <ion-icon name="add-circle-outline"></ion-icon>
-                                <span>Agregar nuevos datos</span>
+                                <span>Agregar datos nuevos</span>
                             </a>
                         </li>
                     <?php endif ?>
                     <li onclick="cargarContenido('pages/copiarDatos.php')">
-                        <a class="inbox" href="#">
+                        <a class="inbox" href="#" title="Copiar Horarios De Carrera">
                             <ion-icon name="copy-outline"></ion-icon>
-                            <span>Copiar Datos De Carrera</span>
+                    <span>Copiar Horarios De Carrera</span>
                         </a>
                     </li>
                     <?php if ($_SESSION['rol'] == 1) : ?>
-                        <li onclick="cargarContenido('pages/usuarios.php')">
+                        <li onclick="cargarContenido('pages/usuarios.php')" title="Agregar/Cambiar Clave"> 
                             <a class="inbox" href="#">
                                 <ion-icon name="person-add-outline"></ion-icon>
                                 <span>Agregar/Cambiar Clave</span>

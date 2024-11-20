@@ -18,10 +18,18 @@
 
         <div class="filtro">
             <form>
-                <label for="nombre">Nombre:</label>
+                <!-- <label for="nombre">Nombre:</label> -->
                 <input type="text" id="nombre" placeholder="Nombre del docente" style="width: 150px;" name="nombre">
-                <label for="apellido">Apellido:</label>
+                <!-- <label for="apellido">Apellido:</label> -->
                 <input type="text" id="apellido" placeholder="Apellido del docente" style="width: 150px;" name="apellido">
+
+                <label for="filtrar-turno">Turno:</label>
+                <select id="filtrar-turno" name="turno" style="width: 85px;">
+                    <option value="Todas">Todas</option>
+                    <option value="Mañana">Mañana</option>
+                    <option value="Tarde">Tarde</option>
+                    <option value="Noche">Noche</option>
+                </select>
 
                 <label for="fecha">Fecha:</label>
                 <input type="date" id="fecha" class="fechaDocente" style="width: 150px;" name="fecha">

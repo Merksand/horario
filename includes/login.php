@@ -12,7 +12,7 @@ if (!empty($_POST["btnIngresar"])) {
         $clave = $_POST['password'];
 
         // Consulta para verificar si el usuario existe
-        $sql = "SELECT * FROM Usuarios WHERE usuario = ?";
+        $sql = "SELECT * FROM Usuarios WHERE usuario = ? and is_active = 1";
         $stmt = $conexion->prepare($sql);
         $stmt->bind_param("s", $usuario);
         $stmt->execute();
